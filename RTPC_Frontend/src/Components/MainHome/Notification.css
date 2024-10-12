@@ -1,0 +1,47 @@
+.notification-section .title{
+    background-color: #4C3575;
+    color: white;
+    padding: 10px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    border-radius: 20px 20px 0 0;
+    
+    
+}
+.notification-box {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    height: 60px;
+    overflow-y: hidden;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center; 
+    color: #563D7C;
+}
+
+.user-icon {
+    font-size: 24px;
+    margin-right: 8px; 
+}
+
+.notification-box h4 {
+    margin: 0;
+}
+
+.notification-box p {
+    font-size: 13px;
+    margin: 5px 0 0 32px; 
+}
+    .notification-box:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}

@@ -1,0 +1,45 @@
+.students-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+.student-section h2{
+    margin: 10px 10px;
+}
+.student-card{
+   
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    
+
+}
+.dash-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+}
+.dash-title p{
+    font-size: 12px;
+}
+.dash-title div{
+    display: flex;
+    gap: 4px;
+}
+.student-card:hover{
+    transform: scale(1.05);
+}
+.student-card h4{
+    color: #563D7C;
+}
+.student-card p{
+    font-size: 12px;
+}
+.student-section{
+    padding-right: 15px;
+}

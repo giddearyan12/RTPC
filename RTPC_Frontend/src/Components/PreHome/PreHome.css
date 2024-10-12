@@ -1,0 +1,276 @@
+
+.prehome{
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden; 
+    font-family: 'Poppins', 'Roboto', 'Helvetica', sans-serif;
+    
+    
+
+}
+
+.navbar{
+    display: flex;
+    color: black;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 100px;
+    
+    z-index: 10; 
+}
+
+.navbar .nav-links{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    list-style: none;
+}
+
+
+.navbar .nav-links li{
+    font-weight: 300;
+    color: #535768;
+    padding: 5px 15px;
+    
+}
+.navbar img{
+    width: 100px;
+}
+a{
+    text-decoration: none;
+}
+
+.navbar .nav-links li:hover{
+    
+   border-bottom:2px solid #5A71E3;
+}
+
+.navbar button{
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: lighter;
+    border: none;
+    font-size: 14px;
+    padding: 10px 15px;
+}
+
+.navbar .contact-btn{
+    margin-right: 20px;
+    background-color: white;
+    border: 1px solid #5A71E3;
+    color: #5A71E3;
+    cursor: pointer;
+}
+
+.navbar .contact-btn:hover{
+    background-color: #5A71E3;
+    color: white;
+}
+
+.navbar .sign-in-btn{
+    background-color: #5A71E3;
+    color: white;
+    cursor: pointer;
+
+}
+
+.home{
+    width: 100%;
+    height: 87%;
+    background-color: #C8CAE6;
+    margin-left: 20px;
+    border-radius: 25px;
+    display: flex;
+    color: #333333;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.login-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 40%;
+    height: 100%;
+    padding: 0px 55px;
+}
+
+.login-section h2{
+    font-size: 27px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 0;
+    
+}
+.login-section h2 span{
+    color: #5A71E3;
+    font-weight: bold;
+}
+
+.login-section p{
+    text-align: justify;
+    color: black;
+    font-weight: lighter;
+}
+
+.login-section button{
+    background-color: #5A71E3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 300;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.demo{
+    position: relative;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.demo img{
+    width: 40rem;
+    height: 20rem;
+    border-radius: 10px;
+}
+
+.background-svg {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  height: 150vh;
+  z-index: 0;
+}
+
+.foreground-img{
+    position: relative;
+    z-index: 1; 
+    width: 600px;
+}
+
+.services-section {
+   
+    padding: 60px 20px;
+    
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+.services-section h2 {
+    color: #3D1053;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.services-section h1 {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.services-section p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.services-container {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    background-color: #EDF4FF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 20px;
+    max-width: 400px;
+    text-align: left;
+    animation: fadeInUp 0.9s ease-out;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    border: 2px solid #5A71E3;
+}
+
+.service-icon {
+    font-size: 50px;
+    color: #3D1053;
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+.service-card p {
+    color: #969696;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.service-card a {
+    color: #333333;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+
+@media (max-width : 768px){
+    .navbar{
+        visibility: hidden;
+    }
+
+    .home {
+        display: grid;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding-bottom: 20px;
+        border-radius: 0px;
+    }
+    .login-section{
+        justify-content: center;
+        width: auto;
+        align-items: center;
+    }
+    .login-section button{
+        margin-bottom: 20px;
+    }
+    .sign-in-btn{
+        margin-bottom: 20px;
+    }
+
+    .demo{
+        width: auto;
+    }
+    .foreground-img{
+        width: 80%;
+    }
+	.services-container{
+        display: grid; 
+        grid-template-columns: repeat(2, 2fr);
+        margin: 20px;
+    }
+}

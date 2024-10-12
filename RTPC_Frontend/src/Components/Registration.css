@@ -1,0 +1,105 @@
+.reg-page{
+    width: 75%;
+    height: 480px;
+    margin: auto;
+    margin-top: 55px;
+    background: linear-gradient(to right, #323DB6, #00B2FD);
+    display: flex;
+    align-items: center;
+}
+.reg-page .reg-welcome{
+  
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: White;
+    gap: 15px;
+    padding: 0 47px;
+}
+.reg-welcome img{
+    width: 100px;
+    animation: moveUpDown 2s ease-in-out infinite;
+    margin-bottom: -13px;
+}
+.reg-welcome p{
+    margin: 10px 0;
+}
+
+.reg-welcome button{
+    background-color: white;
+    color: black;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+}
+
+.reg-page .reg-form{
+    width: 70%;
+    height: 400px;
+    margin-right: 25px;
+    background-color: #E8E8E8;
+    border-top-left-radius: 100px 200px;
+    border-bottom-left-radius: 100px 200px;
+    color: #818183;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.reg-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.flex{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+}
+.reg-form input{
+    width: 100%;
+    padding: 5px 14px;
+    
+    
+}
+.reg-form .submit{
+    width: 50%;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 8px;
+    background-color: #323DB6;
+    color: white;
+    margin-top: 15px;
+}
+.loginform{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.loginform input{
+    width: 100%;
+    padding: 5px 8px;
+}
+
+
+
+@keyframes moveUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-15px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
