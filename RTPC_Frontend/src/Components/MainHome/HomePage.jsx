@@ -11,14 +11,14 @@ import setting from '../../assets/setting.png';
 import logo from '../../assets/logo.png';
 
 import './HomePage.css';
-import Dashboard from './Dashboard';
+import Dashboard from '../MainHome/Home/Dashboard.jsx';
 import Header from './Header';
 
 
-import Chats from './Chats.jsx'; 
-import Students from './Students.jsx'; 
-import Teams from './Teams.jsx'; 
-import Project_Dashboard from './Project_Dashboard.jsx';
+import Chats from './Chat/Chats.jsx'; 
+import Students from './Students/Students.jsx'; 
+import Teams from './Teams/Teams.jsx'; 
+import Project_Dashboard from './MyProject/Project_Dashboard.jsx';
 
 const HomePage = () => {
   const [selectedComponent, setSelectedComponent] = useState('dashboard');

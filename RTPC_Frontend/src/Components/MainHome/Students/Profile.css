@@ -1,0 +1,42 @@
+.profile-section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .profile-section button {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .profile-section button:hover {
+    background-color: #574dcf;
+  }
+  
+  .profile-section h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .profile-section p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .profile-section strong {
+    color: #333;
+  }
+  

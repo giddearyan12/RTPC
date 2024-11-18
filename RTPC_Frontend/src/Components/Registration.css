@@ -1,4 +1,4 @@
-.reg-page{
+.reg-page {
     width: 75%;
     height: 480px;
     margin: auto;
@@ -7,27 +7,29 @@
     display: flex;
     align-items: center;
 }
-.reg-page .reg-welcome{
-  
+
+.reg-page .reg-welcome {
     width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: White;
+    color: white;
     gap: 15px;
     padding: 0 47px;
 }
-.reg-welcome img{
+
+.reg-welcome img {
     width: 100px;
     animation: moveUpDown 2s ease-in-out infinite;
     margin-bottom: -13px;
 }
-.reg-welcome p{
+
+.reg-welcome p {
     margin: 10px 0;
 }
 
-.reg-welcome button{
+.reg-welcome button {
     background-color: white;
     color: black;
     padding: 8px 18px;
@@ -35,7 +37,7 @@
     border: none;
 }
 
-.reg-page .reg-form{
+.reg-page .reg-form {
     width: 70%;
     height: 400px;
     margin-right: 25px;
@@ -48,24 +50,38 @@
     align-items: center;
     padding: 20px;
 }
-.reg-form{
+
+.reg-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.flex{
+
+.flex {
     display: flex;
     gap: 20px;
     align-items: center;
+}
 
-}
-.reg-form input{
-    width: 100%;
+.reg-form input {
+    width: 200px;
     padding: 5px 14px;
-    
-    
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    background-color: white;
+    color: #333;
+    font-size: 1em;
 }
-.reg-form .submit{
+.reg-form select{
+    width: 200px;
+    padding: 5px 14px;
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    background-color: white;
+    color: #818183;
+}
+
+.reg-form .submit {
     width: 50%;
     border: none;
     border-radius: 20px;
@@ -74,7 +90,8 @@
     color: white;
     margin-top: 15px;
 }
-.loginform{
+
+.loginform {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -82,7 +99,8 @@
     align-items: center;
     gap: 15px;
 }
-.loginform input{
+
+.loginform input {
     width: 100%;
     padding: 5px 8px;
 }

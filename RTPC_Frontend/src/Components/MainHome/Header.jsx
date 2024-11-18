@@ -1,24 +1,78 @@
-import React from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import jwt_decode from "jwt-decode";
 import "./Header.css";
-import logo from '../../assets/logo.png'
+import axios from "axios";
+import logo from "../../assets/logo.png";
 
 const Header = () => {
+  const [userName, setUserName] = useState("");
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
+  const token = localStorage.getItem("token");
+
+  const fetchUserName = async () => {
+    if (token) {
+      try {
+        const decodedToken = jwt_decode(token);
+        const response = await axios.get(`http://localhost:3000/user/getname`, {
+          params: { id: decodedToken.id },
+        });
+
+        setUserName(response.data.user.name);
+      } catch (error) {
+        console.error("Failed to fetch user name", error);
+      }
+    } else {
+      console.log("No token");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/"; 
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownVisible((prevState) => !prevState);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (!event.target.closest(".user-info")) {
+      setIsDropdownVisible(false); 
+    }
+  };
+
+  useEffect(() => {
+    fetchUserName();
+
+
+    document.addEventListener("click", handleOutsideClick);
+
+   
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [token]);
+
   return (
     <div className="header">
       <div className="logo">
-      <img src={logo} alt="" />
-     
+        <img src={logo} alt="logo" />
       </div>
-     
-      
-      <div className="user-info">
-        
+
+      <div className="user-info" onClick={toggleDropdown}>
         <FaUserCircle />
-        <span>Dylan Hunter</span>
+        <span>{userName || "Guest"}</span>
+        {isDropdownVisible && (
+          <div className="dropdown-menu">
+            <button className="dropdown-item" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Header;

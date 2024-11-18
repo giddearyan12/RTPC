@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './ProjectCard.css'; 
+import '../Home/ProjectCard.css'; 
 import axios from "axios";
 
 function ProjectList() {

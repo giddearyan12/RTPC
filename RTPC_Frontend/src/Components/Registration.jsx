@@ -1,141 +1,147 @@
-import React, { useEffect, useState } from 'react'
-import './Registration.css'
-import rocket from '../assets/rocket.png'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState } from 'react';
+import './Registration.css';
+import rocket from '../assets/rocket.png';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Registration = () => {
   const url = "http://localhost:3000";
-  const [token, setToken] = useState("")
-  const [curr, setcurr] = useState('Register')
-  
+  const [token, setToken] = useState("");
+  const [curr, setCurr] = useState('Register');
+
   const [data, setData] = useState({
-    name:"",
-    email:"",
-    phone:"",
-    en:"",
-    password:"",
-    department:"",
-    gender:"",
-    college:"",
-    domain:""
-
+    name: "",
+    email: "",
+    phone: "",
+    en: "",
+    password: "",
+    conpass: "",
+    department: "",
+    gender: "",
+    college: "",
+    domain: ""
   });
-  const validateForm = () => {
-   
 
-    if (curr === 'Register') {
-      if (!data.name) alert('Name is required');
-      if (!data.email) alert('Email is required');
-      if (!data.phone) alert('Phone number is required');
-      if (!data.password) alert('Password is required');
-      if (data.password !== data.confirmPassword) {
-        // alert('Passwords do not match');
-      }
-      if (!data.department) alert('Department is required');
-    }
-
-    if (!data.email) alert('Email is required');
-    if (!data.password) alert('Password is required');
-
-    
-  };
-
-
-  const onChangeHandler = (event)=>{
+  const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setData(data=>({...data, [name]:value}))
-  }
+    setData((data) => ({ ...data, [name]: value }));
+  };
+
+  const onNameInput = (event) => {
+    const value = event.target.value;
+    const nameRegex = /^[a-zA-Z ]*$/;
+
+    if (nameRegex.test(value)) {
+      setData((data) => ({ ...data, name: value }));
+    }
+  };
+
   const navigate = useNavigate();
 
-  const onLogin= async(event)=>{
+  const onLogin = async (event) => {
     event.preventDefault();
-    validateForm();
 
     let newUrl = url;
-    if(curr==='Login'){
-      newUrl+='/user/login'
-    }
-    else{
-       newUrl+='/user/register'
-    }
-
-    const response = await axios.post(newUrl, data);
-    if(response.data.success){
-      setToken(response.data.token);
-      localStorage.setItem('token', response.data.token);
-      navigate('/home');
-
-      console.log('Success')
-    }
-    else{
-      alert(response.data.message)
-      console.log("error re bhava");
-      
+    if (curr === 'Login') {
+      newUrl += '/user/login';
+    } else {
+      newUrl += '/user/register';
     }
 
-   
+    try {
+      const response = await axios.post(newUrl, data);
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem('token', response.data.token);
+        navigate('/home');
+        console.log('Success');
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.log('An error occurred. Please try again.');
+    }
+  };
 
-    
-  }
-  const showLogin =()=>{
-    curr==="Register"?setcurr('Login'):setcurr('Register');
-  }
+  const showLogin = () => {
+    setCurr(curr === "Register" ? 'Login' : 'Register');
+  };
 
   return (
     <div>
       <div className="reg-page">
         <div className="reg-welcome">
-            <img src={rocket} alt="" />
-            <h2>Welcome</h2>
-            <p>PROYECTA MINDS</p>
-            <button onClick={showLogin}>{curr==="Register"?"Login":"Register"}</button>
+          <img src={rocket} alt="" />
+          <h2>Welcome</h2>
+          <p>PROYECTA MINDS</p>
+          <button onClick={showLogin}>{curr === "Register" ? "Login" : "Register"}</button>
         </div>
-        <form onSubmit={onLogin} action='' className="reg-form">
-            
-            { curr==='Register'?<>
-              <h2>REGISTRATION</h2>
-            <div className='flex'>
-              <input onChange={onChangeHandler} name='name' type="text" placeholder='Name...'/>
-              <input onChange={onChangeHandler} name='email' type="email" placeholder='Email..' />
-            </div>
-            <div className='flex'>
-              <input onChange={onChangeHandler} name='phone' type="text" placeholder='Phone...'/>
-              <input onChange={onChangeHandler} name='en' type="text" placeholder='EN no...' />
-            </div>
-            <div className='flex'>
-              <input onChange={onChangeHandler} name='password' type="password" placeholder='Password...'/>
-              <input onChange={onChangeHandler} name='conpass' type="password" placeholder='Confirm Password...' />
-            </div>
-            <div className='flex'>
-            <input onChange={onChangeHandler} name='department' type="text" placeholder='Department...' />
-            <div className='flex'>
-            <input onChange={onChangeHandler} type="radio" name='gender' value='Male'/>Male
-            <input onChange={onChangeHandler} type="radio" name='gender' value='Female'/>Female
-            </div>
-            
-              
-            </div>
-            <div className='flex'>
-              <input onChange={onChangeHandler} name='college' type="text" placeholder='College Name...'/>
-              <input onChange={onChangeHandler} name='domain' type="text" placeholder='Domain...' />
-            </div>
-            <input className='submit' type="submit" />
-            </>:
+        <form onSubmit={onLogin} className="reg-form">
+          {curr === 'Register' ? (
             <>
-            <div className="loginform">
-              <h2>LOGIN</h2>
-            <input onChange={onChangeHandler} name='email' type="email" placeholder='Email...'/>
-            <input onChange={onChangeHandler} name='password' type="password" placeholder='Password..' />
-            <input className='submit' type="submit" />
-            </div>
+              <h2>REGISTRATION</h2>
+              <div className='flex'>
+                <input onInput={onNameInput} value={data.name} name='name' type="text" placeholder='Name...' required />
+                <input onChange={onChangeHandler} name='email' type="email" placeholder='Email...' required />
+              </div>
+              <div className='flex'>
+                <input onChange={onChangeHandler} name='phone' type="text" placeholder='Phone...' required />
+                <input onChange={onChangeHandler} name='en' type="text" placeholder='EN no...' required />
+              </div>
+              <div className='flex'>
+                <input onChange={onChangeHandler} name='password' type="password" placeholder='Password...' required />
+                <input onChange={onChangeHandler} name='conpass' type="password" placeholder='Confirm Password...' required />
+              </div>
+              <div className='flex'>
+                <select onChange={onChangeHandler} name='department' value={data.department} required>
+                  <option value="">Select Department...</option>
+                  <option value="CSE">CSE</option>
+                  <option value="DS">DS</option>
+                  <option value="AL/ML">AI/ML</option>
+
+
+                </select>
+                <div className="flex">
+                  <select onChange={onChangeHandler} name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+
+              </div>
+              <div className='flex'>
+                <select onChange={onChangeHandler} name='domain' value={data.domain} required>
+                  <option value="">Select Domain...</option>
+                  <option value="Java">Java</option>
+                  <option value="C/C++">C/C++</option>
+                  <option value="Python">Python</option>
+                  <option value="Javascript">Javascript</option>
+
+                </select>
+                <select onChange={onChangeHandler} name='college' value={data.college} required>
+                  <option value="">Select College...</option>
+                  <option value="Dypcet">Dypcet</option>
+
+                </select>
+              </div>
+              <input className='submit' type="submit" />
             </>
-            }
+          ) : (
+            <>
+              <div className="loginform">
+                <h2>LOGIN</h2>
+                <input onChange={onChangeHandler} name='email' type="email" placeholder='Email...' required />
+                <input onChange={onChangeHandler} name='password' type="password" placeholder='Password...' required />
+                <input className='submit' type="submit" />
+              </div>
+            </>
+          )}
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Registration
+export default Registration;
