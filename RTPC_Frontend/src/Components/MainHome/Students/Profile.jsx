@@ -6,7 +6,6 @@ const Profile = ({ student, onBack }) => {
   const [studentDetails, setStudentDetails] = useState(null); 
   const [loading, setLoading] = useState(true); 
 
-
   useEffect(() => {
     const fetchStudentDetails = async () => {
       try {
@@ -22,7 +21,6 @@ const Profile = ({ student, onBack }) => {
     fetchStudentDetails();
   }, [student.name]);
 
-  
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -31,18 +29,35 @@ const Profile = ({ student, onBack }) => {
     return <p>Student details not found.</p>;
   }
 
-
   return (
     <div className="profile-section">
-      <button onClick={onBack}>Back</button>
-      <h1>{studentDetails.name}</h1>
-      <p><strong>Email:</strong> {studentDetails.email}</p>
-      <p><strong>Phone:</strong> {studentDetails.phone}</p>
-      <p><strong>Enrollment No:</strong> {studentDetails.en}</p>
-      <p><strong>Department:</strong> {studentDetails.department}</p>
-      <p><strong>Gender:</strong> {studentDetails.gender}</p>
-      <p><strong>College:</strong> {studentDetails.college}</p>
-      <p><strong>Domain:</strong> {studentDetails.domain}</p>
+      <div className="profile-header">
+        <button onClick={onBack} className="back-button">Back</button>
+        <h1 className="profile-name">{studentDetails.name}</h1>
+      </div>
+      <div className="profile-info">
+        <div className="profile-info-item">
+          <p><strong>Email:</strong> {studentDetails.email}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>Phone:</strong> {studentDetails.phone}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>Enrollment No:</strong> {studentDetails.en}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>Department:</strong> {studentDetails.department}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>Gender:</strong> {studentDetails.gender}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>College:</strong> {studentDetails.college}</p>
+        </div>
+        <div className="profile-info-item">
+          <p><strong>Domain:</strong> {studentDetails.domain}</p>
+        </div>
+      </div>
     </div>
   );
 };

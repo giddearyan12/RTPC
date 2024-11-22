@@ -2,7 +2,6 @@ import React from 'react';
 import './ProjectCard.css'; 
 
 const ProjectCard = ({ projectName, technology, description }) => {
-  console.log(technology)
   return (
     <div className="project-card">
       <h3 className="project-name">Name :{projectName}</h3>

@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     gender:{type:String, required:true},
     college:{type:String, required:true},
     domain:{type:String, required:true},
+    profilePic: {
+        type: String,
+        default: "",
+    },
     projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }]
 },{minimize:false});
 

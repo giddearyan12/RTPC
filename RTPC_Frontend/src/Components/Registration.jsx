@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import './Registration.css';
 import rocket from '../assets/rocket.png';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from './MainHome/Chat/Context/AuthContext';
+
 import axios from 'axios';
 
 const Registration = () => {
   const url = "http://localhost:3000";
   const [token, setToken] = useState("");
   const [curr, setCurr] = useState('Register');
-
+  const { setAuthUser } = useAuthContext();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -53,14 +55,20 @@ const Registration = () => {
       const response = await axios.post(newUrl, data);
       if (response.data.success) {
         setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('token', response.data.data.token);
+       
+        localStorage.setItem("chat-user", JSON.stringify(response.data.data));
+			  setAuthUser(data);
+        
         navigate('/home');
         console.log('Success');
+        
       } else {
         console.log(response.data.message);
+        alert("ERRROR")
       }
     } catch (error) {
-      console.log('An error occurred. Please try again.');
+      console.log('An error occurred. Please try again.', error);
     }
   };
 

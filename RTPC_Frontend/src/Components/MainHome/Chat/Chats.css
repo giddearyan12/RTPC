@@ -1,0 +1,18 @@
+.chat-page {
+    display: flex;
+    height: 450px; /* Default for small screens */
+    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    overflow: hidden;
+    background-color: rgba(156, 163, 175, 0); /* bg-gray-400 with bg-opacity-0 */
+    background-clip: padding-box; /* bg-clip-padding */
+    backdrop-filter: blur(32px); /* backdrop-blur-lg */
+   
+  }
+  
+  @media (min-width: 768px) {
+    /* Override height for medium screens */
+    .custom-container {
+      height: 550px;
+    }
+  }
+  

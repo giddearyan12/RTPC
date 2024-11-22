@@ -1,0 +1,123 @@
+/* Modal container styles */
+.project-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears on top of other elements */
+  }
+  
+  /* Modal content styles */
+  .modal-content {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    text-align: center;
+  }
+  
+  /* Close button styles */
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .close-button:hover {
+    color: #ff0000; /* Highlight color on hover */
+  }
+  
+  /* Modal title styles */
+  .modal-content h2 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Project details styles */
+  .modal-content p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+  }
+  
+  /* Collaboration question section */
+  .collaboration-question {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  /* Buttons container */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+  }
+  
+  /* Request button styles */
+  .request-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .request-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05); /* Slight zoom-in effect */
+  }
+  
+  /* Cancel button styles */
+  .cancel-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f44336;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e53935;
+    transform: scale(1.05); /* Slight zoom-in effect */
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 95%;
+      padding: 15px;
+    }
+  
+    .modal-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .request-button,
+    .cancel-button {
+      width: 100%;
+    }
+  }
+  

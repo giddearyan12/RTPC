@@ -18,19 +18,19 @@ function Project_Dashboard() {
       <div className="tabs">
         <div className="tab">
           <FontAwesomeIcon icon={faTasks} className="icon" />
-          Total task
+          Total Projects
           <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
         </div>
 
         <div className="tab">
           <FontAwesomeIcon icon={faCheckCircle} className="icon" />
-          Completed task
+          Completed Projects
           <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
         </div>
 
         <div className="tab">
           <FontAwesomeIcon icon={faSpinner} className="icon" />
-          Progress Task
+          Progress Projects
           <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
         </div>
       </div>

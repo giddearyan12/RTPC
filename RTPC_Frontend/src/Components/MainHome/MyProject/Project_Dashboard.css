@@ -37,7 +37,7 @@
   .tab .icon {
     font-size: 2rem;
     margin-right: 10px;
-    background-color: #a8d7e0;
+    /* background-color: #4C3575; */
     padding: 5px;
     border-radius: 5px;
   }
@@ -75,14 +75,14 @@
   }
   
   .project-form input[type="text"]:focus {
-    border-color: #4CAF50;
+    border-color: #4C3575;
     outline: none;
   }
   
   .project-form button {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #4C3575;
     color: white;
     border: none;
     border-radius: 4px;
@@ -93,7 +93,7 @@
   }
   
   .project-form button:hover {
-    background-color: #45a049;
+    background-color: #4C3575;
   }
   
   
@@ -110,16 +110,34 @@
   
 
   .project_form_section{
-    border: 2px solid #64b2c1;
     height: fit-content;
     border-radius: 5%;
     padding: 20px;
-    background-color: #a8d7e0;
+    background-color: #4C3575;
   }
 
   .project_form_section h1{
     font-weight: 500;
     font-size: 24px;
     margin-bottom: 5px;
+    color: white;
   }
+  .custom-select {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    color: #374151;
+    background-color: #f9fafb;
+    width: 100%; /* Full width for responsiveness */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    appearance: none; /* Removes default browser styles */
+    cursor: pointer; /* Changes cursor to pointer */
+  }
+  
+  .custom-select:hover {
+    border-color: #9ca3af; /* Slightly darker border on hover */
+  }
+  
+ 
   

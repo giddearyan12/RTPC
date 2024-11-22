@@ -9,13 +9,15 @@ const Header = () => {
   const [userName, setUserName] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
   const token = localStorage.getItem("token");
+ 
 
   const fetchUserName = async () => {
     if (token) {
       try {
+        
         const decodedToken = jwt_decode(token);
         const response = await axios.get(`http://localhost:3000/user/getname`, {
-          params: { id: decodedToken.id },
+          params: { id: decodedToken.userId },
         });
 
         setUserName(response.data.user.name);

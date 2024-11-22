@@ -30,3 +30,18 @@
     font-size: 0.9em;
     
   }
+  .open-ide-btn {
+    background-color: #4C3575; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  .open-ide-btn:hover {
+    background-color: #4C3575; /* Darker green on hover */
+  }
+  

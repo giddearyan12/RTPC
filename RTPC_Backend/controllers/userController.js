@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import validator from "validator";
 import bcrypt from 'bcrypt';
+import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 const loginUser = async(req, res)=>{
     const {email, password} = req.body;
@@ -16,9 +17,13 @@ const loginUser = async(req, res)=>{
         if(!isMatch){
         return  res.json({success:false, message:"Wrong Password"});
         }
-        const token  = createToken(user._id)
-        console.log(user._id);
-        res.json({success:true, token});
+        //const token  = createToken(user._id)
+        const token = generateTokenAndSetCookie(user._id, res);
+        
+        res.json({success:true, data:{  _id: user._id,
+            name: user.fullName,
+            profilePic: user.profilePic,
+            token:token, }});
     }
     catch(error){
         console.log(error)
@@ -58,6 +63,9 @@ const registerUser = async(req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedpass = await bcrypt.hash(password, salt);
 
+        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
+		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
+
         const newUser = new userModel({
             name: name,
             email: email,
@@ -68,11 +76,16 @@ const registerUser = async(req, res) => {
             gender: gender,
             college: college,
             domain: domain,
+            profilePic: gender === "Male" ? boyProfilePic : girlProfilePic,
         });
 
         const user = await newUser.save();
-        const token = createToken(user._id);
-        res.json({ success: true, token, name });
+        //const token = createToken(user._id);
+        const token = generateTokenAndSetCookie(user._id, res)
+        res.json({success:true, data:{  _id: user._id,
+            name: user.fullName,
+            profilePic: user.profilePic,
+            token:token, }});
     } catch (error) {
         console.log(error);
         return res.json({ success: false, message: "Error" });
@@ -92,7 +105,7 @@ const createProject = async (req, res) => {
         // Extract and verify JWT token
         const token = req.headers.authorization.split(" ")[1]; 
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET); 
-        const userId = decodedToken.id; 
+        const userId = decodedToken.userId; 
 
         // Fetch the user object
         const user = await userModel.findById(userId); 
@@ -126,23 +139,26 @@ const createProject = async (req, res) => {
 
 const myProjects = async (req, res) => {
     try {
-        
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            console.log('header problem')
             return res.status(401).json({ success: false, message: "Authorization token required" });
         }
 
-       
         const token = authHeader.split(" ")[1];
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decodedToken.userId;
 
+        // Fix: Use findById correctly without object wrapping
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
 
-        const userId = decodedToken.id;
-      
-        const userProjects = await projectModel.find({ createdBy: userId });
+        // Get projects for the user using the projects array in user model
+        const userProjects = await projectModel.find({
+            _id: { $in: user.projects }
+        });
 
-    
         if (!userProjects.length) {
             return res.status(404).json({ success: false, message: "No projects found for this user" });
         }
@@ -154,6 +170,7 @@ const myProjects = async (req, res) => {
     }
 };
 
+
 const getName = async (req, res) => {
     try {
         const { id } = req.query; // Destructure `id` from `req.body`
@@ -162,7 +179,7 @@ const getName = async (req, res) => {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
         
-        const user = await userModel.findById(id); // Use `findById` to fetch a single user by `_id`
+        const user = await userModel.findById(id); 
         
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
@@ -178,38 +195,43 @@ const getName = async (req, res) => {
 const ListProjects = async (req, res) => {
     try {
         const { id } = req.query; 
-        console.log(id)
         
         if (!id) {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
-  
-      
-      const user = await userModel.findById(id);
-      
-      
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: "User not found" });
-      }
-  
-      if (!user.domain) {
-        return res.status(400).json({ success: false, message: "User domain is not specified" });
-      }
-  
-      const userProjects = await projectModel.find({ technology: user.domain });
-      console.log(userProjects)
-  
-      if (!userProjects.length) {
-        return res.status(404).json({ success: false, message: "No projects found for this user" });
-      }
-  
-      return res.json({ success: true, projects: userProjects });
+
+        // Fetch user data by userId
+        const user = await userModel.findById(id);
+        
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // If domain is not specified in the user model
+        if (!user.domain) {
+            return res.status(400).json({ success: false, message: "User domain is not specified" });
+        }
+
+        // Query projects that match the user's domain and are not already in the user's projects array
+        const userProjects = await projectModel.find({
+            technology: user.domain,                // Filter by user's domain
+            createdBy: { $ne: id },                 // Exclude projects created by the current user
+            _id: { $nin: user.projects }            // Exclude projects that are already in the user's projects array
+        });
+
+        // If no projects are found that meet the criteria
+        if (!userProjects.length) {
+            return res.status(404).json({ success: false, message: "No available projects for this user" });
+        }
+
+        // Return the filtered list of projects
+        return res.json({ success: true, projects: userProjects });
     } catch (error) {
-      console.error("Error retrieving user projects:", error);
-      return res.status(500).json({ success: false, message: "Internal server error" });
+        console.error("Error retrieving user projects:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
-  };
+};
+
 
   const getUser = async(req,res)=>{
     const { name } = req.params;
