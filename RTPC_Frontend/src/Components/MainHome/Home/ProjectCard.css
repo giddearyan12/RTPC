@@ -44,4 +44,11 @@
   .open-ide-btn:hover {
     background-color: #4C3575; /* Darker green on hover */
   }
+  .delete-project-btn {
+    background-color: #f44336;
+    color: white;
+  }
   
+  .delete-project-btn:hover {
+    background-color: #d32f2f;
+  }

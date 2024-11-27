@@ -1,89 +1,89 @@
 .custom-messages-container {
-    padding-left: 1rem;  /* Tailwind's px-4 */
+    padding-left: 1rem; 
     padding-right: 1rem;
-    flex-grow: 1;  /* Tailwind's flex-1 */
-    overflow-y: auto;  /* Tailwind's overflow-auto */
-  }
+    flex-grow: 1; 
+    overflow-y: auto;  
+}
   
-  .custom-empty-message {
-    text-align: center;  /* Tailwind's text-center */
-  }
+.custom-empty-message {
+    text-align: center;  
+}
   
-  .custom-message-wrapper {
-    padding-bottom: 1rem;  /* Tailwind's padding-bottom for message wrapper */
-  }
+.custom-message-wrapper {
+    padding-bottom: 1rem;  
+}
   
-  .custom-message-skeleton {
-    margin-bottom: 1rem;  /* Tailwind's margin for skeleton loader */
-  }
-  .custom-message-input-wrapper {
-    padding: 0.75rem; /* Reduced padding around the input wrapper */
-    margin: 0.5rem 0; /* Spacing above and below the input area */
-    background-color: #1f2937; /* Dark background for input wrapper */
-    border-radius: 1rem; /* Rounded corners for the wrapper */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+.custom-message-skeleton {
+    margin-bottom: 1rem; 
+}
+.custom-message-input-wrapper {
+    padding: 0.75rem; 
+    margin: 0.5rem 0; 
+    background-color: #1f2937; 
+    border-radius: 1rem; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .custom-input-container {
-    position: relative; /* Necessary for positioning the send button */
-    display: flex; /* Flexbox for alignment */
+    position: relative; 
+    display: flex; 
     align-items: center;
 }
 
 .custom-input {
-    border: 1px solid #4b5563; /* Slightly lighter gray border */
-    font-size: 0.875rem; /* Smaller, more compact font size */
-    border-radius: 1.5rem; /* Fully rounded edges */
-    padding: 0.5rem 2.5rem 0.5rem 1rem; /* Compact padding for spacing */
-    background-color: #2d3748; /* Slightly lighter background for input */
+    border: 1px solid #4b5563; 
+    font-size: 0.875rem; 
+    border-radius: 1.5rem; 
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    background-color: #2d3748; 
     color: white;
-    width: 100%; /* Full width for the input */
-    outline: none; /* Removes default outline */
-    transition: border-color 0.3s ease; /* Smooth focus transition */
-    height: 2.0rem; /* Reduced height */
+    width: 100%; 
+    outline: none;
+    transition: border-color 0.3s ease; 
+    height: 2.0rem; 
 }
 
 .custom-input:focus {
-    border-color: #3b82f6; /* Blue border on focus */
-    box-shadow: 0 0 6px rgba(59, 130, 246, 0.4); /* Subtle glow effect */
+    border-color: #3b82f6; 
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.4); 
 }
 
 .custom-send-button {
-    position: absolute; /* Positioned within the input container */
-    right: 0.5rem; /* Slight padding from the edge */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Correct centering */
-    background-color: #3b82f6; /* Blue button background */
+    position: absolute; 
+    right: 0.5rem; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background-color: #3b82f6; 
     color: white;
-    border: none; /* No border */
-    border-radius: 50%; /* Circular button */
-    width: 2rem; /* Smaller button size */
-    height: 2rem; /* Smaller button size */
-    display: flex; /* Center the icon */
+    border: none; 
+    border-radius: 50%; 
+    width: 2rem; 
+    height: 2rem; 
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
 .custom-send-button:hover {
-    background-color: #2563eb; /* Darker blue on hover */
-    transform: scale(1.1); /* Slightly enlarge button */
+    background-color: #2563eb; 
+    transform: scale(1.1); 
 }
 
 .custom-send-button:active {
-    transform: scale(1); /* Reset scale on click */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+    transform: scale(1); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .loading {
-    border: 3px solid transparent; /* Loader base */
-    border-top: 3px solid white; /* Loader highlight */
-    border-radius: 50%; /* Circular loader */
-    width: 1.25rem; /* Smaller loader size */
+    border: 3px solid transparent; 
+    border-top: 3px solid white; 
+    border-radius: 50%; 
+    width: 1.25rem; 
     height: 1.25rem;
-    animation: spin 0.8s linear infinite; /* Spinner animation */
+    animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -95,23 +95,22 @@
     }
 }
 
-
-  .custom-chat-wrapper {
+.custom-chat-wrapper {
     display: flex;
     flex-direction: column;
-    margin: 0.5rem 0; /* Adds spacing between messages */
+    margin: 0.5rem 0; 
 }
 
 .custom-chat-start,
 .custom-chat-end {
     display: flex;
-    align-items: flex-end; /* Aligns chat bubble and avatar */
-    gap: 0.5rem; /* Adds space between avatar and bubble */
+    align-items: flex-end; 
+    gap: 0.5rem; 
 }
 
 .custom-chat-start {
-    flex-direction: row; /* Bubbles from other users */
-    justify-content: flex-start; /* Align to the left */
+    flex-direction: row; 
+    justify-content: flex-start; 
 }
 
 .custom-chat-end {
@@ -119,47 +118,47 @@
 }
 
 .custom-chat-image-wrapper {
-    width: 40px; /* Larger avatar size */
+    width: 40px; 
     height: 40px;
-    border-radius: 50%; /* Circular avatar */
+    border-radius: 50%; 
     overflow: hidden;
-    flex-shrink: 0; /* Prevent avatar from shrinking */
+    flex-shrink: 0; 
 }
 
 .custom-chat-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures image fills the avatar */
+    object-fit: cover; 
 }
 
 .custom-chat-bubble {
-    max-width: 70%; /* Restricts bubble width */
-    padding: 0.75rem 1rem; /* Adds padding inside bubbles */
-    font-size: 0.9rem; /* Slightly larger text size */
-    line-height: 1.4; /* Better readability */
+    max-width: 70%; 
+    padding: 0.75rem 1rem; 
+    font-size: 0.9rem; 
+    line-height: 1.4; 
     color: white;
-    border-radius: 1rem; /* Rounded edges for bubbles */
-    word-wrap: break-word; /* Ensures long text wraps properly */
+    border-radius: 1rem; 
+    word-wrap: break-word; 
 }
 
 .custom-chat-bubble.from-me {
-    background-color: #3b82f6; /* Blue for the current user */
-    align-self: flex-end; /* Align bubble content to the right */
+    background-color: #3b82f6; 
+    align-self: flex-end; 
 }
 
 .custom-chat-bubble.from-other {
-    background-color: #e5e7eb; /* Light gray for other users */
-    color: #111827; /* Dark text for contrast */
-    align-self: flex-start; /* Align bubble content to the left */
+    background-color: #e5e7eb;
+    color: #111827; 
+    align-self: flex-start; 
 }
 
 .custom-chat-footer {
-    margin-top: 0.25rem; /* Space between bubble and footer */
+    margin-top: 0.25rem; 
     opacity: 0.6;
-    font-size: 0.75rem; /* Smaller font size for time */
-    color: #6b7280; /* Muted text color */
+    font-size: 0.75rem; 
+    color: #6b7280; 
     display: flex;
-    justify-content: flex-end; /* Align time to the edge */
+    justify-content: flex-end; 
     gap: 0.25rem;
 }
 
@@ -193,27 +192,27 @@
   width: 60%; 
   display: flex;
   flex-direction: column;
-  background-color: #1e293b; /* Darker background for the container */
-  border-radius: 1rem; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
-  overflow: hidden; /* Ensures content stays within bounds */
+  background-color: #1e293b; 
+  border-radius: 1rem; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden; 
 }
 
 .custom-header {
-  background-color: #3b82f6; /* Vibrant blue header */
-  padding: 0.75rem 1rem; /* Compact padding for spacing */
+  background-color: #3b82f6; 
+  padding: 0.75rem 1rem; 
   display: flex;
-  align-items: center; /* Vertically center content */
-  justify-content: space-between; /* Space between label and conversation name */
+  align-items: center; 
+  justify-content: space-between; 
   color: white;
-  font-weight: bold; /* Enhance header's importance */
-  font-size: 1rem; /* Compact font size */
+  font-weight: bold; 
+  font-size: 1rem; 
 }
 
 .custom-header-text {
   font-weight: 700;
-  color: #ffffff; /* White text for contrast */
-  text-transform: capitalize; /* Ensures names look neat */
+  color: #ffffff; 
+  text-transform: capitalize; 
 }
 
 .custom-no-chat-selected {
@@ -223,37 +222,37 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 2rem; /* Adds breathing space */
-  text-align: center; /* Center text alignment */
-  background-color: #1e293b; /* Matches the container background */
-  border-radius: 0.5rem; /* Matches the container's aesthetic */
+  padding: 2rem; 
+  text-align: center; 
+  background-color: #1e293b; 
+  border-radius: 0.5rem; 
 }
 
 .custom-no-chat-selected-text {
-  color: #e2e8f0; /* Lighter text color for readability */
-  font-size: 1rem; /* Slightly larger font size for accessibility */
+  color: #e2e8f0; 
+  font-size: 1rem; 
   font-weight: 600;
-  line-height: 1.5; /* Better readability with line spacing */
-  gap: 0.75rem; /* Slightly more spacing between elements */
+  line-height: 1.5; 
+  gap: 0.75rem; 
 }
 
 .custom-welcome-icon {
-  font-size: 2.5rem; /* Medium icon size */
-  color: #60a5fa; /* Matches header's blue */
-  margin-top: 1rem; /* Creates space above icon */
+  font-size: 2.5rem; 
+  color: #60a5fa; 
+  margin-top: 1rem; 
 }
 
 .custom-large-icon {
-  font-size: 4rem; /* Large but not overwhelming */
-  color: #60a5fa; /* Matches the theme */
-  margin: 0.5rem auto; /* Centers the icon */
+  font-size: 4rem; 
+  color: #60a5fa; 
+  margin: 0.5rem auto; 
 }
 
 .custom-message-icon {
-  font-size: 3rem; /* Slightly larger for better visibility */
-  color: #3b82f6; /* Matches the blue theme */
+  font-size: 3rem; 
+  color: #3b82f6; 
   margin-top: 1rem;
-  animation: bounce 1.5s infinite; /* Subtle animation for interactivity */
+  animation: bounce 1.5s infinite; 
 }
 
 @keyframes bounce {
@@ -261,6 +260,6 @@
       transform: translateY(0);
   }
   50% {
-      transform: translateY(-10px); /* Slight bounce */
+      transform: translateY(-10px); 
   }
 }

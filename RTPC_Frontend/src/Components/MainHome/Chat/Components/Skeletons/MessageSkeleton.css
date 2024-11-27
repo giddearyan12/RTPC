@@ -1,14 +1,14 @@
 .skeleton {
-    background-color: #e5e7eb; /* Light gray background */
+    background-color: #e5e7eb; 
     animation: skeleton-loading 1.5s infinite linear;
   }
   
   @keyframes skeleton-loading {
     0% {
-      background-color: #e5e7eb; /* Light gray */
+      background-color: #e5e7eb; 
     }
     50% {
-      background-color: #f3f4f6; /* Lighter gray */
+      background-color: #f3f4f6;
     }
     100% {
       background-color: #e5e7eb;
@@ -20,12 +20,12 @@
   }
   
   .skeleton-small {
-    height: 1rem; /* Tailwind h-4 */
-    width: 10rem; /* Tailwind w-40 */
+    height: 1rem; 
+    width: 10rem; 
   }
   
   .skeleton-avatar {
-    height: 2.5rem; /* Tailwind w-10, h-10 */
+    height: 2.5rem; 
     width: 2.5rem;
     border-radius: 50%;
     flex-shrink: 0;
@@ -34,13 +34,13 @@
   .skeleton-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem; /* Tailwind gap-3 */
+    gap: 0.75rem; 
   }
   
   .skeleton-column {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem; /* Tailwind gap-1 */
+    gap: 0.25rem;
   }
   
   .skeleton-row-end {

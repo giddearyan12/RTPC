@@ -65,7 +65,7 @@ const Registration = () => {
         
       } else {
         console.log(response.data.message);
-        alert("ERRROR")
+        alert(response.data.message)
       }
     } catch (error) {
       console.log('An error occurred. Please try again.', error);
@@ -77,7 +77,7 @@ const Registration = () => {
   };
 
   return (
-    <div>
+    
       <div className="reg-page">
         <div className="reg-welcome">
           <img src={rocket} alt="" />
@@ -94,7 +94,7 @@ const Registration = () => {
                 <input onChange={onChangeHandler} name='email' type="email" placeholder='Email...' required />
               </div>
               <div className='flex'>
-                <input onChange={onChangeHandler} name='phone' type="text" placeholder='Phone...' required />
+              <input onChange={onChangeHandler} name='phone' type="number" placeholder='Phone...' maxLength="10" onInput={(e) => e.target.value = e.target.value.slice(0, 10)} required />
                 <input onChange={onChangeHandler} name='en' type="text" placeholder='EN no...' required />
               </div>
               <div className='flex'>
@@ -148,7 +148,7 @@ const Registration = () => {
           )}
         </form>
       </div>
-    </div>
+    
   );
 };
 

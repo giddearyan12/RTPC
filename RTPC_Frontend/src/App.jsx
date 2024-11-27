@@ -5,6 +5,9 @@ import './App.css'
 import PreHome from './Components/PreHome/PreHome'
 import { useAuthContext } from './Components/MainHome/Chat/Context/AuthContext'
 import HomePage from './Components/MainHome/HomePage'
+import UserProfile from './Components/MainHome/UserProfile'
+import C_Home from './Components/MainHome/MyProject/CodeEditor/C_Home'
+import C_EditorPage from './Components/MainHome/MyProject/CodeEditor/C_EditorPage'
 
 function App() {
   const { authUser } = useAuthContext();
@@ -13,9 +16,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<PreHome/>}/>
-          <Route path='/user/register' element={<Registration/>}/>
+          <Route path='/' element={authUser ?<HomePage/>:<PreHome/>}/>
+          <Route path='/user/register' element={authUser ?<HomePage/>:<Registration/>}/>
           <Route path='/home' element={authUser ?<HomePage/>:<PreHome/>}/>
+          <Route path='/profile' element={authUser ?<UserProfile/>:<PreHome/>}/>
+          <Route path='/ide' element={authUser ?<C_Home/>:<PreHome/>}/>
+          <Route path="/editor/:roomId" element={<C_EditorPage />}></Route>
+
+     
         
         </Routes>
       </BrowserRouter>

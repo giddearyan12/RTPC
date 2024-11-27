@@ -17,7 +17,6 @@ const loginUser = async(req, res)=>{
         if(!isMatch){
         return  res.json({success:false, message:"Wrong Password"});
         }
-        //const token  = createToken(user._id)
         const token = generateTokenAndSetCookie(user._id, res);
         
         res.json({success:true, data:{  _id: user._id,
@@ -32,9 +31,7 @@ const loginUser = async(req, res)=>{
 
 }
 
-const createToken = (id)=>{
-    return jwt.sign({id}, process.env.JWT_SECRET);
-}
+
 const registerUser = async(req, res) => {
     const { name, email, phone, en, password, conpass, department, gender, college, domain } = req.body;
 
@@ -59,6 +56,8 @@ const registerUser = async(req, res) => {
         if (password !== conpass) {
             return res.json({ success: false, message: "Confirm password incorrect" });
         }
+      
+        
 
         const salt = await bcrypt.genSalt(10);
         const hashedpass = await bcrypt.hash(password, salt);
@@ -80,7 +79,6 @@ const registerUser = async(req, res) => {
         });
 
         const user = await newUser.save();
-        //const token = createToken(user._id);
         const token = generateTokenAndSetCookie(user._id, res)
         res.json({success:true, data:{  _id: user._id,
             name: user.fullName,
@@ -96,24 +94,23 @@ const createProject = async (req, res) => {
     const { name, description, technology } = req.body;
     
     try {
-        // Check if the project already exists
+        
         const exists = await projectModel.findOne({ name });
         if (exists) {
             return res.json({ success: false, message: "Project already exists" });
         }
 
-        // Extract and verify JWT token
+        
         const token = req.headers.authorization.split(" ")[1]; 
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET); 
         const userId = decodedToken.userId; 
 
-        // Fetch the user object
+       
         const user = await userModel.findById(userId); 
         if (!user) {
             return res.json({ success: false, message: "User not found" });
         }
 
-        // Create a new project
         const newProject = new projectModel({
             name,
             description,
@@ -121,14 +118,14 @@ const createProject = async (req, res) => {
             createdBy: userId,
         });
 
-        // Save the project in the database
+        
         await newProject.save();
 
-        // Add the project ID to the user's `projects` array
+      
         user.projects.push(newProject._id); 
         await user.save();
 
-        // Send a success response
+     
         return res.json({ success: true, message: "Project created successfully", project: newProject });
     } catch (error) {
         console.error(error);
@@ -148,13 +145,13 @@ const myProjects = async (req, res) => {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decodedToken.userId;
 
-        // Fix: Use findById correctly without object wrapping
+       
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // Get projects for the user using the projects array in user model
+       
         const userProjects = await projectModel.find({
             _id: { $in: user.projects }
         });
@@ -173,7 +170,7 @@ const myProjects = async (req, res) => {
 
 const getName = async (req, res) => {
     try {
-        const { id } = req.query; // Destructure `id` from `req.body`
+        const { id } = req.query; 
         
         if (!id) {
             return res.status(400).json({ success: false, message: "User ID is required" });
@@ -200,31 +197,31 @@ const ListProjects = async (req, res) => {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
 
-        // Fetch user data by userId
+      
         const user = await userModel.findById(id);
         
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // If domain is not specified in the user model
+   
         if (!user.domain) {
             return res.status(400).json({ success: false, message: "User domain is not specified" });
         }
 
-        // Query projects that match the user's domain and are not already in the user's projects array
+       
         const userProjects = await projectModel.find({
-            technology: user.domain,                // Filter by user's domain
-            createdBy: { $ne: id },                 // Exclude projects created by the current user
-            _id: { $nin: user.projects }            // Exclude projects that are already in the user's projects array
+            technology: user.domain,                
+            createdBy: { $ne: id },               
+            _id: { $nin: user.projects }           
         });
 
-        // If no projects are found that meet the criteria
+      
         if (!userProjects.length) {
             return res.status(404).json({ success: false, message: "No available projects for this user" });
         }
 
-        // Return the filtered list of projects
+       
         return res.json({ success: true, projects: userProjects });
     } catch (error) {
         console.error("Error retrieving user projects:", error);
@@ -240,15 +237,61 @@ const ListProjects = async (req, res) => {
       if (!student) {
         return res.status(404).json({ message: 'Student not found' });
       }
+      const projects = await projectModel.find({_id:student._id})
       res.json(student);
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });
     }
   }
+
+
+//user profile
   
+  const getUserProfile = async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1]; 
+      const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+      const student = await userModel.findById(decoded.userId);
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+      res.json({ success: true, user: student });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+    }
+  };
+ 
+  
+  
+  const updateUser = async (req, res) => {
+    const { name, email, phone, en,department, gender, college, domain } = req.body;
+  
+    try {
+      const user = await userModel.findById(req.user.id);
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      user.name = name || user.name;
+      user.email = email || user.email;
+      user.phone = phone || user.phone;
+      user.en = en || user.en;
+      user.department = department || user.department;
+      user.bio = gender || user.gender;
+      user.bio = college || user.college;
+      user.bio = domain || user.domain;
+  
+      await user.save();
+  
+      res.json({ message: "Profile updated successfully." });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
 
 
 
 
-
-export {registerUser, loginUser, createProject, myProjects, getName, ListProjects, getUser}
+export {registerUser, loginUser, createProject, myProjects, getName, ListProjects, getUser, getUserProfile, updateUser}

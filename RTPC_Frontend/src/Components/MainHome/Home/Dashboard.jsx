@@ -10,13 +10,13 @@ const Dashboard = () => {
   const [projectData, setProjectData] = useState([]);
   const token = localStorage.getItem("token");
   const [selectedProject, setSelectedProject] = useState(null); 
-  const [userId, setUserId] = useState(null); // Store decoded user ID
+  const [userId, setUserId] = useState(null); 
 
-  // Fetch data from the API
+  
   const fetchData = async () => {
     try {
       if (token) {
-        // Decode the token once and store the userId
+       
         const decodedToken = jwt_decode(token);
         setUserId(decodedToken.userId);
 
@@ -32,17 +32,17 @@ const Dashboard = () => {
     }
   };
 
-  // Handle card click (open modal)
+  
   const handleCardClick = (project) => {
     setSelectedProject(project); 
   };
 
-  // Close the modal
+
   const closeModal = () => {
     setSelectedProject(null);
   };
 
-  // Handle collaboration request
+ 
   const handleRequest = async (project) => {
     if (!userId) {
       console.error("User ID is not available");
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
     try {
       console.log(project._id)
-      // Ensure that the project object has the 'id' field
+    
       if (!project._id) {
         alert("Invalid project data");
         return;
@@ -60,8 +60,8 @@ const Dashboard = () => {
       const response = await axios.post(
         "http://localhost:3000/students/requestcollaboration",
         {
-          projectId: project._id, // Ensure this is correct
-          userId: userId, // Use stored user ID
+          projectId: project._id,
+          userId: userId, 
         }
       );
       alert(`Collaboration request sent for project: ${project.name}`);
@@ -73,10 +73,10 @@ const Dashboard = () => {
     closeModal();
   };
 
-  // Fetch data when the component mounts or token changes
+
   useEffect(() => {
     fetchData();
-  }, [token]); // Re-fetch when token changes
+  }, [token]); 
 
   return (
     <div className="right-main">

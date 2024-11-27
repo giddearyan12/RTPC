@@ -1,0 +1,8 @@
+FROM node.js
+
+COPY . .
+
+RUN npm install && apt get python install && jdk:latest
+
+
+

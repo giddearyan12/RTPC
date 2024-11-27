@@ -1,4 +1,4 @@
-/* General styling for the profile section */
+
 .profile-section {
   background-color: #f9f9f9;
   padding: 20px;
@@ -8,21 +8,19 @@
   margin: 20px auto;
   font-family: 'Arial', sans-serif;
   display: flex;
-  flex-direction: column; /* Stack profile information vertically */
-  gap: 15px; /* Space between sections */
+  flex-direction: column; 
+  gap: 15px; 
 }
 
-/* Profile Header Styling (Back button and Name) */
-/* Profile Header Styling (Back button at left and Name at center) */
 .profile-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* Distribute items across the container */
+  justify-content: space-between;  
   margin-bottom: 20px;
 }
 
 .profile-header .back-button {
-  margin-right: auto; /* Push the button to the left */
+  margin-right: auto; 
 }
 
 .profile-name {
@@ -30,12 +28,12 @@
   font-size: 2rem;
   color: #333;
   margin: 0;
-  flex-grow: 1;  /* This ensures that the name takes the remaining space and stays centered */
+  flex-grow: 1;  
   display: flex;
   justify-content: center;
 }
 
-/* Back Button Styling */
+
 .back-button {
   background-color: #4CAF50;
   color: white;
@@ -56,21 +54,19 @@
 }
 
 
-/* Profile Info Container */
 .profile-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px; /* Space between profile info items */
+  gap: 15px; 
   justify-content: space-between;
 }
 
-/* Individual profile info item styling */
 .profile-info-item {
   background-color: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 48%; /* Ensures the items are of equal width */
+  width: 48%; 
   text-align: left;
   font-size: 16px;
 }
@@ -81,7 +77,6 @@
   margin: 5px 0;
 }
 
-/* Responsive design for smaller screens */
 @media (max-width: 768px) {
   .profile-section {
     padding: 15px;
@@ -89,11 +84,11 @@
   }
 
   .profile-info {
-    flex-direction: column; /* Stack items vertically on smaller screens */
+    flex-direction: column; 
   }
 
   .profile-info-item {
-    width: 100%; /* Full width on smaller screens */
+    width: 100%; 
     margin-bottom: 10px;
   }
 

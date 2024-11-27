@@ -20,11 +20,10 @@ export const SocketContextProvider = ({ children }) => {
 					userId: authUser._id,
 				},
 			});
-			console.log(authUser._id)
-			console.log(socket)
+			
 			setSocket(socket);
 
-			// socket.on() is used to listen to the events. can be used both on client and server side
+			
 			socket.on("getOnlineUsers", (users) => {
 				setOnlineUsers(users);
 			});

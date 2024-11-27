@@ -7,14 +7,12 @@ import logo from "../../assets/logo.png";
 
 const Header = () => {
   const [userName, setUserName] = useState("");
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const token = localStorage.getItem("token");
- 
 
   const fetchUserName = async () => {
     if (token) {
       try {
-        
         const decodedToken = jwt_decode(token);
         const response = await axios.get(`http://localhost:3000/user/getname`, {
           params: { id: decodedToken.userId },
@@ -31,7 +29,12 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/"; 
+    localStorage.removeItem("chat-user");
+    window.location.href = "/";
+  };
+
+  const handleViewProfile = () => {
+    window.location.href = "/profile"; // Redirect to the profile page
   };
 
   const toggleDropdown = () => {
@@ -40,17 +43,15 @@ const Header = () => {
 
   const handleOutsideClick = (event) => {
     if (!event.target.closest(".user-info")) {
-      setIsDropdownVisible(false); 
+      setIsDropdownVisible(false);
     }
   };
 
   useEffect(() => {
     fetchUserName();
 
-
     document.addEventListener("click", handleOutsideClick);
 
-   
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
@@ -67,6 +68,9 @@ const Header = () => {
         <span>{userName || "Guest"}</span>
         {isDropdownVisible && (
           <div className="dropdown-menu">
+            <button className="dropdown-item" onClick={handleViewProfile}>
+              View Profile
+            </button>
             <button className="dropdown-item" onClick={handleLogout}>
               Logout
             </button>

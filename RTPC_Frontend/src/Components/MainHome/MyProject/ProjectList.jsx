@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import '../Home/ProjectCard.css'; 
 import axios from "axios";
 
 function ProjectList() {
   const url = "http://localhost:3000"; 
   const [projects, setProjects] = useState([]);
-  const [error, setError] = useState(null);  // State for handling errors
+  const [error, setError] = useState(null); // State for handling errors
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const fetchData = async () => {
     try {
@@ -33,6 +35,10 @@ function ProjectList() {
     fetchData();
   }, []);
 
+  const handleOpenIDE = () => {
+    navigate('/ide'); // Navigate to the /ide page
+  };
+
   return (
     <div className="project-list">
       {error && <p className="error-message">{error}</p>} {/* Show error message if any */}
@@ -42,7 +48,9 @@ function ProjectList() {
           <h3 className="project-name">{project.name}</h3>
           <p className="technologies"><strong>Technologies Used: </strong>{project.technology}</p>
           <button 
-            className="open-ide-btn">
+            className="open-ide-btn"
+            onClick={handleOpenIDE} // Add the click handler here
+          >
             Open IDE
           </button>
         </div>

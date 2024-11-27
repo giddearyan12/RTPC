@@ -1,11 +1,13 @@
+
 .reg-page {
     width: 75%;
     height: 480px;
-    margin: auto;
-    margin-top: 55px;
+    margin: 55px auto;
     background: linear-gradient(to right, #323DB6, #00B2FD);
     display: flex;
     align-items: center;
+    
+    
 }
 
 .reg-page .reg-welcome {
@@ -119,5 +121,94 @@
     }
     100% {
         transform: translateY(0);
+    }
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+
+/* responsive */
+/* Base styles (already present above) */
+
+/* For smaller screens (tablets and large phones) */
+@media screen and (max-width: 1024px) {
+    .reg-page {
+        width: 90%;
+        flex-direction: column;
+        height: auto;
+        margin-top: 30px;
+    }
+
+    .reg-page .reg-welcome {
+        width: 100%;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .reg-page .reg-form {
+        width: 100%;
+        margin-right: 0;
+        border-radius: 20px;
+    }
+
+    .reg-form input, .reg-form select {
+        width: 90%;
+    }
+
+    .reg-form .submit {
+        width: 70%;
+    }
+}
+
+/* For small screens (phones) */
+@media screen and (max-width: 768px) {
+    .reg-page {
+        margin-top: 20px;
+    }
+
+    .reg-page .reg-welcome {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .reg-welcome img {
+        width: 80px;
+    }
+
+    .reg-page .reg-form {
+        padding: 10px;
+    }
+
+    .reg-form input, .reg-form select {
+        width: 100%;
+    }
+
+    .reg-form .submit {
+        width: 100%;
+    }
+}
+
+/* For extra small screens */
+@media screen and (max-width: 480px) {
+    .reg-welcome img {
+        width: 60px;
+    }
+
+    .reg-page .reg-welcome p {
+        font-size: 0.9em;
+    }
+
+    .reg-form input, .reg-form select {
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+
+    .reg-form .submit {
+        font-size: 0.9em;
     }
 }

@@ -12,7 +12,7 @@ const Message = ({ message }) => {
 	const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic;
 	const bubbleBgColor = fromMe ? "from-me" : "from-other";
 	const shakeClass = message.shouldShake ? "custom-shake" : "";
-	console.log(fromMe)
+	
 
 	return (
 		<div className={`custom-chat-wrapper ${chatClassName}`}>

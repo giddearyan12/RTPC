@@ -8,12 +8,12 @@ import { SocketContextProvider } from "./Components/MainHome/Chat/Context/Socket
 
 createRoot(document.getElementById('root')).render(
   
-    <StrictMode>
+  
     <AuthContextProvider>
     <SocketContextProvider>
 					<App />
 				</SocketContextProvider>
     </AuthContextProvider>
-  </StrictMode>
+  
  
 )
