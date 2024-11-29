@@ -1,232 +1,164 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useAuthContext } from "./Chat/Context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import "./UserProfile.css";
+import React, { useEffect, useState } from 'react';
+import './UserProfile.css';
+import jwt_decode from "jwt-decode"; 
+import axios from 'axios';
+import Header from './Header';
 
 const UserProfile = () => {
-  const url = "http://localhost:3000"; 
-  const { authUser, setAuthUser } = useAuthContext();
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    en: "",
-    department: "",
-    gender: "",
-    college: "",
-    domain: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false); 
-  const navigate = useNavigate();
+  const [studentDetails, setStudentDetails] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchStudentDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${url}/user/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const decodedToken = jwt_decode(token);
+        const response = await axios.get("http://localhost:3000/students/profile", {
+          params: { id: decodedToken.userId },
         });
-        if (response.data.success) {
-          setUserData(response.data.user);
-        } else {
-          console.error("Failed to fetch profile:", response.data.message);
-        }
+        setStudentDetails(response.data.user);
+        setFormData(response.data.user); // Pre-fill formData for editing
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        console.error('Error fetching student details:', error);
+        setLoading(false);
       }
     };
-    fetchUserProfile();
-  }, []);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUserData((prev) => ({ ...prev, [name]: value }));
+    fetchStudentDetails();
+  }, [token]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleUpdate = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setMessage(null);
-
+  const handleSave = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `${url}/user/profile`,
-        { ...userData },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.data.success) {
-        setAuthUser(response.data.user);
-        setMessage({ type: "success", text: "Profile updated successfully!" });
-        setIsEditMode(false); 
-      } else {
-        setMessage({ type: "error", text: response.data.message });
-      }
+      const decodedToken = jwt_decode(token);
+      await axios.put("http://localhost:3000/students/profile", {
+        id: decodedToken.userId,
+        ...formData,
+      });
+      setStudentDetails(formData); // Update the UI with the new data
+      setEditMode(false); // Exit edit mode
     } catch (error) {
-      setMessage({ type: "error", text: "Failed to update profile." });
-      console.error("Error updating profile:", error);
-    } finally {
-      setLoading(false);
+      console.error('Error updating student details:', error);
     }
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!studentDetails) {
+    return <p>Student details not found.</p>;
+  }
+
   return (
-    <div className="profile-container">
-      <h2 className="profile-header">My Profile</h2>
-      {message && <p className={`profile-message ${message.type}`}>{message.text}</p>}
+    <div>
+      <Header/>
+    <div className="profile-section">
+      <div className="profile-header">
+        <h1 className="profile-name">{studentDetails.name}</h1>
+        {!editMode && (
+          <button onClick={() => setEditMode(true)} className="edit-button">
+            Edit
+          </button>
+        )}
+      </div>
 
-      <form onSubmit={handleUpdate} className="profile-form">
-        <div className="profile-field">
-          <label className="profile-label">Name:</label>
-          {isEditMode ? (
+      {editMode ? (
+        <div className="profile-edit-form">
+          <div className="profile-info-item">
+            <label><strong>Email:</strong></label>
             <input
-              type="text"
-              name="name"
-              value={userData.name}
-              onChange={handleChange}
-              className="profile-input"
-              required
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
             />
-          ) : (
-            <p className="profile-value">{userData.name}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">Email:</label>
-          <p className="profile-value">{userData.email}</p>
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">Phone:</label>
-          {isEditMode ? (
+          </div>
+          <div className="profile-info-item">
+            <label><strong>Phone:</strong></label>
             <input
               type="text"
               name="phone"
-              value={userData.phone}
-              onChange={handleChange}
-              className="profile-input"
-              required
+              value={formData.phone}
+              onChange={handleInputChange}
             />
-          ) : (
-            <p className="profile-value">{userData.phone}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">EN No:</label>
-          {isEditMode ? (
+          </div>
+          <div className="profile-info-item">
+            <label><strong>Enrollment No:</strong></label>
             <input
               type="text"
               name="en"
-              value={userData.en}
-              onChange={handleChange}
-              className="profile-input"
-              required
+              value={formData.en}
+              onChange={handleInputChange}
             />
-          ) : (
-            <p className="profile-value">{userData.en}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">Department:</label>
-          {isEditMode ? (
-            <select
+          </div>
+          <div className="profile-info-item">
+            <label><strong>Department:</strong></label>
+            <input
+              type="text"
               name="department"
-              value={userData.department}
-              onChange={handleChange}
-              className="profile-select"
-              required
-            >
-              <option value="">Select Department</option>
-              <option value="CSE">CSE</option>
-              <option value="DS">DS</option>
-              <option value="AI/ML">AI/ML</option>
-            </select>
-          ) : (
-            <p className="profile-value">{userData.department}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">Gender:</label>
-          {isEditMode ? (
-            <select
+              value={formData.department}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="profile-info-item">
+            <label><strong>Gender:</strong></label>
+            <input
+              type="text"
               name="gender"
-              value={userData.gender}
-              onChange={handleChange}
-              className="profile-select"
-              required
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          ) : (
-            <p className="profile-value">{userData.gender}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">College:</label>
-          {isEditMode ? (
-            <select
-              name="college"
-              value={userData.college}
-              onChange={handleChange}
-              className="profile-select"
-              required
-            >
-              <option value="">Select College</option>
-              <option value="Dypcet">Dypcet</option>
-            </select>
-          ) : (
-            <p className="profile-value">{userData.college}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label className="profile-label">Domain:</label>
-          {isEditMode ? (
-            <select
+              value={formData.gender}
+              onChange={handleInputChange}
+            />
+          </div>
+    
+          <div className="profile-info-item">
+            <label><strong>Domain:</strong></label>
+            <input
+              type="text"
               name="domain"
-              value={userData.domain}
-              onChange={handleChange}
-              className="profile-select"
-              required
-            >
-              <option value="">Select Domain</option>
-              <option value="Java">Java</option>
-              <option value="C/C++">C/C++</option>
-              <option value="Python">Python</option>
-              <option value="Javascript">Javascript</option>
-            </select>
-          ) : (
-            <p className="profile-value">{userData.domain}</p>
-          )}
+              value={formData.domain}
+              onChange={handleInputChange}
+            />
+          </div>
+          <button onClick={() => setEditMode(false)} className="cancel-button">
+            Cancel
+          </button>
+          <button onClick={handleSave} className="save-button">
+            Save
+          </button>
+         
         </div>
-
-        {isEditMode ? (
-          <button type="submit" className="profile-button" disabled={loading}>
-            {loading ? "Updating..." : "Save Changes"}
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="profile-button"
-            onClick={() => setIsEditMode(true)}
-          >
-            Update Profile
-          </button>
-        )}
-      </form>
+      ) : (
+        <div className="profile-info">
+          <div className="profile-info-item">
+            <p><strong>Email:</strong> {studentDetails.email}</p>
+          </div>
+          <div className="profile-info-item">
+            <p><strong>Phone:</strong> {studentDetails.phone}</p>
+          </div>
+          <div className="profile-info-item">
+            <p><strong>Enrollment No:</strong> {studentDetails.en}</p>
+          </div>
+          <div className="profile-info-item">
+            <p><strong>Department:</strong> {studentDetails.department}</p>
+          </div>
+          <div className="profile-info-item">
+            <p><strong>Gender:</strong> {studentDetails.gender}</p>
+          </div>
+        
+          <div className="profile-info-item">
+            <p><strong>Domain:</strong> {studentDetails.domain}</p>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 };

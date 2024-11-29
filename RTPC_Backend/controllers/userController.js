@@ -6,33 +6,37 @@ import validator from "validator";
 import bcrypt from 'bcrypt';
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
-const loginUser = async(req, res)=>{
-    const {email, password} = req.body;
-    try{
-        const user = await userModel.findOne({email});
-        if(!user){
-        return res.json({success:false, message:"Incorrect Credentials"})
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.json({ success: false, message: "Incorrect Credentials" })
         }
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch){
-        return  res.json({success:false, message:"Wrong Password"});
+        if (!isMatch) {
+            return res.json({ success: false, message: "Wrong Password" });
         }
         const token = generateTokenAndSetCookie(user._id, res);
-        
-        res.json({success:true, data:{  _id: user._id,
-            name: user.fullName,
-            profilePic: user.profilePic,
-            token:token, }});
+
+        res.json({
+            success: true, data: {
+                _id: user._id,
+                name: user.fullName,
+                profilePic: user.profilePic,
+                token: token,
+            }
+        });
     }
-    catch(error){
+    catch (error) {
         console.log(error)
-        return res.json({success:false, message:"Error"})
+        return res.json({ success: false, message: "Error" })
     }
 
 }
 
 
-const registerUser = async(req, res) => {
+const registerUser = async (req, res) => {
     const { name, email, phone, en, password, conpass, department, gender, college, domain } = req.body;
 
     try {
@@ -56,14 +60,14 @@ const registerUser = async(req, res) => {
         if (password !== conpass) {
             return res.json({ success: false, message: "Confirm password incorrect" });
         }
-      
-        
+
+
 
         const salt = await bcrypt.genSalt(10);
         const hashedpass = await bcrypt.hash(password, salt);
 
         const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
-		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
+        const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
 
         const newUser = new userModel({
             name: name,
@@ -80,10 +84,14 @@ const registerUser = async(req, res) => {
 
         const user = await newUser.save();
         const token = generateTokenAndSetCookie(user._id, res)
-        res.json({success:true, data:{  _id: user._id,
-            name: user.fullName,
-            profilePic: user.profilePic,
-            token:token, }});
+        res.json({
+            success: true, data: {
+                _id: user._id,
+                name: user.fullName,
+                profilePic: user.profilePic,
+                token: token,
+            }
+        });
     } catch (error) {
         console.log(error);
         return res.json({ success: false, message: "Error" });
@@ -92,21 +100,21 @@ const registerUser = async(req, res) => {
 
 const createProject = async (req, res) => {
     const { name, description, technology } = req.body;
-    
+
     try {
-        
+
         const exists = await projectModel.findOne({ name });
         if (exists) {
             return res.json({ success: false, message: "Project already exists" });
         }
 
-        
-        const token = req.headers.authorization.split(" ")[1]; 
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET); 
-        const userId = decodedToken.userId; 
 
-       
-        const user = await userModel.findById(userId); 
+        const token = req.headers.authorization.split(" ")[1];
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decodedToken.userId;
+
+
+        const user = await userModel.findById(userId);
         if (!user) {
             return res.json({ success: false, message: "User not found" });
         }
@@ -118,14 +126,14 @@ const createProject = async (req, res) => {
             createdBy: userId,
         });
 
-        
+
         await newProject.save();
 
-      
-        user.projects.push(newProject._id); 
+
+        user.projects.push(newProject._id);
         await user.save();
 
-     
+
         return res.json({ success: true, message: "Project created successfully", project: newProject });
     } catch (error) {
         console.error(error);
@@ -145,13 +153,13 @@ const myProjects = async (req, res) => {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decodedToken.userId;
 
-       
+
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-       
+
         const userProjects = await projectModel.find({
             _id: { $in: user.projects }
         });
@@ -170,19 +178,19 @@ const myProjects = async (req, res) => {
 
 const getName = async (req, res) => {
     try {
-        const { id } = req.query; 
-        
+        const { id } = req.query;
+
         if (!id) {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
-        
-        const user = await userModel.findById(id); 
-        
+
+        const user = await userModel.findById(id);
+
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-        
-        return res.json({ success: true, user:user });
+
+        return res.json({ success: true, user: user });
     } catch (error) {
         console.error("Error fetching user:", error);
         return res.status(500).json({ success: false, message: "Server error" });
@@ -191,37 +199,37 @@ const getName = async (req, res) => {
 
 const ListProjects = async (req, res) => {
     try {
-        const { id } = req.query; 
-        
+        const { id } = req.query;
+
         if (!id) {
             return res.status(400).json({ success: false, message: "User ID is required" });
         }
 
-      
+
         const user = await userModel.findById(id);
-        
+
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-   
+
         if (!user.domain) {
             return res.status(400).json({ success: false, message: "User domain is not specified" });
         }
 
-       
+
         const userProjects = await projectModel.find({
-            technology: user.domain,                
-            createdBy: { $ne: id },               
-            _id: { $nin: user.projects }           
+            technology: user.domain,
+            createdBy: { $ne: id },
+            _id: { $nin: user.projects }
         });
 
-      
+
         if (!userProjects.length) {
             return res.status(404).json({ success: false, message: "No available projects for this user" });
         }
 
-       
+
         return res.json({ success: true, projects: userProjects });
     } catch (error) {
         console.error("Error retrieving user projects:", error);
@@ -230,68 +238,26 @@ const ListProjects = async (req, res) => {
 };
 
 
-  const getUser = async(req,res)=>{
+const getUser = async (req, res) => {
     const { name } = req.params;
     try {
-      const student = await userModel.findOne({ name }); 
-      if (!student) {
-        return res.status(404).json({ message: 'Student not found' });
-      }
-      const projects = await projectModel.find({_id:student._id})
-      res.json(student);
+        const student = await userModel.findOne({ name });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        const projects = await projectModel.find({ _id: student._id })
+        res.json(student);
     } catch (error) {
-      res.status(500).json({ message: 'Server error', error });
+        res.status(500).json({ message: 'Server error', error });
     }
-  }
+}
 
 
 //user profile
-  
-  const getUserProfile = async (req, res) => {
-    try {
-      const token = req.headers.authorization?.split(' ')[1]; 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET); 
-      const student = await userModel.findById(decoded.userId);
-      if (!student) {
-        return res.status(404).json({ message: 'Student not found' });
-      }
-      res.json({ success: true, user: student });
-    } catch (error) {
-      res.status(500).json({ message: 'Server error', error });
-    }
-  };
- 
-  
-  
-  const updateUser = async (req, res) => {
-    const { name, email, phone, en,department, gender, college, domain } = req.body;
-  
-    try {
-      const user = await userModel.findById(req.user.id);
-  
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-  
-      user.name = name || user.name;
-      user.email = email || user.email;
-      user.phone = phone || user.phone;
-      user.en = en || user.en;
-      user.department = department || user.department;
-      user.bio = gender || user.gender;
-      user.bio = college || user.college;
-      user.bio = domain || user.domain;
-  
-      await user.save();
-  
-      res.json({ message: "Profile updated successfully." });
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      res.status(500).json({ error: "Server error" });
-    }
-  };
 
 
 
 
-export {registerUser, loginUser, createProject, myProjects, getName, ListProjects, getUser, getUserProfile, updateUser}
+
+
+export { registerUser, loginUser, createProject, myProjects, getName, ListProjects, getUser }

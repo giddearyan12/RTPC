@@ -51,9 +51,7 @@ const Profile = ({ student, onBack }) => {
         <div className="profile-info-item">
           <p><strong>Gender:</strong> {studentDetails.gender}</p>
         </div>
-        <div className="profile-info-item">
-          <p><strong>College:</strong> {studentDetails.college}</p>
-        </div>
+      
         <div className="profile-info-item">
           <p><strong>Domain:</strong> {studentDetails.domain}</p>
         </div>

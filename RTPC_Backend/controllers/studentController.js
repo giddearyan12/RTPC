@@ -59,6 +59,55 @@ const requestCollaboration = async (req, res) => {
     res.status(500).json({ message: "Failed to delete the project." });
   }
 };
+
+const getUserProfile = async (req, res) => {
+  try {
+
+      const { id } = req.query;
+     
+      if (!id) {
+          return res.status(400).json({ success: false, message: "User ID is required" });
+      }
+      const user = await userModel.findById(id);
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.json({ success: true, user: user });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+
+
+const updateUser = async (req, res) => {
+  const { name, email, phone, en, department, gender, college, domain } = req.body;
+
+  try {
+      const user = await userModel.findById(req.user.id);
+
+      if (!user) {
+          return res.status(404).json({ error: "User not found" });
+      }
+
+      user.name = name || user.name;
+      user.email = email || user.email;
+      user.phone = phone || user.phone;
+      user.en = en || user.en;
+      user.department = department || user.department;
+      user.gender = gender || user.gender;
+      user.college = college || user.college;
+      user.domain = domain || user.domain;
+
+      await user.save();
+
+      res.json({ message: "Profile updated successfully." });
+  } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ error: "Server error" });
+  }
+};
  
 
-export {studentsList, requestCollaboration, deleteProject};
+export {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser};
