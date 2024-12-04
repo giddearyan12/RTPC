@@ -9,6 +9,15 @@
     height: 150px;
     transition: transform 0.2s ease-in-out;
   }
+
+  .done{
+    margin-left: 30vh;
+    margin-top: -30px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+
+  }
   
   .project-card:hover {
     transform: scale(1.05);
@@ -52,3 +61,15 @@
   .delete-project-btn:hover {
     background-color: #d32f2f;
   }
+
+  .project-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 300px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.project_list::-webkit-scrollbar {
+  display:none;
+}

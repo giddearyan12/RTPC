@@ -101,31 +101,39 @@ const UserProfile = () => {
           </div>
           <div className="profile-info-item">
             <label><strong>Department:</strong></label>
-            <input
-              type="text"
-              name="department"
-              value={formData.department}
-              onChange={handleInputChange}
-            />
+            <select
+                name="department"
+                value={formData.department}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Department...</option>
+                <option value="CSE">CSE</option>
+                <option value="DS">DS</option>
+                <option value="AL/ML">AI/ML</option>
+              </select>
           </div>
           <div className="profile-info-item">
             <label><strong>Gender:</strong></label>
-            <input
-              type="text"
-              name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
-            />
+            <select value={formData.gender} name="gender" onChange={handleInputChange} required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
           </div>
     
           <div className="profile-info-item">
             <label><strong>Domain:</strong></label>
-            <input
-              type="text"
-              name="domain"
-              value={formData.domain}
-              onChange={handleInputChange}
-            />
+            <select
+                name="domain"
+                value={formData.domain}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Domain...</option>
+                <option value="Java">Java</option>
+                <option value="C/C++">C/C++</option>
+                <option value="Python">Python</option>
+                <option value="Javascript">Javascript</option>
+              </select>
           </div>
           <button onClick={() => setEditMode(false)} className="cancel-button">
             Cancel

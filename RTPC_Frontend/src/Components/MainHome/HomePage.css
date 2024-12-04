@@ -1,29 +1,24 @@
 .main-home {
     width: 100%;
-    
     display: flex;
-  
+   
 }
 .left {
     width: 20%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    
 }
 .left-box {
     width: 70vw;
-    
     background-color: #4C3575;
     padding: 10px;
     margin: 20px 10px;
     position: sticky;
     border-radius: 20px;
-    
 }
 .right {
     width: 80%;
-    
     overflow-y: hidden;
     padding: 10px;
 }

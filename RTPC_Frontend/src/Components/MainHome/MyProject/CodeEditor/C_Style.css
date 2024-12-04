@@ -6,6 +6,50 @@
     color: #ffffff;
 }
 
+.importBtn{
+  display: flex;
+  margin-right: 7vh;
+  gap: 5px;
+  padding: 5px;
+  height: 4.5vh;
+
+}
+
+.exportBtns{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background: none;
+  height: 4.5vh;
+  gap: 5px;
+  margin-right: 7vh;
+  border-style: none;
+  border-radius: 8px;
+}
+
+
+.savebtn{
+  height: 4.5vh;
+  width: 10vh;
+  margin-right: 8vh;
+  border-style: none;
+  border-radius: 8px;
+  background-color: green;
+}
+
+.savebtn:hover{
+  opacity: 70%;
+}
+
+
+.folderbtn{
+  display: flex ;
+  gap: 12px;
+}
+
+.createBtn{
+  cursor: pointer;
+}
 /* Home Page Wrapper */
 .homePageWrapper {
     width: 100%;

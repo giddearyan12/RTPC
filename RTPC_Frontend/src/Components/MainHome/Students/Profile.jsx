@@ -30,29 +30,31 @@ const Profile = ({ student, onBack }) => {
   }
 
   return (
-    <div className="profile-section">
-      <div className="profile-header">
+    <div className="student-profile-section">
+      <div className="student-profile-header">
         <button onClick={onBack} className="back-button">Back</button>
-        <h1 className="profile-name">{studentDetails.name}</h1>
+        <h1 className="student-profile-name">{studentDetails.name}</h1>
       </div>
-      <div className="profile-info">
-        <div className="profile-info-item">
+      <div className="student-profile-info">
+        <div className="student-profile-info-item">
           <p><strong>Email:</strong> {studentDetails.email}</p>
         </div>
-        <div className="profile-info-item">
+        <div className="student-profile-info-item">
           <p><strong>Phone:</strong> {studentDetails.phone}</p>
         </div>
-        <div className="profile-info-item">
+        <div className="student-profile-info-item">
           <p><strong>Enrollment No:</strong> {studentDetails.en}</p>
         </div>
-        <div className="profile-info-item">
+        <div className="student-profile-info-item">
           <p><strong>Department:</strong> {studentDetails.department}</p>
         </div>
-        <div className="profile-info-item">
+        <div className="student-profile-info-item">
           <p><strong>Gender:</strong> {studentDetails.gender}</p>
         </div>
-      
-        <div className="profile-info-item">
+        <div className="student-profile-info-item">
+          <p><strong>College:</strong> {studentDetails.college}</p>
+        </div>
+        <div className="student-profile-info-item">
           <p><strong>Domain:</strong> {studentDetails.domain}</p>
         </div>
       </div>

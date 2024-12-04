@@ -21,8 +21,13 @@
 }
 
 .profile-name {
-  font-size: 24px;
-  color: #4C3575;
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin: 0;
+  flex-grow: 1;  
+  display: flex;
+  justify-content: center;
 }
 
 .edit-button,
@@ -52,16 +57,22 @@
 
 /* Profile Info */
 .profile-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px; /* Adds space between items */
-  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; 
+  justify-content: space-between;
 
 }
 
 .profile-info-item {
-  margin-bottom: 15px;
-  width: 100%;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 48%; 
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 16px;
 }
 
 .profile-info-item label {
@@ -92,12 +103,12 @@
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
-/* Button Group */
+
 .profile-edit-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px; /* Adds space between items */
-  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; 
+  justify-content: space-between;
 }
 
 .profile-edit-form button {
@@ -106,6 +117,21 @@
 
 .profile-edit-form button:last-child {
   margin-right: 0;
+}
+.profile-info-item select{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+
+}
+.profile-info-item select:focus {
+  border-color: #4C3575;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
 /* Responsive Design */

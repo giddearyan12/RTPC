@@ -1,20 +1,23 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import userRouter from './routes/userRoute.js';
-import messageRoutes from './routes/messageRoute.js';
-import membersRoutes from './routes/membersRoute.js';
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import userRouter from "./routes/userRoute.js";
+import messageRoutes from "./routes/messageRoute.js";
+import membersRoutes from "./routes/membersRoute.js";
 import cookieParser from "cookie-parser";
-import studentRouter from './routes/studentRoute.js';
+import studentRouter from "./routes/studentRoute.js";
 import { Server } from "socket.io";
 import http from "http";
-import ACTIONS from "./Actions.js"; // Ensure you have an Actions.js file
+import ACTIONS from "./Actions.js";
 import axios from "axios";
-import 'dotenv/config';
+import "dotenv/config";
+import codeRoutes from "./routes/codeSaveRoute.js";
+import dockerode from "dockerode";
 
 // MongoDB Connection
-mongoose.connect('mongodb://127.0.0.1:27017/RTPC')
-  .then(() => console.log('MONGO DB CONNECTED'));
+mongoose
+  .connect("mongodb://127.0.0.1:27017/ProyectaMinds")
+  .then(() => console.log("MONGO DB CONNECTED"));
 
 // Initialize Express App
 const app = express();
@@ -34,15 +37,18 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/user', userRouter);
-app.use('/students', studentRouter);
+app.use("/user", userRouter);
+app.use("/students", studentRouter);
 app.use("/api/messages", messageRoutes);
 app.use("/api/members", membersRoutes);
-
+app.use("/api", codeRoutes);
 // Root Route
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.end("API Working");
 });
+
+// Docker client initialization
+const docker = new dockerode();
 
 // Language Configuration for Code Compilation
 const languageConfig = {
@@ -51,27 +57,155 @@ const languageConfig = {
   cpp: { versionIndex: "4" },
   php: { versionIndex: "3" },
   c: { versionIndex: "4" },
+  javascript: { versionIndex: "1" },
 };
 
 // Code Compilation Route
-app.post("/compile", async (req, res) => {
+app.post("/api/execute", async (req, res) => {
   const { code, language } = req.body;
 
+  if (!code || !language) {
+    return res.status(400).json({ error: "Code or language not provided" });
+  }
+
+  let imageName = "node";
+  let cmd = ["node", "-e", code];
+
+  switch (language) {
+    case "python3":
+      imageName = "python:3.9";
+      cmd = ["python3", "-c", code];
+      break;
+    case "cpp":
+      imageName = "gcc";
+      cmd = [
+        "bash",
+        "-c",
+        `echo '${code}' > program.cpp && g++ program.cpp -o program && ./program`,
+      ];
+      break;
+
+    case "java":
+      imageName = "openjdk:11";
+      const classNameMatch = code.match(/public\s+class\s+([A-Za-z0-9_]+)/);
+      const className = classNameMatch ? classNameMatch[1] : "Main";
+
+      cmd = [
+        "bash",
+        "-c",
+        `echo "${code.replace(
+          /"/g,
+          '\\"'
+        )}" > ${className}.java && javac ${className}.java && java ${className}`,
+      ];
+      break;
+    case "c":
+      imageName = "gcc";
+      cmd = [
+        "bash",
+        "-c",
+        `echo "${code.replace(
+          /"/g,
+          '\\"'
+        )}" > program.c && gcc program.c -o program && ./program`,
+      ];
+      break;
+    case "javascript":
+    case "js":
+      imageName = "node";
+      cmd = ["node", "-e", code];
+      break;
+    case "php":
+      imageName = "php:8.0-cli";
+
+      const sanitizedCode = code
+        .replace(/\r\n/g, "\n")
+        .replace(/"/g, '\\"')
+        .replace(/\$/g, "\\$");
+
+      cmd = [
+        "bash",
+        "-c",
+        `echo "${sanitizedCode}" > /script.php && php /script.php`,
+      ];
+      break;
+
+    default:
+      return res.status(400).json({ error: "Unsupported language" });
+  }
+
   try {
-    const response = await axios.post("https://api.jdoodle.com/v1/execute", {
-      script: code,
-      language: language,
-      versionIndex: languageConfig[language].versionIndex,
-      clientId: 'edea8ed67d8b30091eb1de199c5fe97',
-      clientSecret: 'f3105127cddbdad6a8da3609cfd69c4014067d87590fe5b54f486652f346b59b',
+    console.log(`Creating Docker container for ${imageName}...`);
+    const container = await docker.createContainer({
+      Image: imageName,
+      Cmd: cmd,
+      Tty: false,
+      MemLimit: 1000000000,
+      CpuShares: 512,
+      Volumes: {
+        "/tmp": {},
+      },
+      HostConfig: {
+        Binds: ["./tmp:/tmp"],
+      },
     });
 
-    res.json(response.data);
+    console.log("Starting Docker container...");
+    await container.start();
+
+    console.log("Fetching logs from Docker container...");
+    const logs = await new Promise((resolve, reject) => {
+      container.logs(
+        {
+          stdout: true,
+          stderr: true,
+          follow: true,
+          tail: 1000,
+        },
+        (err, stream) => {
+          if (err) {
+            reject(err);
+          }
+          let output = "";
+          stream.on("data", (chunk) => {
+            output += chunk.toString("utf8");
+          });
+          stream.on("end", () => {
+            resolve(cleanDockerOutput(output));
+          });
+        }
+      );
+    });
+
+    console.log("Logs from Docker container:", logs);
+
+    if (logs) {
+      res.json({ output: logs });
+    } else {
+      res.status(500).json({ error: "No output from the container" });
+    }
+
+    const containerStatus = await container.inspect();
+    if (containerStatus.State.Running) {
+      console.log("Stopping Docker container...");
+      await container.stop();
+    }
+
+    console.log("Cleaning up Docker container...");
+    await container.remove();
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to compile code" });
+    console.error("Error during Docker execution:", error);
+    if (!res.headersSent) {
+      res
+        .status(500)
+        .json({ error: "Failed to execute code", details: error.message });
+    }
   }
 });
+
+function cleanDockerOutput(output) {
+  return output.replace(/[\x00-\x1F\x7F]/g, "").trim();
+}
 
 // Socket.io Logic
 const userSocketMap = {};
@@ -83,45 +217,65 @@ const getAllConnectedClients = (roomId) => {
     })
   );
 };
+export const getReceiverSocketId = (receiverId) => {
+	return userSocketMap[receiverId];
+};
+
 
 io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
 
+  // Chat system
+  const userId = socket.handshake.query.userId;
+  if (userId !== "undefined") userSocketMap[userId] = socket.id;
+
+  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+  socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+      delete userSocketMap[userId];
+      io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  });
+
+  // Code editor
   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
-    userSocketMap[socket.id] = username;
-    socket.join(roomId);
+      userSocketMap[socket.id] = username;
+      socket.join(roomId);
+      console.log("heloo")
 
-    const clients = getAllConnectedClients(roomId);
-    clients.forEach(({ socketId }) => {
-      io.to(socketId).emit(ACTIONS.JOINED, {
-        clients,
-        username,
-        socketId: socket.id,
+      const clients = getAllConnectedClients(roomId);
+      clients.forEach(({ socketId }) => {
+          io.to(socketId).emit(ACTIONS.JOINED, {
+              clients,
+              username,
+              socketId: socket.id,
+          });
       });
-    });
   });
 
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
-    socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+      socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
-    io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
+      io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
   socket.on("disconnecting", () => {
-    const rooms = [...socket.rooms];
-    rooms.forEach((roomId) => {
-      socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
-        socketId: socket.id,
-        username: userSocketMap[socket.id],
+      const rooms = [...socket.rooms];
+      rooms.forEach((roomId) => {
+          socket.in(roomId).emit(ACTIONS.DISCONNECTED, {
+              socketId: socket.id,
+              username: userSocketMap[socket.id],
+          });
       });
-    });
 
-    delete userSocketMap[socket.id];
-    socket.leave();
+      delete userSocketMap[socket.id];
+      socket.leave();
   });
 });
 
+export { app, io, server };
 // Start Server
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

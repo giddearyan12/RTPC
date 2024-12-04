@@ -5,6 +5,7 @@ import "./Dashboard.css";
 import jwt_decode from "jwt-decode"; 
 import Notification from "../Notification";
 import ProjectModal from "./ProjectModal";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [projectData, setProjectData] = useState([]);
@@ -64,10 +65,24 @@ const Dashboard = () => {
           userId: userId, 
         }
       );
-      alert(`Collaboration request sent for project: ${project.name}`);
+      toast(`Collaboration Request Sent`, {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
     } catch (error) {
       console.error("Error sending collaboration request:", error.message);
-      alert("Failed to send the collaboration request. Please try again.");
+      toast("Collaboration Request Not Sent", {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
     }
 
     closeModal();

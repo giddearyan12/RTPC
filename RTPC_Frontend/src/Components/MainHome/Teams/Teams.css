@@ -1,0 +1,106 @@
+/* Teams Page Container */
+.teams-container {
+  max-width: 1200px;
+  max-height: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-y: auto;
+    scrollbar-width: none;
+}
+
+/* Toggle Buttons */
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #555;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #ddd;
+}
+
+.toggle-btn.active {
+  background-color: #4C3575;
+  color: white;
+  font-weight: bold;
+  border-color: #4C3575;
+}
+
+/* Projects Section */
+.header-teams {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #4C3575;
+  text-align: center;
+}
+
+.no-project {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #777;
+}
+
+/* Card Layout */
+.team-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.team-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* Table Styling */
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.team-table th, .team-table td {
+  padding: 8px;
+  font-size: 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.team-table th {
+  background-color: #f4f4f4;
+  color: #555;
+  font-weight: bold;
+}
+
+.team-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Remove Icon */
+.remove-icon {
+  color: red;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.remove-icon:hover {
+  color: #ff4d4d;
+}

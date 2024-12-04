@@ -1,7 +1,7 @@
 import { useSocketContext } from "../../Context/SocketContext";
 import useConversation from "../../zustand/useConversation";
 
-const Conversation = ({ conversation, lastIdx, emoji }) => {
+const Conversation = ({ conversation, lastIdx}) => {
 	const { selectedConversation, setSelectedConversation } = useConversation();
 
 	const isSelected = selectedConversation?._id === conversation._id;
@@ -22,7 +22,6 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
 				<div className="custom-flex-column">
 					<div className="custom-header">
 						<p>{conversation.name}</p>
-						<span className="custom-emoji">{emoji}</span>
 					</div>
 				</div>
 			</div>

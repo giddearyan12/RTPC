@@ -1,6 +1,6 @@
-import React from 'react';
-import Avatar from 'react-avatar';
-import './C_Style.css'
+import React from "react";
+import Avatar from "react-avatar";
+import "./C_Style.css";
 
 function C_Client({ username }) {
   return (
@@ -12,7 +12,7 @@ function C_Client({ username }) {
         className="client-avatar"
         alt={`Avatar for ${username}`}
       />
-      <span className="client-username">{username || 'Anonymous'}</span>
+      <span className="client-username">{username || "Anonymous"}</span>
     </div>
   );
 }

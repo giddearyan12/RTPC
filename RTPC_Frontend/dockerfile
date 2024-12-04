@@ -1,8 +1,12 @@
-FROM node.js
+FROM node:16
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm install
 
 COPY . .
 
-RUN npm install && apt get python install && jdk:latest
+EXPOSE 5173
 
-
-
+CMD ["npm", "run" , "dev"]

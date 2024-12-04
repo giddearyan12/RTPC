@@ -7,6 +7,7 @@
   
 .custom-empty-message {
     text-align: center;  
+    color: #fff;
 }
   
 .custom-message-wrapper {
@@ -44,7 +45,7 @@
 }
 
 .custom-input:focus {
-    border-color: #3b82f6; 
+    border-color: #4C3575; 
     box-shadow: 0 0 6px rgba(59, 130, 246, 0.4); 
 }
 
@@ -52,8 +53,8 @@
     position: absolute; 
     right: 0.5rem; 
     top: 50%; 
-    transform: translateY(-50%); 
-    background-color: #3b82f6; 
+    transform: translateY(-30%); 
+    background-color: #4C3575; 
     color: white;
     border: none; 
     border-radius: 50%; 
@@ -68,7 +69,7 @@
 }
 
 .custom-send-button:hover {
-    background-color: #2563eb; 
+    background-color: #4C3575; 
     transform: scale(1.1); 
 }
 
@@ -181,12 +182,9 @@
 }
 
 .custom-shake {
-    animation: shake 0.5s ease-in-out infinite;
+    animation: shake 0.8s ease-in-out;
 }
 
-.custom-shake {
-    animation: shake 0.5s ease-in-out infinite;
-}
 
 .message-container {
   width: 60%; 
@@ -199,7 +197,7 @@
 }
 
 .custom-header {
-  background-color: #3b82f6; 
+  background-color: #4C3575; 
   padding: 0.75rem 1rem; 
   display: flex;
   align-items: center; 
@@ -238,19 +236,19 @@
 
 .custom-welcome-icon {
   font-size: 2.5rem; 
-  color: #60a5fa; 
+  color: #4C3575; 
   margin-top: 1rem; 
 }
 
 .custom-large-icon {
   font-size: 4rem; 
-  color: #60a5fa; 
+  color: #4C3575; 
   margin: 0.5rem auto; 
 }
 
 .custom-message-icon {
   font-size: 3rem; 
-  color: #3b82f6; 
+  color: #4C3575; 
   margin-top: 1rem;
   animation: bounce 1.5s infinite; 
 }

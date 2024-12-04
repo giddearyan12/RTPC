@@ -22,7 +22,7 @@
   border-color: #e5e7eb;
 }
 .custom-button {
-  background-color: #0284c7;
+  background-color: #4C3575;
   color: #ffffff;
   border-radius: 9999px;
   padding: 0.5rem;
@@ -73,10 +73,10 @@
   border-radius: 0.375rem;
 }
 .custom-conversation-container:hover {
-  background-color: #0ea5e9;
+  background-color: #4C3575;
 }
 .custom-conversation-container.selected {
-  background-color: #0ea5e9;
+  background-color: #4C3575;
 }
 .custom-avatar {
   width: 3rem;

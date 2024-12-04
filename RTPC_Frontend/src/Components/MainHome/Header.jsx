@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import "./Header.css";
 import axios from "axios";
 import logo from "../../assets/logo.png";
-
+import toast from "react-hot-toast";
 const Header = () => {
   const [userName, setUserName] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -30,7 +30,19 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("chat-user");
-    window.location.href = "/";
+
+    toast("Logged out Successfully", {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 500);
   };
 
   const handleViewProfile = () => {
