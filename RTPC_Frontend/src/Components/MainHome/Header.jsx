@@ -14,7 +14,7 @@ const Header = () => {
     if (token) {
       try {
         const decodedToken = jwt_decode(token);
-        const response = await axios.get(`http://localhost:3000/user/getname`, {
+        const response = await axios.get(`http://localhost:5000/user/getname`, {
           params: { id: decodedToken.userId },
         });
 

@@ -21,7 +21,7 @@ const Dashboard = () => {
         const decodedToken = jwt_decode(token);
         setUserId(decodedToken.userId);
 
-        const response = await axios.get("http://localhost:3000/user/listprojects", {
+        const response = await axios.get("http://localhost:5000/user/listprojects", {
           params: { id: decodedToken.userId },
         });
         setProjectData(response.data.projects);
@@ -59,7 +59,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/students/requestcollaboration",
+        "http://localhost:5000/students/requestcollaboration",
         {
           projectId: project._id,
           userId: userId, 

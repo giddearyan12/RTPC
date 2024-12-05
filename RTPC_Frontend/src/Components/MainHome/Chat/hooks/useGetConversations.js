@@ -16,7 +16,7 @@ const useGetConversations = () => {
 				
 				
 				
-				const res = await axios.get("http://localhost:3000/api/members",{
+				const res = await axios.get("http://localhost:5000/api/members",{
 					
 						headers: {
 						  'Authorization': `Bearer ${token}` 

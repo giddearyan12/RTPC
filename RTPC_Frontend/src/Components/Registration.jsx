@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const Registration = () => {
-  const url = "http://localhost:3000";
+  const url = "http://localhost:5000";
   const [token, setToken] = useState("");
   const [curr, setCurr] = useState("Register");
   const { setAuthUser } = useAuthContext();

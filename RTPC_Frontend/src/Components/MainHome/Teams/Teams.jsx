@@ -12,7 +12,7 @@ const Teams = () => {
   const fetchData = async () => {
     try {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      const response = await axios.get('http://localhost:3000/students/team', {
+      const response = await axios.get('http://localhost:5000/students/team', {
         params: {
           id: decodedToken.userId,
         },

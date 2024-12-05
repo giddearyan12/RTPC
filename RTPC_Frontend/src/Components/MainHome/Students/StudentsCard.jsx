@@ -3,7 +3,7 @@ import './Students.css';
 import axios from 'axios';
 
 const StudentsCard = ({ onCardClick }) => {
-  const url = 'http://localhost:3000';
+  const url = 'http://localhost:5000';
   const [studentList, setStudentList] = useState([]);
 
   // Fetch students data from the API

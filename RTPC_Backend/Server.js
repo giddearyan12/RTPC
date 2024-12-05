@@ -9,7 +9,6 @@ import studentRouter from "./routes/studentRoute.js";
 import { Server } from "socket.io";
 import http from "http";
 import ACTIONS from "./Actions.js";
-import axios from "axios";
 import "dotenv/config";
 import codeRoutes from "./routes/codeSaveRoute.js";
 import dockerode from "dockerode";
@@ -29,7 +28,7 @@ const io = new Server(server, {
   },
 });
 
-const port = 3000;
+const port = 5000;
 
 // Middleware
 app.use(cors());
@@ -52,7 +51,7 @@ const docker = new dockerode();
 
 // Language Configuration for Code Compilation
 const languageConfig = {
-  python3: { versionIndex: "3" },
+  python: { versionIndex: "1" },
   java: { versionIndex: "3" },
   cpp: { versionIndex: "4" },
   php: { versionIndex: "3" },
@@ -63,6 +62,7 @@ const languageConfig = {
 // Code Compilation Route
 app.post("/api/execute", async (req, res) => {
   const { code, language } = req.body;
+  console.log(language)
 
   if (!code || !language) {
     return res.status(400).json({ error: "Code or language not provided" });
@@ -73,8 +73,8 @@ app.post("/api/execute", async (req, res) => {
 
   switch (language) {
     case "python3":
-      imageName = "python:3.9";
-      cmd = ["python3", "-c", code];
+      imageName = "python";
+      cmd = ["python", "-c", code];
       break;
     case "cpp":
       imageName = "gcc";
@@ -241,7 +241,6 @@ io.on("connection", (socket) => {
   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
       userSocketMap[socket.id] = username;
       socket.join(roomId);
-      console.log("heloo")
 
       const clients = getAllConnectedClients(roomId);
       clients.forEach(({ socketId }) => {

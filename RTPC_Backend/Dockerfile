@@ -14,9 +14,9 @@ RUN npm install
 RUN npm install -g nodemon
 
 # Install Python, pip, and necessary Python libraries
-RUN apt-get update && apt-get install -y python3 python3-pip build-essential \
-  && pip3 install --upgrade pip \
-  && pip3 install numpy pandas matplotlib requests \
+RUN apt-get update && apt-get install -y python python-pip build-essential \
+  && pip install --upgrade pip \
+  && pip install numpy pandas matplotlib requests \
   && apt-get clean
 
 # Install Java (OpenJDK 11)
@@ -41,4 +41,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the Node.js app
-CMD ["nodemon", "server.js"]
+CMD ["nodemon", "Server.js"]

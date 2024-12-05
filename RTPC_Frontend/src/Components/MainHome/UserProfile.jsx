@@ -15,7 +15,7 @@ const UserProfile = () => {
     const fetchStudentDetails = async () => {
       try {
         const decodedToken = jwt_decode(token);
-        const response = await axios.get("http://localhost:3000/students/profile", {
+        const response = await axios.get("http://localhost:5000/students/profile", {
           params: { id: decodedToken.userId },
         });
         setStudentDetails(response.data.user);
@@ -38,7 +38,7 @@ const UserProfile = () => {
   const handleSave = async () => {
     try {
       const decodedToken = jwt_decode(token);
-      await axios.put("http://localhost:3000/students/profile", {
+      await axios.put("http://localhost:5000/students/profile", {
         id: decodedToken.userId,
         ...formData,
       });

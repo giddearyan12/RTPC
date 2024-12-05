@@ -11,7 +11,7 @@ const Notification = () => {
     try {
       const token = localStorage.getItem("token"); 
       const decodedToken = jwt_decode(token);
-      const response = await axios.get("http://localhost:3000/students/notifications", {
+      const response = await axios.get("http://localhost:5000/students/notifications", {
         params: { id: decodedToken.userId },
       });
       setNotifications(response.data);
@@ -27,7 +27,7 @@ const Notification = () => {
       const userId = decodedToken.userId;
       
       await axios.post(
-        `http://localhost:3000/students/notifications/${id}/respond`,
+        `http://localhost:5000/students/notifications/${id}/respond`,
         { action },
         { params: { userId: userId }}
       );

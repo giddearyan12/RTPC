@@ -15,7 +15,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import CreateFolder from "./CreateFolder.jsx";
 
-const LANGUAGES = ["python3", "java", "cpp", "c", "javascript", "php"];
+const LANGUAGES = ["python", "java", "cpp", "c", "javascript", "php"];
 
 function C_EditorPage() {
   const [clients, setClients] = useState([]);
@@ -104,7 +104,7 @@ function C_EditorPage() {
   const runCode = async () => {
     setIsCompiling(true);
     try {
-      const response = await axios.post("http://localhost:3000/api/execute", {
+      const response = await axios.post("http://localhost:5000/api/execute", {
         code: codeRef.current,
         language: selectedLanguage,
       });
@@ -169,7 +169,7 @@ function C_EditorPage() {
   const saveCode = async () => {
     const projectId = 1234;
     try {
-      const response = await axios.post("http://localhost:3000/api/save-code", {
+      const response = await axios.post("http://localhost:5000/api/save-code", {
         code: code,
         language: selectedLanguage,
         username: location.state?.username,

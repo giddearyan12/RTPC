@@ -9,7 +9,7 @@ const Profile = ({ student, onBack }) => {
   useEffect(() => {
     const fetchStudentDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/${student.name}`); 
+        const response = await axios.get(`http://localhost:5000/user/${student.name}`); 
         setStudentDetails(response.data);
         setLoading(false);
       } catch (error) {
