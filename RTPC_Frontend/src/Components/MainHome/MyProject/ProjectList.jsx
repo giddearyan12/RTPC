@@ -6,8 +6,8 @@ import axios from "axios";
 function ProjectList({ filterProjects }) {
   const url = "http://localhost:5000";
   const [projects, setProjects] = useState([]);
-  const [error, setError] = useState(null); // State for handling errors
-  const navigate = useNavigate(); // Initialize the navigate function
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
 
   const fetchData = async () => {
     try {
@@ -35,19 +35,18 @@ function ProjectList({ filterProjects }) {
     fetchData();
   }, []);
 
-  const handleOpenIDE = () => {
-    navigate("/ide"); // Navigate to the /ide page
+  const handleOpenIDE = (projectId) => {
+    navigate(`/ide/${projectId}`); 
   };
 
-  // Filter projects based on `filterProjects`
   const filteredProjects = projects.filter((project) => {
-    if (filterProjects === "All") return true; // Show all projects
-    return project.status === filterProjects; // Match the status
+    if (filterProjects === "All") return true; 
+    return project.status === filterProjects; 
   });
 
   return (
     <div className="project-list">
-      {error && <p className="error-message">{error}</p>} {/* Show error message if any */}
+      {error && <p className="error-message">{error}</p>} 
       {filteredProjects.length === 0 && !error && <p>No projects found.</p>}
       {filteredProjects.map((project, index) => (
         <div key={index} className="project-card">
@@ -57,7 +56,7 @@ function ProjectList({ filterProjects }) {
             {project.technology}
           </p>
          
-          <button className="open-ide-btn" onClick={handleOpenIDE}>
+          <button className="open-ide-btn" onClick={()=>handleOpenIDE(project._id)}>
             Open IDE
           </button>
 

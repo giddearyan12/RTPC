@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post("/save-code", saveCode);
 
-router.get("/get-code", getCodeByProjectId);
+router.post("/get-code", getCodeByProjectId);
 
 export default router;

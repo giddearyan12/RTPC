@@ -11,7 +11,7 @@ const useGetMessages = () => {
 			setLoading(true);
 			try {
 				const token = localStorage.getItem('token');
-				const res = await fetch(`http://localhost:3000/api/messages/${selectedConversation._id}`,{
+				const res = await fetch(`http://localhost:5000/api/messages/${selectedConversation._id}`,{
 					headers: {
 						'Authorization': `Bearer ${token}` 
 					}

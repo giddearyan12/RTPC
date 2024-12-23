@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import Code from "../models/saveCode.js";
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -138,7 +139,15 @@ const createProject = async (req, res) => {
       status:"Ongoing"
     });
 
+    const newCode = new Code({
+      code:"",
+      language:"",
+      username:"",
+      projectId:newProject._id,
+    })
+
     await newProject.save();
+    await newCode.save();
 
     user.projects.push(newProject._id);
     await user.save();

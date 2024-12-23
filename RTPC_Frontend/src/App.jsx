@@ -20,7 +20,7 @@ function App() {
           <Route path='/user/register' element={authUser ?<HomePage/>:<Registration/>}/>
           <Route path='/home' element={authUser ?<HomePage/>:<PreHome/>}/>
           <Route path='/profile' element={authUser ?<UserProfile/>:<PreHome/>}/>
-          <Route path='/ide' element={authUser ?<C_Home/>:<PreHome/>}/>
+          <Route path='/ide/:projectId' element={authUser ?<C_Home/>:<PreHome/>}/>
           <Route path="/editor/:roomId" element={<C_EditorPage />}></Route>
 
      

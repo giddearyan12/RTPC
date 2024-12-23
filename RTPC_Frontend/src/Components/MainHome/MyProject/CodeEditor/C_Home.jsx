@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import logo_white from '../../../../assets/logo_white.png'
 import './C_Style.css'
 import Header from '../../Header';
 
 const C_Home = () => {
     const navigate = useNavigate();
+    const projectId = useParams();
+    
 
     const [roomId, setRoomId] = useState('');
     const [username, setUsername] = useState('');
@@ -28,6 +30,7 @@ const C_Home = () => {
         navigate(`/editor/${roomId}`, {
             state: {
                 username,
+                projectId
             },
         });
     };

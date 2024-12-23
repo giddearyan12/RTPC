@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const codeSchema = new mongoose.Schema({
-  code: { type: String, required: true },
-  language: { type: String, required: true },
-  username: { type: String, required: true },
+  code: { type: String },
+  language: { type: String},
+  username: { type: String },
   // foldername: [{ type: String, required: true }],
-  projectId: { type: String, required: true },
+  projectId: { type: String, required: true, unique:true },
   timestamp: { type: Date, default: Date.now },
 });
 

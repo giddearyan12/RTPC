@@ -14,12 +14,15 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import CreateFolder from "./CreateFolder.jsx";
+import Code from "../../../../../../RTPC_Backend/models/saveCode.js";
 
 const LANGUAGES = ["python", "java", "cpp", "c", "javascript", "php"];
 
 function C_EditorPage() {
   const [clients, setClients] = useState([]);
+
   const [output, setOutput] = useState("");
+  const [fetchData, setFetchData] = useState("");
   const [isCompileWindowOpen, setIsCompileWindowOpen] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("python3");
@@ -33,6 +36,7 @@ function C_EditorPage() {
   const socketRef = useRef(null);
 
   useEffect(() => {
+    fetchCode();
     const init = async () => {
       socketRef.current = await initSocket();
       socketRef.current.on("connect_error", (err) => handleErrors(err));
@@ -84,6 +88,14 @@ function C_EditorPage() {
 
   if (!location.state) {
     return <Navigate to="/" />;
+  }
+
+  const fetchCode = async()=>{
+    const projectId = location.state?.projectId.projectId;
+    const response = await axios.post('http://localhost:5000/api/get-code',{
+      projectId
+    })
+    console.log(response.data);
   }
 
   const copyRoomId = async () => {
@@ -167,7 +179,7 @@ function C_EditorPage() {
 
   // Save code
   const saveCode = async () => {
-    const projectId = 1234;
+    const projectId = location.state?.projectId;
     try {
       const response = await axios.post("http://localhost:5000/api/save-code", {
         code: code,
