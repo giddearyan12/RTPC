@@ -20,7 +20,7 @@ const MessageContainer = () => {
 				<NoChatSelected />
 			) : (
 				<>
-					{/* Header */}
+					
 					<div className="custom-header">
 						<span className="label-text">To:</span>{" "}
 						<span className="custom-header-text">{selectedConversation.name}</span>
@@ -39,7 +39,7 @@ const NoChatSelected = () => {
 	return (
 		<div className="custom-no-chat-selected">
 			<div className="custom-no-chat-selected-text">
-				<p>Welcome 👋 {authUser.name} ❄</p>
+				<p>Welcome 👋 {authUser.name} </p>
 				<p>Select a chat to start messaging</p>
 				<TiMessages className="custom-message-icon" />
 			</div>

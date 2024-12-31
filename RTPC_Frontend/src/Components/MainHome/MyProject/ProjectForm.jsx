@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-function ProjectForm() {
+function ProjectForm({ addProject }) {
   const url = "http://localhost:5000";
   const [projectData, setProjectData] = useState({
     name: "",
@@ -10,47 +10,37 @@ function ProjectForm() {
     userId: ""
   });
 
-  const token = localStorage.getItem('token');
-
-  useEffect(() => {
-    if (token) {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      setProjectData((data) => ({
-        ...data, userId: decodedToken.id
-      }));
-    }
-  }, [token]);
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!projectData.name || !projectData.description || !projectData.technology) {
-      console.log('All fields required')
+      console.log("All fields required");
       return;
     }
 
-    let newUrl = url + "/user/createProject";
     try {
-      const response = await axios.post(newUrl, projectData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('Success')
+      const response = await axios.post(
+        `${url}/user/createProject`,
+        projectData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      setProjectData({ name: "", description: "", technology: "", userId: "" });
+      const createdProject = response.data.project; 
+      addProject(createdProject); 
+      setProjectData({ name: "", description: "", technology: "", userId: "" }); 
     } catch (error) {
       console.log("Error creating project:", error);
-
     }
-
-
   };
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setProjectData(data => ({ ...data, [name]: value }))
-  }
+    setProjectData((data) => ({ ...data, [name]: value }));
+  };
 
   return (
     <form onSubmit={handleSubmit} className="project-form">
@@ -68,7 +58,7 @@ function ProjectForm() {
         <label>Description</label>
         <input
           type="text"
-          name='description'
+          name="description"
           value={projectData.description}
           onChange={onChangeHandler}
           required
@@ -89,7 +79,6 @@ function ProjectForm() {
           <option value="C/C++">C/C++</option>
           <option value="Javascript">Javascript</option>
         </select>
-
       </div>
       <button type="submit">Add Project</button>
     </form>

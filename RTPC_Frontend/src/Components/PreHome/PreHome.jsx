@@ -18,7 +18,7 @@ const PreHome = () => {
     {
       title: "Real-time Chat",
       description:
-        "Communicate with your team instantly with integrated real-time chat, ensuring smooth and efficient exchanges during project development.",
+        "Communicate with  members instantly with integrated real-time chat, ensuring smooth and efficient exchanges during project development.",
     },
     {
       title: "Integrated IDE",

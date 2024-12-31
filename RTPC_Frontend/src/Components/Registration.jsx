@@ -64,8 +64,7 @@ const Registration = () => {
         toast.success("Login successfull");
         console.log("Success");
       } else {
-        console.log(response.data.message);
-        alert(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.log("An error occurred. Please try again.", error);

@@ -1,16 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectForm from "./ProjectForm";
 import ProjectList from "./ProjectList";
 import "./Project_Dashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTasks, faCheckCircle, faSpinner, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
-function Project_Dashboard() {
+function ProjectDashboard() {
   const [projects, setProjects] = useState([]);
   const [filterProjects, setFilterProjects] = useState("All");
 
-  const addProject = (project) => {
-    setProjects([...projects, project]);
+  const url = "http://localhost:5000";
+
+  
+  const fetchProjects = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("Authorization token is missing!");
+        return;
+      }
+
+      const response = await axios.get(`${url}/user/myProject`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data.projects)
+
+      setProjects(response.data.projects || []);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  // Add project to the state
+  const addProject = (newProject) => {
+    setProjects((prevProjects) => [...prevProjects, newProject]);
   };
 
   return (
@@ -48,4 +78,4 @@ function Project_Dashboard() {
   );
 }
 
-export default Project_Dashboard;
+export default ProjectDashboard;
