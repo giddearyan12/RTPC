@@ -1,0 +1,173 @@
+/* Container */
+.student-table-container {
+  width: 80%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Table styling */
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.student-table th,
+.student-table td {
+  /* border: 1px solid #ddd; */
+  padding: 12px;
+  text-align: center;
+}
+
+.student-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.student-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.student-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Avatar image */
+.avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+/* View Profile button */
+.view-profile-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Popup overlay */
+/* Overlay for the popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup box */
+.popup {
+  background-color: #fff;
+  width: 400px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: popupShow 0.3s ease-out;
+  text-align: center;
+}
+
+/* Title styling */
+.popup h2 {
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Profile info styling */
+.profile-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.profile-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Profile picture styling */
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 16px;
+  object-fit: cover;
+}
+
+/* Close button styling */
+.btns{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.close-btn {
+  background-color: grey;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  
+  font-weight: bold;
+}
+
+.close-btn:hover {
+  background-color: grey;
+}
+.confirm-btn {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cancel-btn {
+  background-color: gray;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.remove-btn {
+ 
+  background-color: #ff4d4f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  
+}
+
+
+/* Animation */
+@keyframes popupShow {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

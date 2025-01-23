@@ -1,6 +1,6 @@
 import express from 'express'
 const studentRouter = express.Router();
-import {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond} from '../controllers/studentController.js'
+import {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond, removeCollaborator} from '../controllers/studentController.js'
 
 studentRouter.get('/', studentsList);
 
@@ -11,6 +11,8 @@ studentRouter.put('/profile', updateUser);
 studentRouter.get('/team', teamData);
 studentRouter.get('/notifications', notificationFun);
 studentRouter.post('/notifications/:id/respond', notificationRespond);
+studentRouter.post('/remove-collaborator', removeCollaborator);
+
 
 
 export default studentRouter;

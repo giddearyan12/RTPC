@@ -3,20 +3,56 @@ import projectModel from "../models/projectModel.js";
 import mongoose from "mongoose";
 import notificationModel from "../models/notificationModel.js";
 
-const studentsList = async(req, res)=>{
- const students = await userModel.find();
- if(!students){
-    return res.json({success:false, message:"Error"});
- }
- else{
-    return res.json({success:true, students});
- }
-}
+const studentsList = async (req, res) => {
+  try {
+    
+    const students = await userModel.find();
+
+    if (!students || students.length === 0) {
+      return res.json({ success: false, message: "No students found." });
+    }
+
+    const updatedStudents = await Promise.all(
+      students.map(async (student) => {
+     
+        const projects = await projectModel.find({
+          _id: { $in: student.projects },
+        });
+
+       
+        const projectNames = projects.map((project) => project.name);
+
+        return {
+          ...student._doc, 
+          projects: projectNames,
+        };
+      })
+    );
+
+    return res.json({
+      success: true,
+      message: "Students retrieved successfully.",
+      students: updatedStudents,
+    });
+  } catch (error) {
+    console.error("Error fetching students:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching students.",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
 const requestCollaboration = async (req, res) => {
   try {
     const { projectId, userId } = req.body;
 
-    // Fetch project and creator details
+    
     const project = await projectModel.findById(projectId).populate("createdBy");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -29,7 +65,7 @@ const requestCollaboration = async (req, res) => {
 
     const recipientId = project.createdBy._id;
 
-    // Check if a notification already exists for the same recipient, sender, and project
+
     const existingNotification = await notificationModel.findOne({
       recipient: recipientId,
       sender: userId,
@@ -40,7 +76,7 @@ const requestCollaboration = async (req, res) => {
       return res.status(400).json({ message: "Collaboration request already sent." });
     }
 
-    // Create a new notification
+  
     const notification = new notificationModel({
       recipient: recipientId,
       sender: userId,
@@ -164,7 +200,7 @@ const teamData = async (req, res) => {
 const notificationFun = async(req,res)=>{
   try {
     
-    const userId = req.query.id; // Assume the user is authenticated via middleware
+    const userId = req.query.id; 
     
     const notifications = await notificationModel.find({ recipient: userId }).populate("sender", "name");
     res.status(200).json(notifications);
@@ -179,7 +215,7 @@ const notificationRespond = async(req, res)=>{
     const { id } = req.params;
    
     
-    const { action } = req.body; // Accept or Reject
+    const { action } = req.body; 
 
     const notification = await notificationModel.findById(id);
     if (!notification) {
@@ -187,7 +223,7 @@ const notificationRespond = async(req, res)=>{
     }
   
 
-    // Perform action (accept/reject)
+   
     if (action === "accept") {
       const project = await projectModel.findById(notification.projectId);
       const collaborator = await userModel.findById(notification.sender);
@@ -206,7 +242,7 @@ const notificationRespond = async(req, res)=>{
       return res.status(400).json({ message: "Invalid action" });
     }
 
-    // Remove the notification after handling
+   
     await notificationModel.findByIdAndDelete(id);
     res.status(200).json({ message: `Request ${action}ed successfully.` });
   } catch (error) {
@@ -215,6 +251,31 @@ const notificationRespond = async(req, res)=>{
   }
 }
 
+const removeCollaborator = async(req, res)=>{
+  try {
+    const { projectId, collaboratorId } = req.body.data;
+   
+
+    // Remove collaborator from project
+    await projectModel.updateOne(
+      { _id: projectId },
+      { $pull: { collaborators: collaboratorId } } // Remove by direct match
+    );
+
+    await userModel.updateOne(
+      { _id: collaboratorId },
+      { $pull: { projects: projectId  } }
+    );
+
+
+    res.status(200).json({ success: true, message: "Collaborator removed successfully." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error removing collaborator." });
+  }
+}
+
+
+
  
 
-export {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond};
+export {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond, removeCollaborator};

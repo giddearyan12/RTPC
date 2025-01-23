@@ -1,0 +1,97 @@
+.project-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff; /* Add a background color for better visibility */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better design */
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  transform: scale(1.05); /* Slight scaling effect on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.project-card h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.project-card p {
+  font-size: 14px;
+  margin: 4px 0;
+  color: #555;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  text-align: left;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin: 0 0 16px;
+  color: #333;
+}
+
+.modal-content p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.modal-details {
+  text-align: left;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.accept-btn {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.accept-btn:hover {
+  background: #45a049;
+}
+
+.reject-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reject-btn:hover {
+  background: #d32f2f;
+}

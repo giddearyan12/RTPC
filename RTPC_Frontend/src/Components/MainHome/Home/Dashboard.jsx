@@ -101,7 +101,7 @@ const Dashboard = () => {
             <h2>Total Projects</h2>
           </div>
           <div className="project-grid">
-            {projectData.length > 0 ? (
+            {
               projectData.map((project, index) => (
                 <div key={index} onClick={() => handleCardClick(project)}>
                   <ProjectCard
@@ -111,9 +111,7 @@ const Dashboard = () => {
                   />
                 </div>
               ))
-            ) : (
-              <p>No projects available</p>
-            )}
+             }
           </div>
         </div>
       </div>

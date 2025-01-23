@@ -290,25 +290,92 @@
   }
   
   .language-selector {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 15px; /* Adds space between elements */
+  }
+  
+  .language-selector div {
+    display: flex;
+    align-items: center;
   }
   
   .language-dropdown {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    width: 150px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
     cursor: pointer;
+    transition: all 0.3s ease;
+    width: 180px; /* Slightly wider for better usability */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .language-dropdown:hover {
+    background-color: #f0f8ff;
+    border-color: #3498db;
   }
   
   .language-dropdown:focus {
     outline: none;
     border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
   }
+  
+  .importbutton,
+  .exportbutton,
+  .savebutton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .importbutton {
+    background-color: #3498db;
+  }
+  
+  .importbutton:hover {
+    background-color: #2980b9;
+  }
+  
+  .exportbutton {
+    
+    background-color: #e74c3c;
+  }
+  
+  .exportbutton:hover {
+    background-color: #c0392b;
+  }
+  
+  .savebutton {
+    background-color: #2ecc71;
+  }
+  
+  .savebutton:hover {
+   
+    background-color: #27ae60;
+  }
+  
+  .material-icons {
+    font-size: 18px;
+  }
+  
+
+  
   
   /* Compiler Output Section */
   .compiler-output {
@@ -400,3 +467,14 @@
     }
   }
 
+  @media (max-width: 768px) {
+    .language-selector {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+  
+    .language-dropdown {
+      width: 100%;
+    }
+  }

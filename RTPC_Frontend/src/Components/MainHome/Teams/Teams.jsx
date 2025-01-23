@@ -4,9 +4,11 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import './Teams.css';
 
 const Teams = () => {
-  const [view, setView] = useState('created'); // State to manage which table to show
+  const [view, setView] = useState('created');
   const [myteamData, setMyTeamData] = useState([]);
   const [teamData, setTeamData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState(null); // Stores the member to be removed
   const token = localStorage.getItem('token');
 
   const fetchData = async () => {
@@ -22,6 +24,34 @@ const Teams = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleRemoveMember = (projectId, collaboratorId) => {
+    setMemberToRemove({ projectId, collaboratorId });
+    setShowPopup(true);
+  };
+
+  const confirmRemoveMember = async () => {
+    if (memberToRemove) {
+      try {
+        const response = await axios.post(`http://localhost:5000/students/remove-collaborator`, {
+          data: {
+            projectId: memberToRemove.projectId,
+            collaboratorId: memberToRemove.collaboratorId,
+          },
+        });  
+        fetchData();
+        setShowPopup(false);
+        setMemberToRemove(null);
+      } catch (error) {
+        console.log('Error removing member:', error);
+      }
+    }
+  };
+
+  const cancelRemoveMember = () => {
+    setShowPopup(false);
+    setMemberToRemove(null);
   };
 
   useEffect(() => {
@@ -57,7 +87,6 @@ const Teams = () => {
                   <thead>
                     <tr>
                       <th>Collaborator Name</th>
-                      <th>Collaboration Time</th>
                       <th>Remove Member</th>
                     </tr>
                   </thead>
@@ -65,8 +94,12 @@ const Teams = () => {
                     {project.collaborators.map((collaborator) => (
                       <tr key={collaborator._id}>
                         <td>{collaborator.name || 'None'}</td>
-                        <td>MM/YY</td>
-                        <td><IoMdRemoveCircleOutline className="remove-icon" /></td>
+                        <td>
+                          <IoMdRemoveCircleOutline 
+                            className="remove-icon" 
+                            onClick={() => handleRemoveMember(project._id, collaborator._id)} 
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -102,6 +135,19 @@ const Teams = () => {
               </div>
             ))
           )}
+        </div>
+      )}
+
+      {/* Popup for confirming removal */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>Are you sure you want to remove this member?</h3>
+            <div className="popup-actions">
+              <button className="popup-btn" onClick={confirmRemoveMember}>Yes</button>
+              <button className="popup-btn" onClick={cancelRemoveMember}>No</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

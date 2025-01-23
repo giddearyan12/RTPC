@@ -26,7 +26,7 @@ function ProjectDashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data.projects)
+     
 
       setProjects(response.data.projects || []);
     } catch (error) {
@@ -38,7 +38,7 @@ function ProjectDashboard() {
     fetchProjects();
   }, []);
 
-  // Add project to the state
+  
   const addProject = (newProject) => {
     setProjects((prevProjects) => [...prevProjects, newProject]);
   };
@@ -67,11 +67,11 @@ function ProjectDashboard() {
       <div className="App">
         <div className="project_list">
           <h2>Project List</h2>
-          <ProjectList projects={projects} filterProjects={filterProjects} />
+          <ProjectList projects={projects} filterProjects={filterProjects} setProjects={setProjects} />
         </div>
         <div className="project_form_section">
           <h1>Add New Project</h1>
-          <ProjectForm addProject={addProject} />
+          <ProjectForm />
         </div>
       </div>
     </div>

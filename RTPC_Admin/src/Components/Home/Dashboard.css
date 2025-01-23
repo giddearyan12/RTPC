@@ -1,0 +1,39 @@
+/* Toggle Buttons */
+.toggle-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  
+  .toggle-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #555;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #ddd;
+  }
+  
+  .toggle-btn.active {
+    background-color: #4C3575;
+    color: white;
+    font-weight: bold;
+    border-color: #4C3575;
+  }
+
+  .projects-list{
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; 
+    padding: 16px; 
+
+  }
+  

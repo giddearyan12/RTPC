@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function ProjectForm({ addProject }) {
+function ProjectForm() {
   const url = "http://localhost:5000";
   const [projectData, setProjectData] = useState({
     name: "",
@@ -29,7 +29,7 @@ function ProjectForm({ addProject }) {
       );
 
       const createdProject = response.data.project; 
-      addProject(createdProject); 
+      
       setProjectData({ name: "", description: "", technology: "", userId: "" }); 
     } catch (error) {
       console.log("Error creating project:", error);

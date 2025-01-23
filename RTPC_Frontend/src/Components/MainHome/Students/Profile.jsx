@@ -10,6 +10,7 @@ const Profile = ({ student, onBack }) => {
     const fetchStudentDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/user/${student.name}`); 
+        console.log(response.data)
         setStudentDetails(response.data);
         setLoading(false);
       } catch (error) {
@@ -33,29 +34,32 @@ const Profile = ({ student, onBack }) => {
     <div className="student-profile-section">
       <div className="student-profile-header">
         <button onClick={onBack} className="back-button">Back</button>
-        <h1 className="student-profile-name">{studentDetails.name}</h1>
+        <h1 className="student-profile-name">{studentDetails.student.name}</h1>
       </div>
       <div className="student-profile-info">
         <div className="student-profile-info-item">
-          <p><strong>Email:</strong> {studentDetails.email}</p>
+          <p><strong>Email:</strong> {studentDetails.student.email}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>Phone:</strong> {studentDetails.phone}</p>
+          <p><strong>Phone:</strong> {studentDetails.student.phone}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>Enrollment No:</strong> {studentDetails.en}</p>
+          <p><strong>Enrollment No:</strong> {studentDetails.student.en}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>Department:</strong> {studentDetails.department}</p>
+          <p><strong>Department:</strong> {studentDetails.student.department}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>Gender:</strong> {studentDetails.gender}</p>
+          <p><strong>Gender:</strong> {studentDetails.student.gender}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>College:</strong> {studentDetails.college}</p>
+          <p><strong>College:</strong> {studentDetails.student.college}</p>
         </div>
         <div className="student-profile-info-item">
-          <p><strong>Domain:</strong> {studentDetails.domain}</p>
+          <p><strong>Domain:</strong> {studentDetails.student.domain}</p>
+        </div>
+        <div className="student-profile-info-item">
+          <p><strong>Projects:</strong> {studentDetails.student.projects.join(", ")}</p>
         </div>
       </div>
     </div>

@@ -1,65 +1,101 @@
-import React, { useEffect, useRef } from 'react';
-import * as monaco from 'monaco-editor'; 
-import ACTIONS from './Actions';
-import './C_Style.css';
+import React, { useEffect, useRef } from "react";
+import * as monaco from "monaco-editor";
+import ACTIONS from "./Actions";
+import "./C_Style.css";
 
-const C_Editor = ({ socketRef, roomId, onCodeChange }) => {
-    const editorRef = useRef(null);
+const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
+  const editorRef = useRef(null); 
+  const editorContainerRef = useRef(null);
+  const currentCodeRef = useRef(initialCode || ""); 
 
-    useEffect(() => {
-        async function init() {
-            const container = document.getElementById('realtimeEditor');
-            editorRef.current = monaco.editor.create(container, {
-                value: '', 
-                language: 'javascript', 
-                theme: 'vs-dark', 
-                automaticLayout: true,
-                autoClosingBrackets:true, 
-                
-            });
+  
+  useEffect(() => {
+    const container = editorContainerRef.current;
+
+    
+    editorRef.current = monaco.editor.create(container, {
+      value: initialCode || "",
+      language: "javascript",
+      theme: "vs-dark",
+      automaticLayout: true,
+      autoClosingBrackets: true,
+    });
+
+    editorRef.current.onDidChangeModelContent(() => {
+      const code = editorRef.current.getValue();
+
+      
+      if (code !== currentCodeRef.current) {
+        currentCodeRef.current = code; 
+        onCodeChange(code);
 
        
-            editorRef.current.onDidChangeModelContent(() => {
-                const code = editorRef.current.getValue();
-                onCodeChange(code);
-                socketRef.current.emit(ACTIONS.CODE_CHANGE, {
-                    roomId,
-                    code,
-                });
-            });
+        socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+          roomId,
+          code,
+        });
+      }
+    });
+
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.dispose();
+      }
+    };
+  }, []); // Empty dependency ensures this runs only once
+
+  // Handle incoming code changes via WebSocket
+  useEffect(() => {
+    const socket = socketRef.current;
+
+    if (socket) {
+      socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+        if (code !== null && editorRef.current) {
+          const currentCode = editorRef.current.getValue();
+
+          // Only apply changes if they are different
+          if (currentCode !== code) {
+            const currentPosition = editorRef.current.getPosition(); // Save the cursor position
+
+            currentCodeRef.current = code; // Update the current code reference
+            editorRef.current.executeEdits("", [
+              {
+                range: editorRef.current.getModel().getFullModelRange(),
+                text: code,
+              },
+            ]);
+
+            editorRef.current.setPosition(currentPosition); // Restore the cursor position
+          }
         }
+      });
+    }
 
-        init();
+    return () => {
+      if (socket) {
+        socket.off(ACTIONS.CODE_CHANGE);
+      }
+    };
+  }, [socketRef, roomId]);
 
-        return () => {
-            if (editorRef.current) {
-                editorRef.current.dispose();
-            }
-        };
-    }, []);
+  
+  useEffect(() => {
+    if (editorRef.current && initialCode !== currentCodeRef.current) {
+      const currentPosition = editorRef.current.getPosition(); 
 
-    useEffect(() => {
-        const socket = socketRef.current;
+      editorRef.current.executeEdits("", [
+        {
+          range: editorRef.current.getModel().getFullModelRange(),
+          text: initialCode || "",
+        },
+      ]);
 
-        if (socket) {
-            socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
-                if (code !== null && editorRef.current) {
-                    const currentCode = editorRef.current.getValue();
-                    if (currentCode !== code) {
-                        editorRef.current.setValue(code);
-                    }
-                }
-            });
-        }
+      currentCodeRef.current = initialCode || ""; 
+      editorRef.current.setPosition(currentPosition); 
+    }
+  }, [initialCode]);
 
-        return () => {
-            if (socket) {
-                socket.off(ACTIONS.CODE_CHANGE);
-            }
-        };
-    }, [socketRef, roomId]);
-
-    return <div id="realtimeEditor" style={{ height: '100vh', width: '100%' }}></div>;
+  return <div ref={editorContainerRef} style={{ height: "100vh", width: "100%" }} />;
 };
 
 export default C_Editor;

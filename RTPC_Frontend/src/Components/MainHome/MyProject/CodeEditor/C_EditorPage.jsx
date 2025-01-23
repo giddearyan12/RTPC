@@ -13,8 +13,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import CreateFolder from "./CreateFolder.jsx";
-import Code from "../../../../../../RTPC_Backend/models/saveCode.js";
+
 
 const LANGUAGES = ["python", "java", "cpp", "c", "javascript", "php"];
 
@@ -26,8 +25,8 @@ function C_EditorPage() {
   const [isCompileWindowOpen, setIsCompileWindowOpen] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("python3");
-  const [code, setCode] = useState(""); // Added state for code input
-  const codeRef = useRef(""); // Initialize codeRef
+  const [code, setCode] = useState(""); 
+  const codeRef = useRef(""); 
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,6 +36,7 @@ function C_EditorPage() {
 
   useEffect(() => {
     fetchCode();
+    console.log("Code ...",code)
     const init = async () => {
       socketRef.current = await initSocket();
       socketRef.current.on("connect_error", (err) => handleErrors(err));
@@ -95,7 +95,9 @@ function C_EditorPage() {
     const response = await axios.post('http://localhost:5000/api/get-code',{
       projectId
     })
-    console.log(response.data);
+    console.log('Fetched Code = ',response.data);
+    setCode(response.data.code)
+    codeRef.current = response.data.code;
   }
 
   const copyRoomId = async () => {
@@ -206,9 +208,7 @@ function C_EditorPage() {
           {clients.map((client) => (
             <C_Client key={client.socketId} username={client.username} />
           ))}
-          <div className="folderbtn">
-            <CreateFolder />
-          </div>
+         
         </div>
 
         <hr />
@@ -226,7 +226,7 @@ function C_EditorPage() {
         <div className="editor-area">
           <div className="language-selector">
             <div>
-              <label htmlFor="import-code" className="importBtn">
+              <label htmlFor="import-code" className="importbutton">
                 <span className="material-icons">cloud_download</span>
                 <span>Import Code</span>
               </label>
@@ -240,13 +240,13 @@ function C_EditorPage() {
               />
             </div>
             <div>
-              <button className="exportBtns" onClick={exportCode}>
+              <button className="exportbutton" onClick={exportCode}>
                 <span className="material-icons">cloud_upload</span>
                 <span>Export Code</span>
               </button>
             </div>
             <div>
-              <button className="savebtn" onClick={saveCode}>
+              <button className="savebutton" onClick={saveCode}>
                 Save
               </button>
             </div>
@@ -271,6 +271,7 @@ function C_EditorPage() {
               setCode(code);
               codeRef.current = code;
             }}
+            initialCode={code}
           />
         </div>
 

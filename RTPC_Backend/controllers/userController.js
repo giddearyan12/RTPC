@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
-import Code from "../models/saveCode.js";
+
+import verifyModel from "../models/verifyModel.js";
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -50,6 +51,21 @@ const registerUser = async (req, res) => {
   } = req.body;
 
   try {
+
+    const phoneExists = await userModel.findOne({ phone });
+    if (phoneExists) {
+      return res.json({ success: false, message: "Phone number already exists" });
+    }
+
+    const enExists = await userModel.findOne({ en });
+    if (enExists) {
+      return res.json({ success: false, message: "Enrollment number already exists" });
+    }
+    const emailExists = await userModel.findOne({ email });
+    if (emailExists) {
+      return res.json({ success: false, message: "Email already exists" });
+    }
+
     if (!password || !conpass) {
       return res.json({
         success: false,
@@ -73,7 +89,7 @@ const registerUser = async (req, res) => {
     if (password !== conpass) {
       return res.json({
         success: false,
-        message: "Confirm password incorrect",
+        message: "Confirm password doesn't match Password",
       });
     }
 
@@ -131,30 +147,23 @@ const createProject = async (req, res) => {
       return res.json({ success: false, message: "User not found" });
     }
 
-    const newProject = new projectModel({
+    const newProject = new verifyModel({
       name,
       description,
       technology,
       createdBy: userId,
-      status:"Ongoing"
     });
 
-    const newCode = new Code({
-      code:"",
-      language:"",
-      username:"",
-      projectId:newProject._id,
-    })
+  
 
     await newProject.save();
-    await newCode.save();
+   
 
-    user.projects.push(newProject._id);
-    await user.save();
+   
 
     return res.json({
       success: true,
-      message: "Project created successfully",
+      message: "Wait for Verification...",
       project: newProject,
     });
   } catch (error) {
@@ -261,7 +270,7 @@ const ListProjects = async (req, res) => {
       technology: user.domain,
       createdBy: { $ne: id },
       _id: { $nin: user.projects },
-    });
+    }).populate('createdBy', 'name').populate('collaborators','name');
 
     if (!userProjects.length) {
       return res
@@ -282,19 +291,71 @@ const ListProjects = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const { name } = req.params;
-  try {
-    const student = await userModel.findOne({ name });
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-    const projects = await projectModel.find({ _id: student._id });
-    res.json(student);
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
-  }
-};
 
+    const { name } = req.params; 
+    try {
+  
+      const student = await userModel.findOne({name});
+  
+      if (!student) {
+        return res.status(404).json({ success: false, message: "Student not found." });
+      }
+  
+    
+      const projects = await projectModel.find({
+        _id: { $in: student.projects },
+      });
+  
+   
+      const projectNames = projects.map((project) => project.name);
+  
+     
+      const updatedStudent = {
+        ...student._doc, 
+        projects: projectNames, 
+      };
+  
+     
+      return res.json({
+        success: true,
+        message: "Student retrieved successfully.",
+        student: updatedStudent,
+      });
+    } catch (error) {
+      console.error("Error fetching student:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching the student.",
+        error: error.message,
+      });
+    }
+  };
+
+  const updateProject = async(req,res)=>{
+    const {data} = req.body;
+    try {
+      const project = await projectModel.findById(data._id);
+      if(!project){
+        return res.status(404).json({ success: false, message: "Project not found." });
+      }
+      project.name = data.name || project.name;
+      project.technology = data.technology || project.technology;
+      project.description = data.description || project.description;
+      project.status = data.status || project.status;
+
+      await project.save();
+      res.json({ success: true, message: "Profile updated successfully." });
+    } catch (error) {
+      console.error("Error updating project:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the project.",
+        error: error.message,
+      });
+    }
+  
+  }
+  
 
 
 export {
@@ -305,4 +366,5 @@ export {
   getName,
   ListProjects,
   getUser,
+  updateProject,
 };

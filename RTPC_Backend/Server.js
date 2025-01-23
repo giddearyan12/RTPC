@@ -12,15 +12,15 @@ import ACTIONS from "./Actions.js";
 import "dotenv/config";
 import codeRoutes from "./routes/codeSaveRoute.js";
 import dockerode from "dockerode";
+import adminRouter from "./routes/adminRoute.js";
 
-// MongoDB Connection
 mongoose
   .connect("mongodb://127.0.0.1:27017/ProyectaMinds")
   .then(() => console.log("MONGO DB CONNECTED"));
 
-// Initialize Express App
+
 const app = express();
-const server = http.createServer(app); // Wrap the app in an HTTP server
+const server = http.createServer(app); 
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -30,26 +30,27 @@ const io = new Server(server, {
 
 const port = 5000;
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-// Routes
+
 app.use("/user", userRouter);
 app.use("/students", studentRouter);
 app.use("/api/messages", messageRoutes);
 app.use("/api/members", membersRoutes);
 app.use("/api", codeRoutes);
-// Root Route
+app.use("/admin", adminRouter);
+
 app.get("/", (req, res) => {
   res.end("API Working");
 });
 
-// Docker client initialization
+
 const docker = new dockerode();
 
-// Language Configuration for Code Compilation
+
 const languageConfig = {
   python: { versionIndex: "1" },
   java: { versionIndex: "3" },
@@ -59,7 +60,7 @@ const languageConfig = {
   javascript: { versionIndex: "1" },
 };
 
-// Code Compilation Route
+
 app.post("/api/execute", async (req, res) => {
   const { code, language } = req.body;
   console.log(language)
@@ -207,7 +208,7 @@ function cleanDockerOutput(output) {
   return output.replace(/[\x00-\x1F\x7F]/g, "").trim();
 }
 
-// Socket.io Logic
+
 const userSocketMap = {};
 const getAllConnectedClients = (roomId) => {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -225,7 +226,7 @@ export const getReceiverSocketId = (receiverId) => {
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  // Chat system
+
   const userId = socket.handshake.query.userId;
   if (userId !== "undefined") userSocketMap[userId] = socket.id;
 
@@ -237,7 +238,7 @@ io.on("connection", (socket) => {
       io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 
-  // Code editor
+
   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
       userSocketMap[socket.id] = username;
       socket.join(roomId);
@@ -275,7 +276,7 @@ io.on("connection", (socket) => {
 });
 
 export { app, io, server };
-// Start Server
+
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
