@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import profile from '../assets/profile.jpg';
 import mytask from '../assets/mytask.png';
 import home from '../assets/home.png';
 import member from '../assets/member.png';
-import project from '../assets/project.png';
-import { FaSearch } from 'react-icons/fa';
-import group from '../assets/group.png';
-import setting from '../assets/setting.png';
-import logo from '../assets/logo.png';
-
 import './HomePage.css';
 import Dashboard from '../Components/Home/Dashboard.jsx';
 import Header from './Header';
-
 import Students from './Students/Students.jsx'; 
 
 const HomePage = () => {

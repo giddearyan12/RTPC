@@ -5,38 +5,41 @@ import { initSocket } from "./Socket.js";
 import logo_white from "../../../../assets/logo_white.png";
 import ACTIONS from "./Actions.js";
 import "./C_Style.css";
-import {
-  useNavigate,
-  useLocation,
-  Navigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useLocation, Navigate, useParams } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 
 
 const LANGUAGES = ["python", "java", "cpp", "c", "javascript", "php"];
 
 function C_EditorPage() {
   const [clients, setClients] = useState([]);
-
   const [output, setOutput] = useState("");
-  const [fetchData, setFetchData] = useState("");
+  const [tempCode, settempCode] = useState("");
   const [isCompileWindowOpen, setIsCompileWindowOpen] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("python3");
-  const [code, setCode] = useState(""); 
-  const codeRef = useRef(""); 
-
+  const [code, setCode] = useState("");
+  const codeRef = useRef("");
   const location = useLocation();
+  const [userInput, setUserInput] = useState(""); 
   const navigate = useNavigate();
   const { roomId } = useParams();
+  const { project } = location.state || {};
+  const token = localStorage.getItem("token");
+  const userId = jwt_decode(token).userId;
+  const [logs, setLogs] = useState([]);
+
+
 
   const socketRef = useRef(null);
 
   useEffect(() => {
     fetchCode();
-    console.log("Code ...",code)
+    getLogs();
+
     const init = async () => {
       socketRef.current = await initSocket();
       socketRef.current.on("connect_error", (err) => handleErrors(err));
@@ -90,12 +93,25 @@ function C_EditorPage() {
     return <Navigate to="/" />;
   }
 
-  const fetchCode = async()=>{
+  const handleLogClick = (log) => {
+    console.log("Selected Log:", log);
+  };
+
+  const getLogs = async () => {
     const projectId = location.state?.projectId.projectId;
-    const response = await axios.post('http://localhost:5000/api/get-code',{
+    const response = await axios.post('http://localhost:5000/api/logs-code', {
       projectId
     })
-    console.log('Fetched Code = ',response.data);
+
+    setLogs(response.data)
+    setLogs((prevLogs) => [...prevLogs].reverse());
+  }
+  const fetchCode = async () => {
+    const projectId = location.state?.projectId.projectId;
+    const response = await axios.post('http://localhost:5000/api/get-code', {
+      projectId
+    })
+    settempCode(response.data.code)
     setCode(response.data.code)
     codeRef.current = response.data.code;
   }
@@ -121,6 +137,7 @@ function C_EditorPage() {
       const response = await axios.post("http://localhost:5000/api/execute", {
         code: codeRef.current,
         language: selectedLanguage,
+        input:userInput,
       });
 
       console.log("Backend response:", response.data);
@@ -189,7 +206,24 @@ function C_EditorPage() {
         username: location.state?.username,
         projectId: projectId,
       });
+      settempCode(code);
       toast.success(response.data.message || "Code saved successfully");
+    } catch (error) {
+      console.error("Error saving code:", error);
+      toast.error(
+        error.response?.data?.error || "An error occurred while saving the code"
+      );
+    }
+  };
+  const submitCode = async () => {
+    const projectId = location.state?.projectId;
+    try {
+      const response = await axios.post("http://localhost:5000/api/submit-code", {
+        code: code,
+        username: location.state?.username,
+        projectId: projectId,
+      });
+      toast.success(response.data.message || "Code submitted successfully");
     } catch (error) {
       console.error("Error saving code:", error);
       toast.error(
@@ -203,15 +237,15 @@ function C_EditorPage() {
       <div className="sidebar">
         <img src={logo_white} alt="Logo" className="logo" />
         <hr />
+
         <div className="clients-list">
           <span className="members-title">Members</span>
           {clients.map((client) => (
             <C_Client key={client.socketId} username={client.username} />
           ))}
-         
         </div>
 
-        <hr />
+
         <div className="room-actions">
           <button className="copy-btn" onClick={copyRoomId}>
             Copy Room ID
@@ -246,10 +280,22 @@ function C_EditorPage() {
               </button>
             </div>
             <div>
-              <button className="savebutton" onClick={saveCode}>
-                Save
+              <button className="savebutton" onClick={() => project.createdBy === userId ? saveCode() : submitCode()}>
+                <span className="material-icons">save</span>
+                {project.createdBy === userId ? "Save" : "Submit"}
               </button>
             </div>
+            {project.createdBy === userId ? <select className="language-dropdown" onChange={(e) => setCode(e.target.value)}>
+              <option disabled value="">
+                Select a log
+              </option>
+              <option value={tempCode}>Updates</option>
+              {logs.map((log) => (
+                <option key={log} value={log.code}>
+                  {log.username}
+                </option>
+              ))}
+            </select> : ''}
 
             <select
               className="language-dropdown"
@@ -262,6 +308,7 @@ function C_EditorPage() {
                 </option>
               ))}
             </select>
+
           </div>
 
           <C_Editor
@@ -278,10 +325,25 @@ function C_EditorPage() {
         <button className="compile-btn" onClick={toggleCompileWindow}>
           {isCompileWindowOpen ? "Close Compiler" : "Open Compiler"}
         </button>
+{/* 
+        <div className={`compiler-input ${isCompileWindowOpen ? "open" : ""}`}>
+          <div className="input-header">
+            <h5>Compiler Input</h5>
+       
+          </div>
+          
+            <textarea
+              className="input-content"
+              placeholder="Enter input here..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+          
+        </div> */}
 
         <div className={`compiler-output ${isCompileWindowOpen ? "open" : ""}`}>
           <div className="output-header">
-            <h5>Compiler Output ({selectedLanguage})</h5>
+            <h5>Compiler Output</h5>
             <div className="action-buttons">
               <button
                 className="run-btn"
@@ -300,6 +362,9 @@ function C_EditorPage() {
           </pre>
         </div>
       </div>
+
+
+
     </div>
   );
 }

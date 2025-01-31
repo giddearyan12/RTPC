@@ -4,8 +4,7 @@ const codeSchema = new mongoose.Schema({
   code: { type: String },
   language: { type: String},
   username: { type: String },
-  // foldername: [{ type: String, required: true }],
-  projectId: { type: String, required: true, unique:true },
+  projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   timestamp: { type: Date, default: Date.now },
 });
 

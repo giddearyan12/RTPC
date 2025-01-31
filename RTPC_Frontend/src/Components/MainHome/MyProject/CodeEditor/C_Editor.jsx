@@ -8,11 +8,10 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
   const editorContainerRef = useRef(null);
   const currentCodeRef = useRef(initialCode || ""); 
 
-  
+
   useEffect(() => {
     const container = editorContainerRef.current;
 
-    
     editorRef.current = monaco.editor.create(container, {
       value: initialCode || "",
       language: "javascript",
@@ -21,10 +20,10 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
       autoClosingBrackets: true,
     });
 
+   
     editorRef.current.onDidChangeModelContent(() => {
       const code = editorRef.current.getValue();
 
-      
       if (code !== currentCodeRef.current) {
         currentCodeRef.current = code; 
         onCodeChange(code);
@@ -42,22 +41,22 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
         editorRef.current.dispose();
       }
     };
-  }, []); // Empty dependency ensures this runs only once
+  }, []); 
 
-  // Handle incoming code changes via WebSocket
+  
   useEffect(() => {
     const socket = socketRef.current;
 
     if (socket) {
-      socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
-        if (code !== null && editorRef.current) {
+      socket.on(ACTIONS.CODE_CHANGE, ({ code, roomId: updatedRoomId }) => {
+        
+        if (updatedRoomId === roomId && code !== null && editorRef.current) {
           const currentCode = editorRef.current.getValue();
 
-          // Only apply changes if they are different
           if (currentCode !== code) {
-            const currentPosition = editorRef.current.getPosition(); // Save the cursor position
+            const currentPosition = editorRef.current.getPosition();
 
-            currentCodeRef.current = code; // Update the current code reference
+            currentCodeRef.current = code; 
             editorRef.current.executeEdits("", [
               {
                 range: editorRef.current.getModel().getFullModelRange(),
@@ -65,7 +64,7 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
               },
             ]);
 
-            editorRef.current.setPosition(currentPosition); // Restore the cursor position
+            editorRef.current.setPosition(currentPosition); 
           }
         }
       });
@@ -78,10 +77,10 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
     };
   }, [socketRef, roomId]);
 
-  
+
   useEffect(() => {
     if (editorRef.current && initialCode !== currentCodeRef.current) {
-      const currentPosition = editorRef.current.getPosition(); 
+      const currentPosition = editorRef.current.getPosition();
 
       editorRef.current.executeEdits("", [
         {
@@ -91,7 +90,7 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
       ]);
 
       currentCodeRef.current = initialCode || ""; 
-      editorRef.current.setPosition(currentPosition); 
+      editorRef.current.setPosition(currentPosition);
     }
   }, [initialCode]);
 

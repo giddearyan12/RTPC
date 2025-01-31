@@ -1,16 +1,17 @@
+/* Project Card */
 .project-card {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 10px;
-  background: #fff; /* Add a background color for better visibility */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better design */
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
 }
 
 .project-card:hover {
-  transform: scale(1.05); /* Slight scaling effect on hover */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .project-card h2 {
@@ -94,4 +95,93 @@
 
 .reject-btn:hover {
   background: #d32f2f;
+}
+
+/* Responsive Design */
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .project-card {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .project-card h2 {
+    font-size: 16px;
+  }
+
+  .project-card p {
+    font-size: 12px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-content p {
+    font-size: 14px;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .project-card {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .project-card h2 {
+    font-size: 17px;
+  }
+
+  .modal-content {
+    width: 80%;
+    padding: 20px;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .project-card {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .project-card h2 {
+    font-size: 18px;
+  }
+
+  .modal-content {
+    width: 70%;
+    padding: 22px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .project-card {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .modal-content {
+    width: 50%;
+    padding: 24px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .project-card {
+    padding: 16px;
+  }
+
+  .modal-content {
+    width: 40%;
+  }
 }

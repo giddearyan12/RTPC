@@ -1,11 +1,11 @@
-/* Container */
+
 .student-table-container {
   width: 80%;
   margin: 20px auto;
   font-family: Arial, sans-serif;
 }
 
-/* Table styling */
+
 .student-table {
   width: 100%;
   border-collapse: collapse;
@@ -14,7 +14,6 @@
 
 .student-table th,
 .student-table td {
-  /* border: 1px solid #ddd; */
   padding: 12px;
   text-align: center;
 }
@@ -32,14 +31,14 @@
   background-color: #f1f1f1;
 }
 
-/* Avatar image */
+
 .avatar {
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
 
-/* View Profile button */
+
 .view-profile-btn {
   background-color: #007bff;
   color: white;
@@ -54,8 +53,6 @@
   background-color: #0056b3;
 }
 
-/* Popup overlay */
-/* Overlay for the popup */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -69,7 +66,7 @@
   z-index: 1000;
 }
 
-/* Popup box */
+
 .popup {
   background-color: #fff;
   width: 400px;
@@ -80,14 +77,14 @@
   text-align: center;
 }
 
-/* Title styling */
+
 .popup h2 {
   margin-bottom: 16px;
   font-size: 24px;
   color: #333;
 }
 
-/* Profile info styling */
+
 .profile-info {
   text-align: left;
   margin-bottom: 20px;
@@ -99,7 +96,6 @@
   color: #555;
 }
 
-/* Profile picture styling */
 .profile-pic {
   width: 100px;
   height: 100px;
@@ -108,12 +104,13 @@
   object-fit: cover;
 }
 
-/* Close button styling */
-.btns{
+
+.btns {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .close-btn {
   background-color: grey;
   color: #fff;
@@ -122,13 +119,13 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  
   font-weight: bold;
 }
 
 .close-btn:hover {
-  background-color: grey;
+  background-color: darkgray;
 }
+
 .confirm-btn {
   background-color: red;
   color: white;
@@ -149,18 +146,14 @@
 }
 
 .remove-btn {
- 
   background-color: #ff4d4f;
   color: white;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  
 }
 
-
-/* Animation */
 @keyframes popupShow {
   from {
     transform: scale(0.9);
@@ -169,5 +162,74 @@
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+
+@media (max-width: 575.98px) {
+  .student-table-container {
+    width: 95%;
+  }
+
+  .popup {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .popup h2 {
+    font-size: 20px;
+  }
+
+  .profile-info p {
+    font-size: 14px;
+  }
+
+  .btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .student-table-container {
+    width: 90%;
+  }
+
+  .popup {
+    width: 80%;
+  }
+
+  .popup h2 {
+    font-size: 22px;
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .student-table-container {
+    width: 85%;
+  }
+
+  .popup {
+    width: 70%;
+  }
+}
+
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .student-table-container {
+    width: 80%;
+  }
+
+  .popup {
+    width: 60%;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .popup {
+    width: 50%;
   }
 }

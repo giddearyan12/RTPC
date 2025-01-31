@@ -2,6 +2,7 @@ import projectModel from "../models/projectModel.js";
 import Code from '../models/saveCode.js'
 import verifyModel from "../models/verifyModel.js";
 import userModel from "../models/userModel.js";
+import verifyCode from "../models/verifyCodeModel.js";
 
 export const verifyProject = async (req, res) => {
     const { name} = req.body;
@@ -28,6 +29,21 @@ export const verifyProject = async (req, res) => {
         username:"",
         projectId:newProject._id,
       })
+      const newVerifyCode = new verifyCode({
+        
+        projectId: newProject._id, 
+        codeHistory: [
+          {
+            username: "", 
+            code: "",  
+          },
+        ],
+      });
+      
+      // Save the new document to the database
+      await newVerifyCode.save();
+       
+      
   
       await newProject.save();
       await newCode.save();

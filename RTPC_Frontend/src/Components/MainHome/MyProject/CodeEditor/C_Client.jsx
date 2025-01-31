@@ -7,7 +7,7 @@ function C_Client({ username }) {
     <div className="client-container">
       <Avatar
         name={username.toString()}
-        size={50}
+        size={30}
         round="14px"
         className="client-avatar"
         alt={`Avatar for ${username}`}

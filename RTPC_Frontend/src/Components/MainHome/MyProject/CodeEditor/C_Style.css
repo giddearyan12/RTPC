@@ -1,480 +1,481 @@
 /* General Styling */
 .home-wrap {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    min-height: 100vh;
-    color: #ffffff;
-}
-
-.importBtn{
-  display: flex;
-  margin-right: 7vh;
-  gap: 5px;
-  padding: 5px;
-  height: 4.5vh;
-
-}
-
-.exportBtns{
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  background: none;
-  height: 4.5vh;
-  gap: 5px;
-  margin-right: 7vh;
-  border-style: none;
-  border-radius: 8px;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  color: #ffffff;
 }
 
 
-.savebtn{
-  height: 4.5vh;
-  width: 10vh;
-  margin-right: 8vh;
-  border-style: none;
-  border-radius: 8px;
-  background-color: green;
-}
-
-.savebtn:hover{
-  opacity: 70%;
-}
-
-
-.folderbtn{
-  display: flex ;
-  gap: 12px;
-}
-
-.createBtn{
-  cursor: pointer;
-}
-/* Home Page Wrapper */
 .homePageWrapper {
-    width: 100%;
-    max-width: 500px;
-    margin: 2rem auto;
-    background: #4C3575;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    text-align: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 2rem auto;
+  background: #4C3575;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 .formWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .homePageLogo {
-    width: 100px;
-    margin-bottom: 1rem;
+  width: 100px;
+  margin-bottom: 1rem;
 }
 
 .mainLabel {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: #e6e6e6;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #e6e6e6;
 }
 
 /* Input Fields */
 .inputGroup {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .inputBox {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #34495e;
-    border-radius: 5px;
-    font-size: 1rem;
-    background: #ffffff;
-    color: #000;
-    outline: none;
-    transition: border-color 0.2s ease;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #34495e;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #ffffff;
+  color: #000;
+  outline: none;
+  transition: border-color 0.2s ease;
 }
 
 .inputBox:focus {
-    border-color: #4C3575;
-    box-shadow: 0 0 8px rgba(76, 53, 117, 0.5);
+  border-color: #4C3575;
+  box-shadow: 0 0 8px rgba(76, 53, 117, 0.5);
 }
 
 .inputBox::placeholder {
-    color: #95a5a6;
+  color: #95a5a6;
 }
 
 /* Buttons */
 .btn {
-    background-color: #ffffff;
-    border: none;
-    padding: 0.8rem 1rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #000000;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #ffffff;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000000;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(26, 188, 156, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(26, 188, 156, 0.3);
 }
 
 .createInfo {
-    font-size: 0.9rem;
-    color: #bdc3c7;
+  font-size: 0.9rem;
+  color: #bdc3c7;
 }
 
 .createNewBtn {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
 }
 
 .createNewBtn:hover {
-    color: black;
-    text-decoration: underline;
+  color: black;
+  text-decoration: underline;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .homePageWrapper {
-        padding: 1.5rem;
-    }
+  .homePageWrapper {
+      padding: 1.5rem;
+  }
 
-    .mainLabel {
-        font-size: 1.2rem;
-    }
+  .mainLabel {
+      font-size: 1.2rem;
+  }
 
-    .btn {
-        font-size: 0.9rem;
-        padding: 0.7rem;
-    }
+  .btn {
+      font-size: 0.9rem;
+      padding: 0.7rem;
+  }
 }
 
 #realtimeEditor {
-    width: 100%;
-    height: 80%;  /* You can adjust this based on the available space */
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    background-color: #2d2d2d;
-    color: #fff;
-    padding: 10px;
+  width: 100%;
+  height: 80%;  /* You can adjust this based on the available space */
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  background-color: #2d2d2d;
+  color: #fff;
+  padding: 10px;
+}
+
+
+/* Main Container */
+.editor-container {
+  display: flex;
+  height: 100vh;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background-color: #4C3575;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-right: 2px solid #4C3575;
+}
+
+.sidebar img.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.sidebar .clients-list {
+  flex-grow: 1;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.sidebar .members-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.sidebar .client-container{
+  margin: 10px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.sidebar .room-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sidebar .copy-btn,
+.sidebar .leave-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar .copy-btn:hover{
+  background-color: rgb(14, 228, 125);
+}
+.sidebar .leave-btn:hover {
+  background-color: red;
+}
+
+/* Editor Playground Container */
+/* Positioning the Compile Button at the Top Right */
+.compile-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* Smaller padding for a small button */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px; /* Smaller font size */
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+/* Adjust distance from the right edge */
+  z-index: 10; /* Ensure it stays on top of other elements */
+}
+
+.compile-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Editor Playground Container */
+.editor-playground {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f4f4f9;
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  position: relative; /* Make sure the button is positioned relative to this container */
+}
+
+/* Editor Area and Language Selector */
+.editor-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 10vh;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width:100%  ;
+  height: 90vh;
+}
+
+.language-selector {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px; /* Adds space between elements */
+}
+
+.language-selector div {
+  display: flex;
+  align-items: center;
+}
+
+.language-dropdown {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 150px; /* Slightly wider for better usability */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.language-dropdown:hover {
+  background-color: #f0f8ff;
+  border-color: #3498db;
+}
+
+.language-dropdown:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.importbutton,
+.exportbutton,
+.savebutton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.importbutton {
+  background-color: #3498db;
+}
+
+.importbutton:hover {
+  background-color: #2980b9;
+}
+
+.exportbutton {
+  
+  background-color: #e74c3c;
+}
+
+.exportbutton:hover {
+  background-color: #c0392b;
+}
+
+.savebutton {
+  background-color: #2ecc71;
+}
+
+.savebutton:hover {
+ 
+  background-color: #27ae60;
+}
+
+.material-icons {
+  font-size: 18px;
 }
 
 
 
-  
-  /* Main Container */
-  .editor-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    width: 280px;
-    background-color: #4C3575;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    border-right: 2px solid #4C3575;
-  }
-  
-  .sidebar img.logo {
-    width: 120px;
-    margin-bottom: 20px;
-  }
-  
-  .sidebar .clients-list {
-    flex-grow: 1;
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .sidebar .members-title {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  .sidebar .client-container{
-    margin: 10px;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
-  
-  .sidebar .room-actions {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .sidebar .copy-btn,
-  .sidebar .leave-btn {
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .sidebar .copy-btn:hover{
-    background-color: rgb(14, 228, 125);
-  }
-  .sidebar .leave-btn:hover {
-    background-color: red;
-  }
-  
-/* Editor Playground Container */
-/* Positioning the Compile Button at the Top Right */
-.compile-btn {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 8px 16px; /* Smaller padding for a small button */
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px; /* Smaller font size */
-    font-weight: bold;
-    transition: background-color 0.3s ease;
- /* Adjust distance from the right edge */
-    z-index: 10; /* Ensure it stays on top of other elements */
-  }
-  
-  .compile-btn:hover {
-    background-color: #2980b9;
-  }
-  
-  /* Editor Playground Container */
-  .editor-playground {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #f4f4f9;
-    height: 100vh;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-y: auto;
-    position: relative; /* Make sure the button is positioned relative to this container */
-  }
-  
-  /* Editor Area and Language Selector */
-  .editor-area {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    margin-bottom: 10vh;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width:100%  ;
-    height: 90vh;
-  }
-  
-  .language-selector {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 15px; /* Adds space between elements */
-  }
-  
-  .language-selector div {
-    display: flex;
-    align-items: center;
-  }
-  
-  .language-dropdown {
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: 500;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 180px; /* Slightly wider for better usability */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .language-dropdown:hover {
-    background-color: #f0f8ff;
-    border-color: #3498db;
-  }
-  
-  .language-dropdown:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  }
-  
-  .importbutton,
-  .exportbutton,
-  .savebutton {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Space between icon and text */
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .importbutton {
-    background-color: #3498db;
-  }
-  
-  .importbutton:hover {
-    background-color: #2980b9;
-  }
-  
-  .exportbutton {
-    
-    background-color: #e74c3c;
-  }
-  
-  .exportbutton:hover {
-    background-color: #c0392b;
-  }
-  
-  .savebutton {
-    background-color: #2ecc71;
-  }
-  
-  .savebutton:hover {
-   
-    background-color: #27ae60;
-  }
-  
-  .material-icons {
-    font-size: 18px;
-  }
-  
 
-  
-  
-  /* Compiler Output Section */
-  .compiler-output {
-    display: none;
-    margin-top: 20px;
-    background-color: #fff;
+/* Compiler Output Section */
+.compiler-output {
+  display: none;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  width: 100%;
+}
+
+.compiler-output.open {
+  display: block;
+}
+.compiler-input {
+  display: none;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  width: 100%;
+}
+
+.compiler-input.open {
+  display: block;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.output-header h5 {
+  font-size: 18px;
+  font-weight: bold;
+}
+.input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.inputput-header h5 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.run-btn, .close-btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.run-btn:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.run-btn:hover {
+  background-color: #2980b9;
+  color: white;
+}
+
+.close-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.close-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Compiler Output Content */
+.output-content {
+  background-color: #ecf0f1;
+  padding: 15px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  color: #333;
+  min-height: 100px;
+  overflow-y: auto;
+}
+.input-content {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  color: #333;
+  resize: vertical;
+  overflow-y: auto;
+}
+
+.input-content:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .editor-playground {
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .editor-area {
+    padding: 15px;    
+  }
+
+  .compile-btn {
+    width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .language-selector {
     flex-direction: column;
-    width: 100%;
-  }
-  
-  .compiler-output.open {
-    display: block;
-  }
-  
-  .output-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .output-header h5 {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .action-buttons {
-    display: flex;
+    align-items: flex-end;
     gap: 10px;
   }
-  
-  .run-btn, .close-btn {
-    padding: 10px 15px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .run-btn:disabled {
-    background-color: #bdc3c7;
-    cursor: not-allowed;
-  }
-  
-  .run-btn:hover {
-    background-color: #2980b9;
-    color: white;
-  }
-  
-  .close-btn {
-    background-color: #e74c3c;
-    color: white;
-  }
-  
-  .close-btn:hover {
-    background-color: #c0392b;
-  }
-  
-  /* Compiler Output Content */
-  .output-content {
-    background-color: #ecf0f1;
-    padding: 15px;
-    border-radius: 5px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    color: #333;
-    min-height: 100px;
-    overflow-y: auto;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .editor-playground {
-      padding: 15px;
-    }
-  
-    .editor-area {
-      padding: 15px;    
-    }
-  
-    .compile-btn {
-      width: auto;
-    }
-  }
 
-  @media (max-width: 768px) {
-    .language-selector {
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-    }
-  
-    .language-dropdown {
-      width: 100%;
-    }
+  .language-dropdown {
+    width: 100%;
   }
+}

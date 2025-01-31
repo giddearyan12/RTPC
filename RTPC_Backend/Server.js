@@ -15,7 +15,7 @@ import dockerode from "dockerode";
 import adminRouter from "./routes/adminRoute.js";
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/ProyectaMinds")
+  .connect("mongodb+srv://giddearyan222:umcaa2025@pym-db.nwazx.mongodb.net/?retryWrites=true&w=majority&appName=pym-db")
   .then(() => console.log("MONGO DB CONNECTED"));
 
 
@@ -240,24 +240,28 @@ io.on("connection", (socket) => {
 
 
   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
-      userSocketMap[socket.id] = username;
-      socket.join(roomId);
+    userSocketMap[socket.id] = username;
+    socket.join(roomId);
 
-      const clients = getAllConnectedClients(roomId);
-      clients.forEach(({ socketId }) => {
-          io.to(socketId).emit(ACTIONS.JOINED, {
-              clients,
-              username,
-              socketId: socket.id,
-          });
-      });
-  });
+    const clients = getAllConnectedClients(roomId);
+    clients.forEach(({ socketId }) => {
+        io.to(socketId).emit(ACTIONS.JOINED, {
+            clients,
+            username,
+            socketId: socket.id,
+        });
+    });
+
+    console.log(`${username} joined room: ${roomId}`);
+});
+
 
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
       socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+   
       io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 

@@ -11,6 +11,8 @@ function ProjectList({ projects, filterProjects, setProjects }) {
   const userId = jwt_decode(token).userId;
   const [showModal, setShowModal] = useState(false);
   const [currentProject, setCurrentProject] = useState(null);
+  
+  
 
   const updateProject = async()=>{
     console.log(currentProject)
@@ -34,8 +36,9 @@ function ProjectList({ projects, filterProjects, setProjects }) {
     }
   }
 
-  const handleOpenIDE = (projectId) => {
-    navigate(`/ide/${projectId}`);
+  const handleOpenIDE = (project) => {
+    
+    navigate(`/ide/${project._id}`, { state: { project } });
   };
 
   const handleEditClick = (project) => {
@@ -82,7 +85,7 @@ function ProjectList({ projects, filterProjects, setProjects }) {
           </p>
           <button
             className="open-ide-btn"
-            onClick={() => handleOpenIDE(project._id)}
+            onClick={() => handleOpenIDE(project)}
           >
             Open IDE
           </button>
