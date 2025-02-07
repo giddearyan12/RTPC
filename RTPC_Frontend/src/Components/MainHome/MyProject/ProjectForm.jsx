@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function ProjectForm() {
   const url = "http://localhost:5000";
@@ -27,12 +28,33 @@ function ProjectForm() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      if(response.data.success){
+        toast(`Project Request Sent`, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
+      else{
+        toast(response.data.message, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
 
-      const createdProject = response.data.project; 
+  
       
       setProjectData({ name: "", description: "", technology: "", userId: "" }); 
     } catch (error) {
       console.log("Error creating project:", error);
+   
     }
   };
 

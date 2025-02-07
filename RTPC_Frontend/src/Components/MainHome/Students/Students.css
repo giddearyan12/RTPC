@@ -1,6 +1,6 @@
 .students-list{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     width: 100%;
     justify-content: center;
@@ -23,6 +23,7 @@
     justify-content: space-between;
     align-items: center;
     padding-right: 10px;
+    
 }
 .dash-title p{
     font-size: 12px;
@@ -36,6 +37,7 @@
 }
 .student-card h4{
     color: #563D7C;
+    margin-right: 15px;
 }
 .student-card p{
     font-size: 12px;

@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
-import ProjectCard from "./ProjectCard";
-import './Dashboard.css';
 import axios from "axios";
+import "./Dashboard.css";
 
 function Dashboard() {
-  const [newProjects, setNewProjects] = useState([]);
-  const [allProjects, setAllProjects] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [view, setView] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("all");
 
-  const fetchProjects = async () => {
+  useEffect(() => {
+    if (filter === "new") {
+      fetchNewProjects();
+    } else {
+      fetchAllProjects();
+    }
+  }, [filter]);
+  
+
+  const fetchNewProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/admin/newProjects"); 
+      const response = await axios.get("http://localhost:5000/admin/newProjects");
       if (response.data.success) {
-        setNewProjects(response.data.project);
+        setProjects(response.data.project);
       } else {
         setError(response.data.message || "Failed to fetch projects");
       }
@@ -24,12 +32,11 @@ function Dashboard() {
       setLoading(false);
     }
   };
-
   const fetchAllProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/admin/allProjects"); 
+      const response = await axios.get("http://localhost:5000/admin/allProjects");
       if (response.data.success) {
-        setAllProjects(response.data.project);
+        setProjects(response.data.project);
       } else {
         setError(response.data.message || "Failed to fetch projects");
       }
@@ -37,22 +44,6 @@ function Dashboard() {
       setError(err.message || "An error occurred while fetching projects");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleRemove = async (projectId) => {
-    try {
-      const response = await axios.post("http://localhost:5000/admin/remove", { id: projectId }); 
-      if (response.data.success) {
-       
-        // Update the project list after removal
-        
-        setAllProjects((prevProjects) => prevProjects.filter(project => project._id !== projectId));
-      } else {
-        alert('Error');
-      }
-    } catch (err) {
-      console.log(err.message || "An error occurred");
     }
   };
 
@@ -62,92 +53,103 @@ function Dashboard() {
         name: name,
       });
       if (!response.data.success) {
-       
-        alert('Error');
+        alert("Error");
       }
-      setNewProjects((prevProjects) => prevProjects.filter(project => project.name !== name));
+      setProjects((prevProjects) => prevProjects.filter((project) => project.name !== name));
     } catch (err) {
-      console.log(err.message || "An error occurred while fetching projects");
+      console.log(err.message || "An error occurred while processing the request");
     }
-    
   };
 
   const handleReject = async (name) => {
     try {
-      const response = await axios.post("http://localhost:5000/admin/reject", {
-        name: name
-      });
+      const response = await axios.post("http://localhost:5000/admin/reject", { name: name });
       if (!response.data.success) {
-       
-        alert('Error');
+        alert("Error");
       }
-      setNewProjects((prevProjects) => prevProjects.filter(project => project.name !== name));
+      setProjects((prevProjects) => prevProjects.filter((project) => project.name !== name));
     } catch (err) {
-      console.log("An error occurred while fetching projects");
+      console.log("An error occurred while processing the request");
     }
-   
   };
 
-  useEffect(() => {
-    fetchProjects();
-    fetchAllProjects();
-  }, []);
+
+  const handleRemove = async (projectId) => {
+    try {
+      const response = await axios.post("http://localhost:5000/admin/remove", { id: projectId });
+      if (response.data.success) {
+        setProjects((prev) => prev.filter((p) => p._id !== projectId));
+      } else {
+        alert("Error removing project");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const filteredProjects = projects.filter((project) => {
+    return (
+      project.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+  });
 
   return (
     <div className="admin-home">
-      <div className="toggle-buttons">
-        <button 
-          className={`toggle-btn ${view === 'all' ? 'active' : ''}`} 
-          onClick={() => setView('all')}
-        >
-          All Projects
-        </button>
-        <button 
-          className={`toggle-btn ${view === 'new' ? 'active' : ''}`} 
-          onClick={() => setView('new')}
-        >
-          New Projects
-        </button>
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Search projects..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+          <option value="all">All Projects</option>
+          <option value="new">New Projects</option>
+        </select>
       </div>
 
-      {view === 'all' && (
-        <div>
-          {allProjects.length === 0 ? (
-            <p className="no-project">No projects created yet.</p>
-          ) : (
-            <div className="projects-list">
-              {allProjects.map((project, index) => (
-                <ProjectCard 
-                  key={index} 
-                  project={project} 
-                  onRemove={handleRemove}  
-                  view={view}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {view === 'new' && (
-        <div>
-          {newProjects.length === 0 ? (
-            <p className="no-project">No new projects created yet.</p>
-          ) : (
-            <div className="projects-list">
-              {newProjects.map((project, index) => (
-                <ProjectCard 
-                  key={index} 
-                  project={project} 
-                  onAccept={handleAccept}  
-                  onReject={handleReject}  
-                  view={view}
-                  
-                />
-              ))}
-            </div>
-          )}
-        </div>
+      {loading ? (
+        <div className="loader">Loading projects...</div>
+      ) : error ? (
+        <div className="error-message">{error}</div>
+      ) : (
+        <table className="project-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Technology</th>
+              <th>Created By</th>
+              <th>Created On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProjects.length === 0 ? (
+              <tr><td colSpan="5">No projects found</td></tr>
+            ) : (
+              filteredProjects.map((project) => (
+                <tr key={project._id}>
+                  <td>{project.name}</td>
+                  <td>{project.technology}</td>
+                  <td>{project.createdBy.name}</td>
+                  <td>{new Date(project.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    {filter==='new' && (
+                      <button className="accept-btn" onClick={() => handleAccept(project.name)}>Accept</button>
+                    )}
+                    {filter==='new' && (
+                      <button className="reject-btn" onClick={() => handleReject(project.name)}>Reject</button>
+                    )}
+                    {
+                      filter==='all' && (
+                    <button className="remove-btn" onClick={() => handleRemove(project._id)}>Remove</button>)
+                    }
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       )}
     </div>
   );

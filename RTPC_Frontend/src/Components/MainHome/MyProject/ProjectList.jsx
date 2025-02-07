@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
 import jwt_decode from "jwt-decode";
-import "../Home/ProjectCard.css";
 import axios from "axios";
+import "./Project_List.css";
 
 function ProjectList({ projects, filterProjects, setProjects }) {
   const navigate = useNavigate();
@@ -11,33 +11,34 @@ function ProjectList({ projects, filterProjects, setProjects }) {
   const userId = jwt_decode(token).userId;
   const [showModal, setShowModal] = useState(false);
   const [currentProject, setCurrentProject] = useState(null);
-  
-  
+  const [loading, setLoading] = useState(true);
 
-  const updateProject = async()=>{
-    console.log(currentProject)
+  useEffect(() => {
+    if (projects.length > 0) {
+      setLoading(false);
+    }
+  }, [projects]);
+
+  const updateProject = async () => {
     try {
-      const response = await axios.put('http://localhost:5000/user/project/update',{
-        data:currentProject,
+      const response = await axios.put("http://localhost:5000/user/project/update", {
+        data: currentProject,
       });
-      if(response.data.success){
-        console.log("Updated SuccessFully");
+      if (response.data.success) {
         setProjects((prevProjects) =>
           prevProjects.map((project) =>
             project._id === currentProject._id ? { ...currentProject } : project
           )
         );
-      }
-      else{
-        console.log("Error");
+      } else {
+        console.log("Error updating project");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  }
+  };
 
   const handleOpenIDE = (project) => {
-    
     navigate(`/ide/${project._id}`, { state: { project } });
   };
 
@@ -52,11 +53,7 @@ function ProjectList({ projects, filterProjects, setProjects }) {
   };
 
   const handleSaveChanges = () => {
-
-    console.log("Saving changes for project:");
     updateProject();
-
-
     handleCloseModal();
   };
 
@@ -67,31 +64,32 @@ function ProjectList({ projects, filterProjects, setProjects }) {
 
   return (
     <div className="project-list">
-      {filteredProjects.length === 0 && <p>No projects found.</p>}
-      {filteredProjects.map((project) => (
-        <div key={project._id} className="project-card">
-          <div className="myproject-title">
-            <h3 className="project-name">{project.name}</h3>
-            {userId === project.createdBy && (
-              <MdOutlineEdit
-                className="edit-icon"
-                onClick={() => handleEditClick(project)}
-              />
-            )}
-          </div>
-          <p className="technologies">
-            <strong>Technologies Used: </strong>
-            {project.technology}
-          </p>
-          <button
-            className="open-ide-btn"
-            onClick={() => handleOpenIDE(project)}
-          >
-            Open IDE
-          </button>
+      {loading ? (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading projects...</p>
         </div>
-      ))}
-
+      ) : filteredProjects.length === 0 ? (
+        <p>No projects found.</p>
+      ) : (
+        filteredProjects.map((project) => (
+          <div key={project._id} className="project-cards">
+            <div className="myproject-title">
+              <h3 className="project-name">{project.name}</h3>
+              {userId === project.createdBy && (
+                <MdOutlineEdit className="edit-icon" onClick={() => handleEditClick(project)} />
+              )}
+            </div>
+            <p className="technologies">
+              <strong>Technologies Used: </strong>
+              {project.technology}
+            </p>
+            <button className="open-ide-btn" onClick={() => handleOpenIDE(project)}>
+              Open IDE
+            </button>
+          </div>
+        ))
+      )}
 
       {showModal && currentProject && (
         <div className="modal-overlay" onClick={handleCloseModal}>
@@ -103,24 +101,14 @@ function ProjectList({ projects, filterProjects, setProjects }) {
                 <input
                   type="text"
                   value={currentProject.name}
-                  onChange={(e) =>
-                    setCurrentProject({
-                      ...currentProject,
-                      name: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setCurrentProject({ ...currentProject, name: e.target.value })}
                 />
               </label>
               <label>
                 Technology:
                 <select
                   value={currentProject.technology}
-                  onChange={(e) =>
-                    setCurrentProject({
-                      ...currentProject,
-                      technology: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setCurrentProject({ ...currentProject, technology: e.target.value })}
                 >
                   <option value="">--Select Technology--</option>
                   <option value="Java">Java</option>
@@ -134,15 +122,9 @@ function ProjectList({ projects, filterProjects, setProjects }) {
               Description:
               <textarea
                 value={currentProject.description}
-                onChange={(e) =>
-                  setCurrentProject({
-                    ...currentProject,
-                    description: e.target.value,
-                  })
-                }
+                onChange={(e) => setCurrentProject({ ...currentProject, description: e.target.value })}
               ></textarea>
             </label>
-
 
             <div className="checkbox-container">
               <input
@@ -158,7 +140,6 @@ function ProjectList({ projects, filterProjects, setProjects }) {
               <label>Mark as Completed</label>
             </div>
 
-
             <div className="modal-buttons">
               <button onClick={handleSaveChanges} className="save-btn">
                 Save
@@ -170,9 +151,6 @@ function ProjectList({ projects, filterProjects, setProjects }) {
           </div>
         </div>
       )}
-
-
-
     </div>
   );
 }

@@ -29,10 +29,10 @@ const Messages = () => {
 				))}
 
 			
-			{loading &&
+			{/* {loading &&
 				[...Array(3)].map((_, idx) => (
 					<MessageSkeleton key={idx} className="custom-message-skeleton" />
-				))}
+				))} */}
 
 			
 			{!loading && messages.length === 0 && (

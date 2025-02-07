@@ -15,9 +15,6 @@ const HomePage = () => {
     switch (selectedComponent) {
       case 'dashboard':
         return <Dashboard />;
-      case 'projects':
-        return <Project_Dashboard />;
-      
       case 'students':
         return <Students />;
       default:

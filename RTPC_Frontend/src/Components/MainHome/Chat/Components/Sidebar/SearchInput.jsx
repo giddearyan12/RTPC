@@ -29,7 +29,7 @@ const SearchInput = () => {
 			<input
 				type="text"
 				placeholder="Search…"
-				className="custom-input"
+				className="custom-search-input"
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
 			/>

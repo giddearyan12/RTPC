@@ -1,45 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { IoMdRemoveCircleOutline } from "react-icons/io";
+import { FaUsers, FaTrashAlt, FaTimes, FaCross } from 'react-icons/fa';
 import './Teams.css';
 
 const Teams = () => {
-  const [view, setView] = useState('created');
-  const [myteamData, setMyTeamData] = useState([]);
-  const [teamData, setTeamData] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterByStatus, setFilterByStatus] = useState('');
+  const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-  const [memberToRemove, setMemberToRemove] = useState(null); // Stores the member to be removed
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [memberToRemove, setMemberToRemove] = useState(null);
   const token = localStorage.getItem('token');
+
+  let decodedToken;
+  try {
+    decodedToken = JSON.parse(atob(token.split('.')[1]));
+  } catch (error) {
+    console.error("Invalid token", error);
+  }
+  const currentUserId = decodedToken?.userId;
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    filterAndSortProjects();
+  }, [searchQuery,filterByStatus, projects]);
 
   const fetchData = async () => {
     try {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const response = await axios.get('http://localhost:5000/students/team', {
-        params: {
-          id: decodedToken.userId,
-        },
+        params: { id: currentUserId },
       });
-      setMyTeamData(response.data.projects);
-      setTeamData(response.data.collaboratedProjects);
+      const allProjects = [...response.data.projects, ...response.data.collaboratedProjects];
+      console.log(allProjects)
+      setProjects(allProjects);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRemoveMember = (projectId, collaboratorId) => {
-    setMemberToRemove({ projectId, collaboratorId });
+  const filterAndSortProjects = () => {
+    let updatedProjects = [...projects];
+
+    if (searchQuery) {
+      updatedProjects = updatedProjects.filter((project) =>
+        project.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (filterByStatus) {
+      updatedProjects = updatedProjects.filter((project) => project.status === filterByStatus);
+    }
+
+    setFilteredProjects(updatedProjects);
+  };
+
+  const openPopup = (project) => {
+    console.log(project)
+    setSelectedProject(project);
     setShowPopup(true);
   };
 
-  const confirmRemoveMember = async () => {
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  const handleRemoveMember = async () => {
     if (memberToRemove) {
       try {
-        const response = await axios.post(`http://localhost:5000/students/remove-collaborator`, {
-          data: {
-            projectId: memberToRemove.projectId,
-            collaboratorId: memberToRemove.collaboratorId,
-          },
-        });  
+        await axios.post('http://localhost:5000/students/remove-collaborator', {
+          projectId: memberToRemove.projectId,
+          collaboratorId: memberToRemove.collaboratorId,
+        });
         fetchData();
         setShowPopup(false);
         setMemberToRemove(null);
@@ -49,104 +87,90 @@ const Teams = () => {
     }
   };
 
-  const cancelRemoveMember = () => {
-    setShowPopup(false);
-    setMemberToRemove(null);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="teams-container">
-      <div className="toggle-buttons">
-        <button 
-          className={`toggle-btn ${view === 'created' ? 'active' : ''}`} 
-          onClick={() => setView('created')}
-        >
-          Projects Created by Me
-        </button>
-        <button 
-          className={`toggle-btn ${view === 'collaborated' ? 'active' : ''}`} 
-          onClick={() => setView('collaborated')}
-        >
-          Projects I Collaborate On
-        </button>
+      <div className="table-controls">
+        <input
+          type="text"
+          placeholder="Search projects..."
+          value={searchQuery}
+          className='search-box'
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        
+        <select className='status-select' onChange={(e) => setFilterByStatus(e.target.value)}>
+          <option value="">Filter by Status</option>
+          <option value="Ongoing">Ongoing</option>
+          <option value="Completed">Completed</option>
+        </select>
       </div>
 
-      {view === 'created' && (
-        <div>
-          {myteamData.length === 0 ? (
-            <p className="no-project">No projects created yet.</p>
-          ) : (
-            myteamData.map((project) => (
-              <div key={project._id} className="team-card">
-                <h3 className="team-title">{project.name}</h3>
-                <table className="team-table">
-                  <thead>
-                    <tr>
-                      <th>Collaborator Name</th>
-                      <th>Remove Member</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {project.collaborators.map((collaborator) => (
-                      <tr key={collaborator._id}>
-                        <td>{collaborator.name || 'None'}</td>
-                        <td>
-                          <IoMdRemoveCircleOutline 
-                            className="remove-icon" 
-                            onClick={() => handleRemoveMember(project._id, collaborator._id)} 
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))
-          )}
+      {loading ? (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading projects...</p>
         </div>
+      ) : (
+        <>
+          {filteredProjects.length === 0 ? (
+            <p className="no-project">No projects available.</p>
+          ) : (
+            <table className="projects-table">
+              <thead>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Technology</th>
+                  <th>Created By</th>
+                  <th>Created At</th>
+                  <th>Collaborators</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProjects.map((project) => (
+                  <tr key={project._id}>
+                    <td>{project.name}</td>
+                    <td>{project.technology || 'N/A'}</td>
+                    <td>{project.createdBy ? project.createdBy.name : 'Me'}</td>
+                    <td>{new Date(project.createdAt).toLocaleDateString()}</td>
+                    <td className="collaborator-td" onClick={() => openPopup(project)}>
+                      <FaUsers style={{ cursor: 'pointer' }} />
+                    </td>
+                    <td>{project.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
       )}
 
-      {view === 'collaborated' && (
-        <div>
-          {teamData.length === 0 ? (
-            <p className="no-project">No projects to collaborate on yet.</p>
-          ) : (
-            teamData.map((project) => (
-              <div key={project._id} className="team-card">
-                <h3 className="team-title">{project.name}</h3>
-                <table className="team-table">
-                  <thead>
-                    <tr>
-                      <th>Created By</th>
-                      <th>Collaborator Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{project.createdBy.name}</td>
-                      <td>{project.collaborators.map((collaborator) => collaborator.name).join(', ')}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ))
-          )}
-        </div>
-      )}
-
-      {/* Popup for confirming removal */}
       {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <h3>Are you sure you want to remove this member?</h3>
-            <div className="popup-actions">
-              <button className="popup-btn" onClick={confirmRemoveMember}>Yes</button>
-              <button className="popup-btn" onClick={cancelRemoveMember}>No</button>
+        <div className="teams-popup-overlay" onClick={closePopup}>
+          <div className="teams-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="col-title">
+            <h3>Collaborators</h3>
+            <FaTimes onClick={closePopup}/>
             </div>
+            <ul className="collaborators-list">
+              {selectedProject.collaborators && selectedProject.collaborators.length > 0 ? (
+                selectedProject.collaborators.map((collaborator) => (
+                  <li key={collaborator._id} className="collaborator-item">
+                    <span>{collaborator.name}</span>
+                    
+                    {selectedProject.createdBy &&
+                      selectedProject.createdBy._id === currentUserId && (
+                        <span onClick={() => handleRemoveMember(selectedProject._id, collaborator._id)}>
+                          <FaTrashAlt className="remove-icon" />
+                        </span>
+                      )}
+                  </li>
+                ))
+              ) : (
+                <li className="collaborator-item">No collaborators</li>
+              )}
+            </ul>
+            
           </div>
         </div>
       )}

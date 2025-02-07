@@ -39,9 +39,6 @@ function ProjectDashboard() {
   }, []);
 
   
-  const addProject = (newProject) => {
-    setProjects((prevProjects) => [...prevProjects, newProject]);
-  };
 
   return (
     <div className="pro-dash">
@@ -49,24 +46,23 @@ function ProjectDashboard() {
         <div className="tab" onClick={() => setFilterProjects("All")}>
           <FontAwesomeIcon icon={faTasks} className="icon" />
           Total Projects
-          <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
+        
         </div>
 
         <div className="tab" onClick={() => setFilterProjects("Completed")}>
           <FontAwesomeIcon icon={faCheckCircle} className="icon" />
           Completed Projects
-          <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
+          
         </div>
 
         <div className="tab" onClick={() => setFilterProjects("Ongoing")}>
           <FontAwesomeIcon icon={faSpinner} className="icon" />
           Ongoing Projects
-          <FontAwesomeIcon icon={faArrowRight} className="arrow-icon" />
+      
         </div>
       </div>
-      <div className="App">
+      <div className="project-app">
         <div className="project_list">
-          <h2>Project List</h2>
           <ProjectList projects={projects} filterProjects={filterProjects} setProjects={setProjects} />
         </div>
         <div className="project_form_section">

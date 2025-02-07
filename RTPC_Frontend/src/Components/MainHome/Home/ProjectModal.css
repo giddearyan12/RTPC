@@ -12,7 +12,6 @@
     z-index: 1000; 
   }
   
- 
   .modal-content {
     background-color: #ffffff;
     width: 90%;
@@ -22,6 +21,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     text-align: center;
+  }
+  .name-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
   }
   
 

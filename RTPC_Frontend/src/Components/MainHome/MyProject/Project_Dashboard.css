@@ -1,13 +1,15 @@
 .pro-dash{
   width: 100%;
+  height: 100%;
 }
-.App {
+.project-app {
     font-family: Arial, sans-serif;
-    height: fit-content;
+    height: 85%;
     text-align: left;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    
   }
   
   .tabs {
@@ -37,7 +39,6 @@
   .tab .icon {
     font-size: 2rem;
     margin-right: 10px;
-    /* background-color: #4C3575; */
     padding: 5px;
     border-radius: 5px;
   }
@@ -96,23 +97,11 @@
     background-color: #4C3575;
   }
   
-  
-  .project-list {
-    margin-top: 20px;
-  }
-  
-  .project-list{
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
- 
-    gap: 20px;
-  }
-  
-
   .project_form_section{
     height: fit-content;
     border-radius: 5%;
     padding: 20px;
+    margin-top: 20px;
     background-color: #4C3575;
   }
 
@@ -129,14 +118,14 @@
     font-size: 1rem;
     color: #374151;
     background-color: #f9fafb;
-    width: 100%; /* Full width for responsiveness */
+    width: 100%; 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    appearance: none; /* Removes default browser styles */
-    cursor: pointer; /* Changes cursor to pointer */
+    appearance: none; 
+    cursor: pointer; 
   }
   
   .custom-select:hover {
-    border-color: #9ca3af; /* Slightly darker border on hover */
+    border-color: #9ca3af; 
   }
   
  

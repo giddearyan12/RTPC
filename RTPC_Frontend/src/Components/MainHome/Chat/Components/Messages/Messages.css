@@ -1,8 +1,10 @@
 .custom-messages-container {
     padding-left: 1rem; 
+    
     padding-right: 1rem;
     flex-grow: 1; 
     overflow-y: auto;  
+    
 }
   
 .custom-empty-message {
@@ -18,14 +20,15 @@
     margin-bottom: 1rem; 
 }
 .custom-message-input-wrapper {
-    padding: 0.75rem; 
+    
     margin: 0.5rem 0; 
-    background-color: #1f2937; 
+    
     border-radius: 1rem; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .custom-input-container {
+    
     position: relative; 
     display: flex; 
     align-items: center;
@@ -35,9 +38,8 @@
     border: 1px solid #4b5563; 
     font-size: 0.875rem; 
     border-radius: 1.5rem; 
-    padding: 0.5rem 2.5rem 0.5rem 1rem;
-    background-color: #2d3748; 
-    color: white;
+    padding: 25px 15px; 
+    color: black;
     width: 100%; 
     outline: none;
     transition: border-color 0.3s ease; 
@@ -52,14 +54,14 @@
 .custom-send-button {
     position: absolute; 
     right: 0.5rem; 
-    top: 50%; 
+    top: 30%; 
     transform: translateY(-30%); 
     background-color: #4C3575; 
     color: white;
     border: none; 
     border-radius: 50%; 
-    width: 2rem; 
-    height: 2rem; 
+    width: 3rem; 
+    height: 3rem; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,15 +70,7 @@
     transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
-.custom-send-button:hover {
-    background-color: #4C3575; 
-    transform: scale(1.1); 
-}
 
-.custom-send-button:active {
-    transform: scale(1); 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-}
 
 .loading {
     border: 3px solid transparent; 
@@ -187,29 +181,28 @@
 
 
 .message-container {
-  width: 60%; 
+  width: 100%; 
   display: flex;
   flex-direction: column;
-  background-color: #1e293b; 
-  border-radius: 1rem; 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
   overflow: hidden; 
 }
 
 .custom-header {
-  background-color: #4C3575; 
-  padding: 0.75rem 1rem; 
+  padding: 25px; 
   display: flex;
+
   align-items: center; 
   justify-content: space-between; 
-  color: white;
+  color: black;
   font-weight: bold; 
-  font-size: 1rem; 
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 20px; 
 }
 
 .custom-header-text {
-  font-weight: 700;
-  color: #ffffff; 
+  font-weight: 800;
+  color: black; 
   text-transform: capitalize; 
 }
 
@@ -222,12 +215,11 @@
   height: 100%;
   padding: 2rem; 
   text-align: center; 
-  background-color: #1e293b; 
   border-radius: 0.5rem; 
 }
 
 .custom-no-chat-selected-text {
-  color: #e2e8f0; 
+  color: black; 
   font-size: 1rem; 
   font-weight: 600;
   line-height: 1.5; 

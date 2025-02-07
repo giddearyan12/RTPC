@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
-import profile from '../../assets/profile.jpg';
 import mytask from '../../assets/mytask.png';
 import chat from '../../assets/chat.png';
 import home from '../../assets/home.png';
 import member from '../../assets/member.png';
 import project from '../../assets/project.png';
-import { FaSearch } from 'react-icons/fa';
 import group from '../../assets/group.png';
-import setting from '../../assets/setting.png';
-import logo from '../../assets/logo.png';
-
 import './HomePage.css';
 import Dashboard from '../MainHome/Home/Dashboard.jsx';
 import Header from './Header';
-
-
 import Chats from './Chat/Chats.jsx'; 
 import Students from './Students/Students.jsx'; 
 import Teams from './Teams/Teams.jsx'; 
@@ -42,9 +35,9 @@ const HomePage = () => {
   };
 
   return (
-    <>
+    <div className='main-dashboard'>
       <div className='right-navbar'>
-        <Header />
+      <Header />
       </div>
       <div className='main-home'>
         <div className="left">
@@ -79,7 +72,7 @@ const HomePage = () => {
           {renderComponent()} 
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

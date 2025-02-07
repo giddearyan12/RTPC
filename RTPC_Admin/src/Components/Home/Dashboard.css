@@ -1,112 +1,113 @@
-/* Toggle Buttons */
-.toggle-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
+/* Dashboard.css */
+.admin-home {
+  max-width: 100%;
+  margin: 10px auto;
+  background: #ffffff;
+  
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
 }
 
-.toggle-btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #555;
-  background-color: #f4f4f4;
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.controls input,
+.controls select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  margin: 0 5px;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.toggle-btn:hover {
-  background-color: #ddd;
+.controls input {
+  flex: 1;
+  margin-right: 10px;
 }
 
-.toggle-btn.active {
-  background-color: #4C3575;
-  color: white;
-  font-weight: bold;
+.controls select {
+  cursor: pointer;
+  background: #f8f9fa;
+}
+
+.controls input:focus,
+.controls select:focus {
   border-color: #4C3575;
+  outline: none;
 }
 
-/* Projects List */
-.projects-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  padding: 16px;
+.project-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
-
-/* Extra small devices (phones, less than 576px) */
-@media (max-width: 575.98px) {
-  .toggle-buttons {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .toggle-btn {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    margin: 5px 0;
-  }
-
-  .projects-list {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 8px;
-  }
+.project-table th,
+.project-table td {
+  padding: 12px;
+  text-align: left;
 }
 
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .toggle-buttons {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .toggle-btn {
-    padding: 9px 18px;
-    font-size: 1rem;
-    margin: 5px;
-  }
-
-  .projects-list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    padding: 12px;
-  }
+.project-table thead {
+  background: #4C3575;
+  color: #fff;
 }
 
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .projects-list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 16px;
-  }
-
-  .toggle-btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-  }
+.project-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
 }
 
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .projects-list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
-  }
+.project-table tbody tr:hover {
+  background: #e9ecef;
+  transition: background 0.3s ease;
 }
 
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-  .projects-list {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    padding: 24px;
-  }
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
+}
+
+.accept-btn {
+  background: #28a745;
+  color: white;
+}
+
+.reject-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.remove-btn {
+  background: #ffc107;
+  color: black;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.loader {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.error-message {
+  text-align: center;
+  font-size: 16px;
+  color: red;
+  margin-top: 10px;
 }

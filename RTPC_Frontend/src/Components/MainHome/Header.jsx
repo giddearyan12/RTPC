@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBell } from "react-icons/fa";
 import jwt_decode from "jwt-decode";
 import "./Header.css";
 import axios from "axios";
@@ -46,7 +46,7 @@ const Header = () => {
   };
 
   const handleViewProfile = () => {
-    window.location.href = "/profile"; // Redirect to the profile page
+    window.location.href = "/profile";
   };
 
   const toggleDropdown = () => {

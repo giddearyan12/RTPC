@@ -1,7 +1,6 @@
 import userModel from "../models/userModel.js";
 import projectModel from "../models/projectModel.js";
 import jwt from "jsonwebtoken";
-
 import validator from "validator";
 import bcrypt from "bcrypt";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
@@ -135,7 +134,7 @@ const createProject = async (req, res) => {
   try {
     const exists = await projectModel.findOne({ name });
     if (exists) {
-      return res.json({ success: false, message: "Project already exists" });
+      return res.json({ success: false, message: "Project with same name already exists" });
     }
 
     const token = req.headers.authorization.split(" ")[1];
@@ -153,13 +152,7 @@ const createProject = async (req, res) => {
       technology,
       createdBy: userId,
     });
-
-  
-
     await newProject.save();
-   
-
-   
 
     return res.json({
       success: true,
@@ -296,26 +289,17 @@ const getUser = async (req, res) => {
     try {
   
       const student = await userModel.findOne({name});
-  
       if (!student) {
         return res.status(404).json({ success: false, message: "Student not found." });
       }
-  
-    
       const projects = await projectModel.find({
         _id: { $in: student.projects },
       });
-  
-   
       const projectNames = projects.map((project) => project.name);
-  
-     
       const updatedStudent = {
         ...student._doc, 
         projects: projectNames, 
       };
-  
-     
       return res.json({
         success: true,
         message: "Student retrieved successfully.",

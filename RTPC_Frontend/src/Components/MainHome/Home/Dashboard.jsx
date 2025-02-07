@@ -12,6 +12,7 @@ const Dashboard = () => {
   const token = localStorage.getItem("token");
   const [selectedProject, setSelectedProject] = useState(null); 
   const [userId, setUserId] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   
   const fetchData = async () => {
@@ -30,6 +31,9 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching project data:", error.response?.data || error.message);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -100,19 +104,26 @@ const Dashboard = () => {
           <div className="dash-title">
             <h2>Total Projects</h2>
           </div>
-          <div className="project-grid">
+          {loading?(
+            <div className="loading-container">
+            <div className="spinner"></div>
+            <p>Loading Projects...</p>
+          </div>
+          ):
+          (<div className="project-grid">
             {
               projectData.map((project, index) => (
-                <div key={index} onClick={() => handleCardClick(project)}>
+                <div key={index} >
                   <ProjectCard
                     projectName={project.name}
                     technology={project.technology}
                     description={project.description}
+                    onClick={() => handleCardClick(project)}
                   />
                 </div>
               ))
              }
-          </div>
+          </div>)}
         </div>
       </div>
       <div className="notification">

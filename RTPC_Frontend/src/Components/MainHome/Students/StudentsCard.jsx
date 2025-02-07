@@ -5,14 +5,19 @@ import axios from 'axios';
 const StudentsCard = ({ onCardClick }) => {
   const url = 'http://localhost:5000';
   const [studentList, setStudentList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch students data from the API
+  
   const fetchData = async () => {
     try {
       const response = await axios.get(`${url}/students`);
       setStudentList(response.data.students);
+     
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -23,18 +28,24 @@ const StudentsCard = ({ onCardClick }) => {
   return (
     <div className="student-section">
       <h2>Proyecta Minds Members</h2>
-      <div className="students-list">
+      {loading? (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading Members...</p>
+        </div>
+      ) 
+      :(<div className="students-list">
         {studentList.map((student) => (
           <div
             className="student-card"
             key={student.id}
-            onClick={() => onCardClick(student)} // Pass the clicked student's data
+            onClick={() => onCardClick(student)}
           >
             <h4>{student.name}</h4>
             <p>{student.domain}</p>
           </div>
         ))}
-      </div>
+      </div>)}
     </div>
   );
 };

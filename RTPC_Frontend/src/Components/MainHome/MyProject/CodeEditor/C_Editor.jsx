@@ -1,5 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import * as monaco from "monaco-editor";
+
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
+import 'monaco-editor/esm/vs/basic-languages/html/html.contribution';
+import 'monaco-editor/esm/vs/basic-languages/css/css.contribution';
+import 'monaco-editor/esm/vs/basic-languages/xml/xml.contribution';
+import 'monaco-editor/esm/vs/basic-languages/yaml/yaml.contribution';
+import 'monaco-editor/esm/vs/basic-languages/markdown/markdown.contribution';
+import 'monaco-editor/esm/vs/language/json/monaco.contribution.js';
+
 import ACTIONS from "./Actions";
 import "./C_Style.css";
 
@@ -23,13 +32,14 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
    
     editorRef.current.onDidChangeModelContent(() => {
       const code = editorRef.current.getValue();
+      console.log("Code get Value", code);
 
       if (code !== currentCodeRef.current) {
         currentCodeRef.current = code; 
         onCodeChange(code);
 
        
-        socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+        socketRef.current.emit(ACTIONS.SYNC_CODE, {
           roomId,
           code,
         });

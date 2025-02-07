@@ -20,7 +20,7 @@ const Conversation = ({ conversation, lastIdx}) => {
 				</div>
 
 				<div className="custom-flex-column">
-					<div className="custom-header">
+					<div className="custom-name-header">
 						<p>{conversation.name}</p>
 					</div>
 				</div>

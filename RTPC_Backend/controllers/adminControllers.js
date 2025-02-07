@@ -4,9 +4,10 @@ import verifyModel from "../models/verifyModel.js";
 import userModel from "../models/userModel.js";
 import verifyCode from "../models/verifyCodeModel.js";
 
+
 export const verifyProject = async (req, res) => {
     const { name} = req.body;
-  
+
     try {
       const proj = await verifyModel.findOne({ name });
       if (!proj) {
@@ -160,17 +161,9 @@ export const removeMember = async (req, res) => {
     });
   }
 };
-
-
-
-
 export const removeProject = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log(id);
-
-   
-
     const project = await projectModel.findById(id);
     if (!project) {
       return res.status(404).json({

@@ -7,12 +7,12 @@ import MessageContainer from './Components/Messages/MessageContainer'
 
 const Chats = () => {
   return (
-    <div>
+    
       <div className='chat-page'>
 			<Sidebar />
 			<MessageContainer/>
 		 </div> 
-   </div>
+  
   )
 }
 

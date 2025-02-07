@@ -1,18 +1,13 @@
 .chat-page {
     display: flex;
-    height: 450px; 
+    height:100%;
+    width: 100%;
     border-radius: 0.5rem; 
     overflow: hidden;
-    background-color: rgba(156, 163, 175, 0); 
     background-clip: padding-box;
     backdrop-filter: blur(32px); 
    
-  }
-  
-  @media (min-width: 768px) {
    
-    .custom-container {
-      height: 550px;
-    }
   }
+ 
   

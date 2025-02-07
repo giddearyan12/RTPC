@@ -1,6 +1,6 @@
 const MessageSkeleton = () => {
 	return (
-		<>
+		<div className="sk"> 
 			<div className="skeleton-row">
 				<div className="skeleton skeleton-avatar">hii</div>
 				<div className="skeleton-column">
@@ -14,7 +14,7 @@ const MessageSkeleton = () => {
 				</div>
 				<div className="skeleton skeleton-avatar"></div>
 			</div>
-		</>
+		</div>
 	);
 };
 export default MessageSkeleton;

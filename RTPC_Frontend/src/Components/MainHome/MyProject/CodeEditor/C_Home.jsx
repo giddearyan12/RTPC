@@ -13,12 +13,14 @@ const C_Home = () => {
     const projectId = useParams();
     const location = useLocation();
     const { project } = location.state || {}; 
+    
     const [roomId, setRoomId] = useState('');
     const [username, setUsername] = useState('');
     const createNewRoom = (e) => {
         e.preventDefault();
         const id = uuidV4();
         setRoomId(id);
+        localStorage.setItem("id", JSON.stringify(project._id));
         toast.success('Created a new room');
     };
 
@@ -28,8 +30,9 @@ const C_Home = () => {
             toast.error('ROOM ID & username is required');
             return;
         }
+    
+    
 
-        
         navigate(`/editor/${roomId}`, {
             state: {
                 username,
@@ -88,14 +91,7 @@ const C_Home = () => {
                         value={roomId}
                         onKeyUp={handleInputEnter}
                     />
-                    {/* <input
-                        type="text"
-                        className="inputBox"
-                        placeholder="USERNAME"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
-                        onKeyUp={handleInputEnter}
-                    /> */}
+              
                     <button className="btn joinBtn" onClick={joinRoom}>
                         Join
                     </button>

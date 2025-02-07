@@ -15,7 +15,8 @@ const Footer = () => {
               <li><a href="#">C/C++</a></li>
               <li><a href="#">Java</a></li>
               <li><a href="#">Python</a></li>
-              <li><a href="#">HTML/CSS</a></li>
+              <li><a href="#">JavaScript</a></li>
+              <li><a href="#">Php</a></li>
             </ul>
           </div>
           <div className="footer-col">

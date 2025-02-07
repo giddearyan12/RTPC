@@ -5,26 +5,19 @@ const ProjectModal = ({ project, onClose, onRequest }) => {
   return (
     <div className="project-modal">
       <div className="modal-content">
-      
         <span className="close-button" onClick={onClose}>
           &times;
         </span>
-
-      
         <h2>{project.name}</h2>
-
-       
+        <div className="name-status">
         <p>
           <strong>Created By:</strong> {project.createdBy.name}
         </p>
-
-    
-
-       
         <p>
           <strong>Status:</strong> {project.status}
         </p>
-
+        
+        </div>
         <p>
           <strong>Collaborators:</strong>{" "}
           {project.collaborators.length > 0
@@ -36,8 +29,6 @@ const ProjectModal = ({ project, onClose, onRequest }) => {
               ))
             : "None"}
         </p>
-
-       
         <div className="collaboration-question">
           <p>Do you want to collaborate on this project?</p>
           <div className="modal-buttons">
