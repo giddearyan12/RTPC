@@ -2,7 +2,7 @@
 .reg-page {
     width: 75%;
     height: 480px;
-    margin: 55px auto;
+    margin: 110px auto;
     background: linear-gradient(to right, #323DB6, #00B2FD);
     display: flex;
     align-items: center;

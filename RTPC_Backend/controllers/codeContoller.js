@@ -76,8 +76,6 @@ export const submitCode = async (req, res) => {
 export const getCodeByProjectId = async (req, res) => {
   try {
     const { projectId } = req.body;
-    
-    console.log(projectId)
     if (!projectId) {
       return res.status(400).json({ error: "Project ID is required" });
     }

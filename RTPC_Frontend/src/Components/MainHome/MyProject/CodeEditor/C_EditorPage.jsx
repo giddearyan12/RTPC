@@ -37,8 +37,16 @@ function C_EditorPage() {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    fetchCode();
-    getLogs();
+    const fetchCode = async () => {
+      const projectId = location.state?.projectId.projectId;
+      const response = await axios.post('http://localhost:5000/api/get-code', {
+        projectId
+      })
+      settempCode(response.data.code)
+      await setCode(response.data.code)
+      codeRef.current = response.data.code;
+    }
+    
 
     const init = async () => {
       socketRef.current = await initSocket();
@@ -50,10 +58,12 @@ function C_EditorPage() {
         toast.error("Socket connection failed, try again later");
         navigate("/");
       };
-
+      
+      console.log("IC",code)
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
         username: location.state?.username,
+        initialCode:code,
       });
 
       socketRef.current.on(
@@ -78,7 +88,13 @@ function C_EditorPage() {
       });
     };
 
-    init();
+    const fetchAndInit = async () => {
+      await fetchCode(); 
+      await getLogs();  
+      await init();      
+    };
+  
+    fetchAndInit();
 
     return () => {
       if (socketRef.current) {
@@ -106,15 +122,7 @@ function C_EditorPage() {
     setLogs(response.data)
     setLogs((prevLogs) => [...prevLogs].reverse());
   }
-  const fetchCode = async () => {
-    const projectId = location.state?.projectId.projectId;
-    const response = await axios.post('http://localhost:5000/api/get-code', {
-      projectId
-    })
-    settempCode(response.data.code)
-    setCode(response.data.code)
-    codeRef.current = response.data.code;
-  }
+
 
   const copyRoomId = async () => {
     try {
@@ -290,8 +298,8 @@ function C_EditorPage() {
                 Select a log
               </option>
               <option value={tempCode}>Updates</option>
-              {logs.map((log) => (
-                <option key={log} value={log.code}>
+              {logs.map((log, index) => (
+                <option key={index} value={log.code}>
                   {log.username}
                 </option>
               ))}

@@ -3,6 +3,7 @@ import projectModel from "../models/projectModel.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import nodemailer from 'nodemailer'
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 import verifyModel from "../models/verifyModel.js";
@@ -32,6 +33,30 @@ const loginUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.json({ success: false, message: "Error" });
+  }
+};
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: 'proyectaminds@gmail.com', 
+    pass: 'eshn jxtg xjmo zchk',
+  },
+});
+const sendEmail = async (to, subject, text, html) => {
+  try {
+    const mailOptions = {
+      from: 'proyectaminds@gmail.com',
+      to, 
+      subject,
+      text, 
+      html,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully!");
+  } catch (error) {
+    console.error("Error sending email:", error);
   }
 };
 
@@ -112,6 +137,12 @@ const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
+    await sendEmail(
+      email,
+      "Welcome to Our Platform!",
+      `Hi ${name}, welcome to our website.`,
+      `<h2>Hi ${name},</h2><p>Welcome to our platform! We're glad to have you.</p>`
+    );
     const token = generateTokenAndSetCookie(user._id, res);
     res.json({
       success: true,
@@ -266,11 +297,10 @@ const ListProjects = async (req, res) => {
     }).populate('createdBy', 'name').populate('collaborators','name');
 
     if (!userProjects.length) {
-      return res
-        .status(404)
-        .json({
-          success: false,
+      return res.json({
+          success: true,
           message: "No available projects for this user",
+          projects: userProjects,
         });
     }
 

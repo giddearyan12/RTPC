@@ -1,16 +1,14 @@
-import React from 'react';
-import './PreHome.css';
-
+import React from "react";
+import "./PreHome.css"; // Import the CSS file
 
 const ServiceCard = ({ icon, title, description }) => {
-    return (
-        <div className="service-card">
-            <div className="service-icon">{icon}</div>
-            <h3>{title}</h3>
-            <p>{description}</p>
-            
-        </div>
-    );
+  return (
+    <div className="service-card">
+      <div className="service-icon">{icon}</div>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+  );
 };
 
 export default ServiceCard;

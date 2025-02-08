@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PreHomeImg from "../../assets/PreHomeImg.png";
 import ServiceCard from "./ServiceCard.jsx";
 import logo from "../../assets/logo.png";
+import { FaCode, FaUsers, FaProjectDiagram } from "react-icons/fa";
 import Footer from "./Footer.jsx";
 
 const PreHome = () => {
@@ -11,19 +12,19 @@ const PreHome = () => {
 
   const serviceCards = [
     {
-      title: "Project Collaboration",
-      description:
-        "Connect with skilled peers to collaborate on projects, combining expertise for seamless team-based development.",
+      icon: <FaCode />,
+      title: "Code Collaboration",
+      description: "Work together in real time with seamless code integration.",
     },
     {
-      title: "Real-time Chat",
-      description:
-        "Communicate with  members instantly with integrated real-time chat, ensuring smooth and efficient exchanges during project development.",
+      icon: <FaUsers />,
+      title: "Communication",
+      description: "Chat, share ideas, and collaborate efficiently with your team.",
     },
     {
-      title: "Integrated IDE",
-      description:
-        "Collaboratively write, run, and debug code directly within the platform through the built-in IDE, enhancing development speed and teamwork.",
+      icon: <FaProjectDiagram />,
+      title: "Project Management",
+      description: "Organize, track, and manage your projects effectively.",
     },
   ];
 
@@ -81,24 +82,24 @@ const PreHome = () => {
         </div>
       </div>
       <div id="ss" className="services-section">
-        <h2>WHAT WE DO</h2>
-        <h1>We Provide You With Real Time Project Collaboration</h1>
+      <h2>WHAT WE DO</h2>
+      <h1>We Provide You With Real-Time Project Collaboration</h1>
 
-        <div className="services-container">
-          {serviceCards.map((card, index) => (
-            <ServiceCard
-              key={index}
-              icon={card.icon}
-              title={card.title}
-              description={card.description}
-            />
-          ))}
-        </div>
+      <div className="services-container">
+        {serviceCards.map((card, index) => (
+          <ServiceCard
+            key={index}
+            icon={card.icon}
+            title={card.title}
+            description={card.description}
+          />
+        ))}
       </div>
-      {/* <div id="footer">
+    </div>
+      <div id="footer">
         {" "}
         <Footer />
-      </div> */}
+      </div>
     </div>
   );
 };
