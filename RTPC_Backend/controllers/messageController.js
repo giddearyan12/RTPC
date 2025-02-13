@@ -23,6 +23,7 @@ export const sendMessage = async (req, res) => {
 			senderId,
 			receiverId,
 			message,
+			seen:false,
 		});
 
 		if (newMessage) {
@@ -33,7 +34,9 @@ export const sendMessage = async (req, res) => {
 
 		
 		if (receiverSocketId) {
+			
 			io.to(receiverSocketId).emit("newMessage", newMessage);
+			
 			
 		}
 

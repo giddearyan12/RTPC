@@ -80,6 +80,10 @@ const registerUser = async (req, res) => {
     if (phoneExists) {
       return res.json({ success: false, message: "Phone number already exists" });
     }
+    const nameExists = await userModel.findOne({ name });
+    if (nameExists) {
+      return res.json({ success: false, message: "Name already exists" });
+    }
 
     const enExists = await userModel.findOne({ en });
     if (enExists) {

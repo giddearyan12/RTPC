@@ -55,8 +55,6 @@ const Dashboard = () => {
     }
 
     try {
-      console.log(project._id)
-    
       if (!project._id) {
         alert("Invalid project data");
         return;
@@ -69,7 +67,7 @@ const Dashboard = () => {
           userId: userId, 
         }
       );
-      toast(`Collaboration Request Sent`, {
+      toast(response.data.message, {
         icon: "👏",
         style: {
           borderRadius: "10px",

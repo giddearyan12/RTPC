@@ -48,17 +48,19 @@ const requestCollaboration = async (req, res) => {
   try {
     const { projectId, userId } = req.body;
 
+
     const project = await projectModel.findById(projectId).populate("createdBy");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-
+   
     const sender = await userModel.findById(userId);
     if (!sender) {
       return res.status(404).json({ message: "Requesting user not found" });
     }
 
     const recipientId = project.createdBy._id;
+   
 
 
     const existingNotification = await notificationModel.findOne({
@@ -66,9 +68,12 @@ const requestCollaboration = async (req, res) => {
       sender: userId,
       projectId: projectId
     });
+  
+
+    
 
     if (existingNotification) {
-      return res.status(400).json({ message: "Collaboration request already sent." });
+      return res.status(200).json({ message: "Collaboration request already sent." });
     }
 
   
@@ -79,9 +84,11 @@ const requestCollaboration = async (req, res) => {
       message: `${sender.name} has requested to collaborate on your project "${project.name}".`,
     });
 
+   
+
     await notification.save();
 
-    res.status(201).json({ message: "Collaboration request sent successfully." });
+    res.status(201).json({ message: "Collaboration request sent" });
   } catch (error) {
     console.error("Error handling collaboration request:", error);
     res.status(500).json({ message: "Internal server error." });
@@ -148,6 +155,8 @@ const updateUser = async (req, res) => {
       if (!user) {
           return res.status(404).json({ error: "User not found" });
       }
+      const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
+      const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
 
       user.name = name || user.name;
       user.email = email || user.email;
@@ -157,6 +166,7 @@ const updateUser = async (req, res) => {
       user.gender = gender || user.gender;
       user.college = college || user.college;
       user.domain = domain || user.domain;
+      user.profilePic = user.gender === "Male"? boyProfilePic : girlProfilePic;
 
       await user.save();
 

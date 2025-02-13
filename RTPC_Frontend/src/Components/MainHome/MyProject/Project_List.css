@@ -8,6 +8,29 @@
     margin-top: 10px;
     font-size: 16px;
   }
+  .status-icon {
+    margin-left: 10px;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  
+  .completed {
+    color: green;
+  }
+  
+  .ongoing {
+    color: orange;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
   
   .open-ide-btn:hover {
     background-color: #4C3575; 

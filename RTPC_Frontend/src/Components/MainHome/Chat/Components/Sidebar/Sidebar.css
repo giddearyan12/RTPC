@@ -105,6 +105,7 @@
 }
 .custom-name-header {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
   justify-content: space-between;
 }
@@ -121,4 +122,11 @@
   padding-top: 0;
   padding-bottom: 0;
   height: 0.25rem;
+}
+.green-dot {
+	width: 10px;
+	height: 10px;
+	background-color: green;
+	border-radius: 50%;
+	
 }

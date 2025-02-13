@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
+import { FaCheckCircle, FaSpinner } from "react-icons/fa"; // Import FA icons
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import "./Project_List.css";
 
-function ProjectList({ projects, filterProjects, setProjects }) {
+function ProjectList({ projects, filterProjects, setProjects, loading }) {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userId = jwt_decode(token).userId;
   const [showModal, setShowModal] = useState(false);
   const [currentProject, setCurrentProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (projects.length > 0) {
-      setLoading(false);
-    }
-  }, [projects]);
 
   const updateProject = async () => {
     try {
@@ -69,13 +63,20 @@ function ProjectList({ projects, filterProjects, setProjects }) {
           <div className="spinner"></div>
           <p>Loading projects...</p>
         </div>
-      ) : filteredProjects.length === 0 ? (
+      ) : projects.length === 0 ? (
         <p>No projects found.</p>
       ) : (
         filteredProjects.map((project) => (
           <div key={project._id} className="project-cards">
             <div className="myproject-title">
-              <h3 className="project-name">{project.name}</h3>
+              <h3 className="project-name">
+                {project.name}{" "}
+                {project.status === "Completed" ? (
+                  <FaCheckCircle className="status-icon completed" />
+                ) : (
+                  <FaSpinner className="status-icon ongoing" />
+                )}
+              </h3>
               {userId === project.createdBy && (
                 <MdOutlineEdit className="edit-icon" onClick={() => handleEditClick(project)} />
               )}

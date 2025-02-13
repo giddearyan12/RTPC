@@ -1,70 +1,109 @@
-
-.container{
+.container {
     max-width: 1170px;
     margin: auto;
 }
-.row{
+
+.row {
     display: flex;
     flex-wrap: wrap;
 }
-ul{
+
+ul {
     list-style: none;
 }
-.footer{
+
+.footer {
     background-color: #C8CAE6;
     padding: 30px 0;
 }
-.footer-col{
+
+.footer-col {
     width: 25%;
     padding: 0 15px;
 }
-.footer-col h4{
+
+.footer-col h4 {
     font-size: 18px;
-    color: b00bae;
+    
     text-transform: capitalize;
     margin-bottom: 35px;
-    font-weight: 500;
+    font-weight: 600;
     position: relative;
 }
 
-.footer-col ul li:not(:last-child){
+.footer-col ul li:not(:last-child) {
     margin-bottom: 10px;
 }
-.footer-col ul li a{
+
+.footer-col ul li a {
     font-size: 16px;
     text-transform: capitalize;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 300;
     color: #020202;
+    text-decoration: none;
+    font-weight: 400;
     display: block;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
-.footer-col .social-links a{
+.footer-col ul li a:hover {
+    /* color: #b00bae; */
+    transform: translateX(5px);
+}
+
+.footer-col .social-links a {
     display: inline-block;
     height: 40px;
     width: 40px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.3);
     margin: 0 10px 10px 0;
     text-align: center;
     line-height: 40px;
     border-radius: 50%;
+    font-size: 18px;
     color: #ffffff;
-    transition: all 0.5s ease;
+    transition: all 0.4s ease-in-out;
 }
-.footer-col .social-links a:hover{
-    color: #24262b;
-    background-color: #ffffff;
+
+/* Specific Colors for Each Icon */
+.footer-col .social-links a.facebook:hover {
+    background-color: #1877F2;
+    color: #ffffff;
 }
-@media(max-width: 767px){
-    .footer-col{
+
+.footer-col .social-links a.x:hover {
+    background-color: #000000; 
+    color: #ffffff;
+}
+
+.footer-col .social-links a.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Instagram Gradient */
+    color: #ffffff;
+}
+
+.footer-col .social-links a.linkedin:hover {
+    background-color: #0077B5;  
+    color: #ffffff;
+}
+
+.footer-col .social-links a:hover {
+    transform: scale(1.2);
+}
+
+@media (max-width: 767px) {
+    .footer-col {
         width: 50%;
-        margin: 30px;
+        margin-bottom: 20px;
     }
 }
-@media(max-width: 574px){
-    .footer-col{
+
+@media (max-width: 574px) {
+    .footer-col {
         width: 100%;
+        text-align: center;
+    }
+
+    .footer-col .social-links {
+        display: flex;
+        justify-content: center;
     }
 }

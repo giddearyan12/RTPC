@@ -50,10 +50,11 @@ const Registration = () => {
     } else {
       newUrl += "/user/register";
     }
-
+    const loadingToast = toast.loading(curr === "Login" ? "Signing in..." : "Registering...");
     try {
       const response = await axios.post(newUrl, data);
       if (response.data.success) {
+        toast.dismiss(loadingToast);
         setToken(response.data.token);
         localStorage.setItem("token", response.data.data.token);
 
@@ -62,11 +63,11 @@ const Registration = () => {
 
         navigate("/home");
         toast.success("Login successfull");
-        console.log("Success");
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
       console.log("An error occurred. Please try again.", error);
     }
   };

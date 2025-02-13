@@ -1,23 +1,25 @@
 import useGetConversations from "../../hooks/useGetConversations";
-import './Sidebar.css'
+import "./Sidebar.css";
 import Conversation from "./Conversation";
 
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
-	
 
 	return (
 		<div className="custom-conversations-container">
-			 {conversations.map((conversation, idx) => (
-				<Conversation
-					key={conversation._id}
-					conversation={conversation}
-					lastIdx={idx === conversations.length - 1}
-				/>
-			))} 
+			{Object.values(conversations)
+				.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) 
+				.map((conversation, idx, arr) => (
+					<Conversation
+						key={conversation._id}
+						conversation={conversation}
+						lastIdx={idx === arr.length - 1}
+					/>
+				))}
 
-			{loading ? <span className="custom-loading-spinner mx-auto"></span> : null}
+			{loading && <span className="custom-loading-spinner mx-auto"></span>}
 		</div>
 	);
 };
+
 export default Conversations;

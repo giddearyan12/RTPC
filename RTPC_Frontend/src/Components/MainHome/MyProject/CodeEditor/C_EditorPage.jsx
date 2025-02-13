@@ -24,14 +24,15 @@ function C_EditorPage() {
   const [code, setCode] = useState("");
   const codeRef = useRef("");
   const location = useLocation();
-  const [userInput, setUserInput] = useState(""); 
+  const [userInput, setUserInput] = useState("");
   const navigate = useNavigate();
   const { roomId } = useParams();
   const { project } = location.state || {};
   const token = localStorage.getItem("token");
   const userId = jwt_decode(token).userId;
   const [logs, setLogs] = useState([]);
-
+  const [lastLogTimestamp, setLastLogTimestamp] = useState(null);
+  const [hasNewLog, setHasNewLog] = useState(false);
 
 
   const socketRef = useRef(null);
@@ -46,7 +47,7 @@ function C_EditorPage() {
       await setCode(response.data.code)
       codeRef.current = response.data.code;
     }
-    
+
 
     const init = async () => {
       socketRef.current = await initSocket();
@@ -58,12 +59,11 @@ function C_EditorPage() {
         toast.error("Socket connection failed, try again later");
         navigate("/");
       };
-      
-      console.log("IC",code)
+
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId,
         username: location.state?.username,
-        initialCode:code,
+        initialCode: code,
       });
 
       socketRef.current.on(
@@ -89,11 +89,11 @@ function C_EditorPage() {
     };
 
     const fetchAndInit = async () => {
-      await fetchCode(); 
-      await getLogs();  
-      await init();      
+      await fetchCode();
+      await getLogs();
+      await init();
     };
-  
+
     fetchAndInit();
 
     return () => {
@@ -109,9 +109,6 @@ function C_EditorPage() {
     return <Navigate to="/" />;
   }
 
-  const handleLogClick = (log) => {
-    console.log("Selected Log:", log);
-  };
 
   const getLogs = async () => {
     const projectId = location.state?.projectId.projectId;
@@ -119,8 +116,19 @@ function C_EditorPage() {
       projectId
     })
 
-    setLogs(response.data)
-    setLogs((prevLogs) => [...prevLogs].reverse());
+    const newLogs = response.data;
+    setLogs(newLogs.reverse());
+
+    if (newLogs.length > 0) {
+      const latestLogTime = newLogs[0].timestamp; 
+      console.log()
+
+      if (!lastLogTimestamp || latestLogTime > lastLogTimestamp) {
+        setHasNewLog(true); 
+        setLastLogTimestamp(latestLogTime);
+      }
+    }
+
   }
 
 
@@ -138,14 +146,14 @@ function C_EditorPage() {
     navigate(-1);
   };
 
-  // Run the code
+ 
   const runCode = async () => {
     setIsCompiling(true);
     try {
       const response = await axios.post("http://localhost:5000/api/execute", {
         code: codeRef.current,
         language: selectedLanguage,
-        input:userInput,
+        input: userInput,
       });
 
       console.log("Backend response:", response.data);
@@ -167,7 +175,7 @@ function C_EditorPage() {
     setIsCompileWindowOpen((prev) => !prev);
   };
 
-  // Import code
+ 
   const importCode = (event) => {
     const file = event.target.files[0];
     if (file && file.type.includes("text")) {
@@ -183,7 +191,7 @@ function C_EditorPage() {
     }
   };
 
-  // Export code
+  
   const exportCode = () => {
     const codeValue = code.trim();
     if (!codeValue) {
@@ -204,7 +212,7 @@ function C_EditorPage() {
     setCode(codeValue);
   };
 
-  // Save code
+  
   const saveCode = async () => {
     const projectId = location.state?.projectId;
     try {
@@ -231,6 +239,7 @@ function C_EditorPage() {
         username: location.state?.username,
         projectId: projectId,
       });
+      getLogs();
       toast.success(response.data.message || "Code submitted successfully");
     } catch (error) {
       console.error("Error saving code:", error);
@@ -238,6 +247,10 @@ function C_EditorPage() {
         error.response?.data?.error || "An error occurred while saving the code"
       );
     }
+  };
+  const handleLogSelection = (event) => {
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, { roomId, code:event.target.value });
+    setHasNewLog(false);
   };
 
   return (
@@ -293,17 +306,34 @@ function C_EditorPage() {
                 {project.createdBy === userId ? "Save" : "Submit"}
               </button>
             </div>
-            {project.createdBy === userId ? <select className="language-dropdown" onChange={(e) => setCode(e.target.value)}>
-              <option disabled value="">
-                Select a log
-              </option>
-              <option value={tempCode}>Updates</option>
-              {logs.map((log, index) => (
-                <option key={index} value={log.code}>
-                  {log.username}
+            {project.createdBy === userId ? (
+              <select className="language-dropdown" onChange={handleLogSelection}>
+                <option disabled value="">
+                  Select a log
                 </option>
-              ))}
-            </select> : ''}
+                <option value={tempCode}>Updates</option>
+                {logs.map((log, index) => (
+                  <option key={index} value={log.code}>
+                    {log.username}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+             {project.createdBy === userId && hasNewLog &&(
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "30px",
+                      right: "200px",
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: "green",
+                      borderRadius: "50%",
+                    }}
+                  />
+                )}
+              
+
 
             <select
               className="language-dropdown"
@@ -333,7 +363,7 @@ function C_EditorPage() {
         <button className="compile-btn" onClick={toggleCompileWindow}>
           {isCompileWindowOpen ? "Close Compiler" : "Open Compiler"}
         </button>
-{/* 
+        {/* 
         <div className={`compiler-input ${isCompileWindowOpen ? "open" : ""}`}>
           <div className="input-header">
             <h5>Compiler Input</h5>
