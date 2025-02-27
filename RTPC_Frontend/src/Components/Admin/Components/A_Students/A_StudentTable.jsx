@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StudentTable = ({ students, handleViewProfile }) => {
+const A_StudentTable = ({ students, handleViewProfile }) => {
   return (
     <div className="student-table-container">
       <table className="student-table">
@@ -34,4 +34,4 @@ const StudentTable = ({ students, handleViewProfile }) => {
   );
 };
 
-export default StudentTable;
+export default A_StudentTable;

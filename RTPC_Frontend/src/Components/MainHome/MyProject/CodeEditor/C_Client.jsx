@@ -3,6 +3,7 @@ import Avatar from "react-avatar";
 import "./C_Style.css";
 
 function C_Client({ username }) {
+  
   return (
     <div className="client-container">
       <Avatar

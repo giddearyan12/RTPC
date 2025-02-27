@@ -43,8 +43,10 @@ const useGetConversations = () => {
 
 		
 		socket?.on("newMessage", (message) => {
+			
+			getConversations();
 			setConversations((prevConversations) => {
-				getConversations();
+				
 				const updatedConversations = { ...prevConversations };
 
 				

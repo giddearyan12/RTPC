@@ -81,3 +81,11 @@
     text-align: center;
     margin-top: 10px;
   }
+  .notification-panel{
+    height: 100%;
+    max-height: calc(100vh - 200px); 
+   
+    overflow-y: auto;
+    scrollbar-width: none; 
+    overflow-x: hidden;
+  }

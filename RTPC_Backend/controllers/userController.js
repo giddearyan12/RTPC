@@ -7,11 +7,23 @@ import nodemailer from 'nodemailer'
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 import verifyModel from "../models/verifyModel.js";
+import adminModel from "../models/adminModel.js";
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
+
+
+  
   try {
-    const user = await userModel.findOne({ email });
+   let user;
+    if(role==='user'){
+       user = await userModel.findOne({ email });
+    }
+    else{
+     
+       user = await adminModel.findOne({ email });
+    }
+    
     if (!user) {
       return res.json({ success: false, message: "Incorrect Credentials" });
     }
@@ -19,6 +31,9 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.json({ success: false, message: "Wrong Password" });
     }
+   
+    
+   
     const token = generateTokenAndSetCookie(user._id, res);
 
     res.json({
@@ -28,8 +43,13 @@ const loginUser = async (req, res) => {
         name: user.fullName,
         profilePic: user.profilePic,
         token: token,
+        role:role,
       },
+    
     });
+ 
+ 
+  
   } catch (error) {
     console.log(error);
     return res.json({ success: false, message: "Error" });
@@ -72,6 +92,7 @@ const registerUser = async (req, res) => {
     gender,
     college,
     domain,
+    role
   } = req.body;
 
   try {
@@ -138,6 +159,7 @@ const registerUser = async (req, res) => {
       college: college,
       domain: domain,
       profilePic: gender === "Male" ? boyProfilePic : girlProfilePic,
+      role:role,
     });
 
     const user = await newUser.save();
@@ -224,17 +246,16 @@ const myProjects = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    const userProjects = await projectModel.find({
-      _id: { $in: user.projects },
-
-    });
+    const userProjects = await projectModel
+      .find({ _id: { $in: user.projects } })
+      .populate("createdBy", "name"); 
+      
 
     if (!userProjects.length) {
       return res
         .status(404)
         .json({ success: false, message: "No projects found for this user" });
     }
-    
 
     return res.json({ success: true, projects: userProjects });
   } catch (error) {
@@ -244,6 +265,7 @@ const myProjects = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
+
 
 const getName = async (req, res) => {
   try {

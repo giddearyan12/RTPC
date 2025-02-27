@@ -13,7 +13,6 @@ const getAllConnectedClients = (roomId, io) => {
 };
 
 export const socketHandler = (socket, io) => {
-  console.log("A user connected:", socket.id);
 
   const userId = socket.handshake.query.userId;
   if (userId !== "undefined") userSocketMap[userId] = socket.id;
@@ -21,7 +20,6 @@ export const socketHandler = (socket, io) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });

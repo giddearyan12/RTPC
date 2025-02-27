@@ -6,13 +6,13 @@ export const getUsersForSidebar = async (req, res) => {
 	try {
 		const loggedInUserId = req.user._id;
 
-		// Fetch all users except the logged-in user
+	
 		const allUsers = await userModel.find({ _id: { $ne: loggedInUserId } }).select("name profilePic");
 
-		// Fetch conversations where the logged-in user is a participant
+		
 		const conversations = await conversationalModel.find({ participants: loggedInUserId });
 
-		// Initialize user map
+		
 		const userMap = {};
 		allUsers.forEach((user) => {
 			userMap[user._id.toString()] = {
@@ -20,11 +20,11 @@ export const getUsersForSidebar = async (req, res) => {
 				name: user.name,
 				profilePic: user.profilePic,
 				updatedAt: null, 
-				unreadCount: 0, // Default unread count
+				unreadCount: 0, 
 			};
 		});
 
-		// Update last interaction time
+		
 		conversations.forEach((conversation) => {
 			const otherParticipants = conversation.participants.filter(
 				(user) => user._id.toString() !== loggedInUserId.toString()
@@ -37,7 +37,7 @@ export const getUsersForSidebar = async (req, res) => {
 			});
 		});
 
-		// Fetch unread message counts per sender
+	
 		const unreadCounts = await messageModel.aggregate([
 			{
 				$match: {
@@ -59,7 +59,6 @@ export const getUsersForSidebar = async (req, res) => {
 			}
 		});
 		
-
 		res.status(200).json(userMap);
 	} catch (error) {
 		console.error("Error in getUsersForSidebar: ", error.message);
@@ -74,6 +73,21 @@ export const markRead = async(req, res)=>{
 		{ receiverId: receiverId, senderId:senderId, seen: false }, 
 		{ $set: { seen: true } }
 	  );
+	  res.status(200).json({success:true, message:"Marked read"});
+	} catch (error) {
+		res.status(500).json({error:"Error"});
+	}
+
+}
+export const markNotification = async(req, res)=>{
+	try {
+	const {receiverId, senderId, message} = req.body;
+	
+	const abc = await messageModel.updateOne(
+		{ receiverId: receiverId, senderId:senderId, message:message, seen: false }, 
+		{ $set: { seen: true } }
+	  );
+	  
 	  res.status(200).json({success:true, message:"Marked read"});
 	} catch (error) {
 		res.status(500).json({error:"Error"});

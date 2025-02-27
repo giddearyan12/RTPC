@@ -1,6 +1,8 @@
-
+import { getReceiverSocketId} from "../socketExecution.js";
+import {io} from '../Server.js'
 import Code from "../models/saveCode.js";
 import verifyCode from "../models/verifyCodeModel.js";
+import projectModel from "../models/projectModel.js";
 
 export const saveCode = async (req, res) => {
   try {
@@ -31,7 +33,8 @@ export const saveCode = async (req, res) => {
 export const submitCode = async (req, res) => {
   try {
     const { code, username, projectId } = req.body;
-
+    
+    
     if (!code || !username || !projectId) {
       return res.status(400).json({
         error: "Code Editor is empty",
@@ -49,6 +52,15 @@ export const submitCode = async (req, res) => {
       }
       projectCode.codeHistory.push(newCodeHistory);
       await projectCode.save();
+      
+    
+      const projectOwner = await projectModel.findById(projectId.projectId)
+  
+      const receiverSocketId = getReceiverSocketId(projectOwner.createdBy);
+      
+		if (receiverSocketId) {
+			io.to(receiverSocketId).emit("newLog", newCodeHistory);
+		}
       res.status(200).json({ message: "Code submitted successfully" });
     } else {
       
@@ -62,6 +74,7 @@ export const submitCode = async (req, res) => {
           },
         ],
       });
+  
 
       await newProjectCode.save();
 
@@ -94,7 +107,7 @@ export const getCodeByProjectId = async (req, res) => {
 export const getLogs = async (req, res) => {
   try {
     const { projectId } = req.body;
-    console.log(projectId)
+ 
 
     if (!projectId) {
       return res.status(400).json({ error: "Project ID is required" });

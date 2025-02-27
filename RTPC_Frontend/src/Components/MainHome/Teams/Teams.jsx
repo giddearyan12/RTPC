@@ -36,7 +36,7 @@ const Teams = () => {
         params: { id: currentUserId },
       });
       const allProjects = [...response.data.projects, ...response.data.collaboratedProjects];
-      console.log(allProjects)
+     
       setProjects(allProjects);
     } catch (error) {
       console.log(error);

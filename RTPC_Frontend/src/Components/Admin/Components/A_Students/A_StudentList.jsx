@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './StudentList.css';
+import './A_StudentList.css';
 import axios from 'axios';
-import StudentTable from './StudentTable';
-import StudentProfile from './StudentProfile';
+import A_StudentTable from './A_StudentTable';
+import A_StudentProfile from './A_StudentProfile';
 
-const StudentList = () => {
+const A_StudentList = () => {
   const url = 'http://localhost:5000';
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -58,14 +58,14 @@ const StudentList = () => {
   return (
     <div className="student-list-container">
       {/* Pass students and actions to StudentTable component */}
-      <StudentTable
+      <A_StudentTable
         students={students}
         handleViewProfile={handleViewProfile}
       />
 
       {/* Pass selectedStudent and actions to StudentProfile component */}
       {selectedStudent && (
-        <StudentProfile
+        <A_StudentProfile
           student={selectedStudent}
           closePopup={closePopup}
           handleRemoveClick={handleRemoveClick}
@@ -93,4 +93,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default A_StudentList;

@@ -3,13 +3,13 @@ import C_Client from "./C_Client";
 import C_Editor from "./C_Editor";
 import { initSocket } from "./Socket.js";
 import logo_white from "../../../../assets/logo_white.png";
+import { useSocketContext } from "../../Chat/Context/SocketContext.jsx";
 import ACTIONS from "./Actions.js";
 import "./C_Style.css";
-import { useNavigate, useLocation, Navigate, useParams } from "react-router-dom";
+import {useNavigate,useLocation,Navigate,useParams} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 
 
 const LANGUAGES = ["python", "java", "cpp", "c", "javascript", "php"];
@@ -24,30 +24,42 @@ function C_EditorPage() {
   const [code, setCode] = useState("");
   const codeRef = useRef("");
   const location = useLocation();
-  const [userInput, setUserInput] = useState("");
   const navigate = useNavigate();
   const { roomId } = useParams();
   const { project } = location.state || {};
+  
   const token = localStorage.getItem("token");
   const userId = jwt_decode(token).userId;
   const [logs, setLogs] = useState([]);
   const [lastLogTimestamp, setLastLogTimestamp] = useState(null);
   const [hasNewLog, setHasNewLog] = useState(false);
-
-
+  const [inputIndex, setInputIndex] = useState(0);
+  const [prompts, setPrompts] = useState([]);
+  const [userInput, setUserInput] = useState("");
   const socketRef = useRef(null);
+  const [userInputs, setUserInputs] = useState([]);
+  const { socket } = useSocketContext();
+
+  const samplecode = `
+  num1 = input("Enter first number: ")
+  num2 = input("Enter second number: ")
+  print(f"Sum of {num1} and {num2}")
+`;
+
+  useEffect(() => {
+    setPrompts(detectInputPlaceholder(codeRef.current));
+  }, [samplecode]); 
 
   useEffect(() => {
     const fetchCode = async () => {
       const projectId = location.state?.projectId.projectId;
-      const response = await axios.post('http://localhost:5000/api/get-code', {
-        projectId
-      })
-      settempCode(response.data.code)
-      await setCode(response.data.code)
+      const response = await axios.post("http://localhost:5000/api/get-code", {
+        projectId,
+      });
+      settempCode(response.data.code);
+      await setCode(response.data.code);
       codeRef.current = response.data.code;
-    }
-
+    };
 
     const init = async () => {
       socketRef.current = await initSocket();
@@ -88,6 +100,9 @@ function C_EditorPage() {
       });
     };
 
+
+    
+
     const fetchAndInit = async () => {
       await fetchCode();
       await getLogs();
@@ -108,29 +123,47 @@ function C_EditorPage() {
   if (!location.state) {
     return <Navigate to="/" />;
   }
+  useEffect(() => {
+     
+    if (!socket) return;
+
+    const handleNewLog = (log) => {
+      
+      setLogs((prevLogs) => {
+        const updatedLogs = [log, ...prevLogs]; 
+        return updatedLogs.slice(0, 5); 
+      });
+      setHasNewLog(true);
+    };
+
+    socket.on("newLog", handleNewLog);
+      return () => {
+        socket.off("newLog", handleNewLog);
+      };
+    }, [socket])
+
+
 
 
   const getLogs = async () => {
     const projectId = location.state?.projectId.projectId;
-    const response = await axios.post('http://localhost:5000/api/logs-code', {
-      projectId
-    })
+    const response = await axios.post("http://localhost:5000/api/logs-code", {
+      projectId,
+    });
 
     const newLogs = response.data;
     setLogs(newLogs.reverse());
 
     if (newLogs.length > 0) {
-      const latestLogTime = newLogs[0].timestamp; 
-      console.log()
+      const latestLogTime = newLogs[0].timestamp;
+     
 
       if (!lastLogTimestamp || latestLogTime > lastLogTimestamp) {
-        setHasNewLog(true); 
+        setHasNewLog(true);
         setLastLogTimestamp(latestLogTime);
       }
     }
-
-  }
-
+  };
 
   const copyRoomId = async () => {
     try {
@@ -146,7 +179,25 @@ function C_EditorPage() {
     navigate(-1);
   };
 
- 
+  const detectInputPlaceholder = (code) => {
+    const inputRegex = /input\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
+    const matches = [...code.matchAll(inputRegex)];
+    return matches.map((match) => match[1]);
+  };
+
+  const handleUserInputChange = (e) => {
+    setUserInput(e.target.value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && userInputs.trim()) {
+      setUserInputs((prev) => [...prev, userInputs.trim()]);
+      if (inputIndex < prompts.length - 1) {
+        setInputIndex((prev) => prev + 1);
+        setUserInput("");
+      }
+    }
+  };
   const runCode = async () => {
     setIsCompiling(true);
     try {
@@ -156,7 +207,7 @@ function C_EditorPage() {
         input: userInput,
       });
 
-      console.log("Backend response:", response.data);
+      
 
       setOutput(
         response.data.output
@@ -175,7 +226,6 @@ function C_EditorPage() {
     setIsCompileWindowOpen((prev) => !prev);
   };
 
- 
   const importCode = (event) => {
     const file = event.target.files[0];
     if (file && file.type.includes("text")) {
@@ -191,7 +241,6 @@ function C_EditorPage() {
     }
   };
 
-  
   const exportCode = () => {
     const codeValue = code.trim();
     if (!codeValue) {
@@ -212,7 +261,6 @@ function C_EditorPage() {
     setCode(codeValue);
   };
 
-  
   const saveCode = async () => {
     const projectId = location.state?.projectId;
     try {
@@ -234,11 +282,14 @@ function C_EditorPage() {
   const submitCode = async () => {
     const projectId = location.state?.projectId;
     try {
-      const response = await axios.post("http://localhost:5000/api/submit-code", {
-        code: code,
-        username: location.state?.username,
-        projectId: projectId,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/submit-code",
+        {
+          code: code,
+          username: location.state?.username,
+          projectId: projectId,
+        }
+      );
       getLogs();
       toast.success(response.data.message || "Code submitted successfully");
     } catch (error) {
@@ -249,9 +300,13 @@ function C_EditorPage() {
     }
   };
   const handleLogSelection = (event) => {
-    socketRef.current.emit(ACTIONS.CODE_CHANGE, { roomId, code:event.target.value });
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+      roomId,
+      code: event.target.value,
+    });
     setHasNewLog(false);
   };
+ 
 
   return (
     <div className="editor-container">
@@ -262,10 +317,9 @@ function C_EditorPage() {
         <div className="clients-list">
           <span className="members-title">Members</span>
           {clients.map((client) => (
-            <C_Client key={client.socketId} username={client.username} />
+            <C_Client key={client.socketId} username={project.createdBy.name === client.username ? `${client.username} ⭐` : client.username}  />
           ))}
         </div>
-
 
         <div className="room-actions">
           <button className="copy-btn" onClick={copyRoomId}>
@@ -301,13 +355,21 @@ function C_EditorPage() {
               </button>
             </div>
             <div>
-              <button className="savebutton" onClick={() => project.createdBy === userId ? saveCode() : submitCode()}>
+              <button
+                className="savebutton"
+                onClick={() =>
+                  project.createdBy._id === userId ? saveCode() : submitCode()
+                }
+              >
                 <span className="material-icons">save</span>
-                {project.createdBy === userId ? "Save" : "Submit"}
+                {project.createdBy._id === userId ? "Save" : "Submit"}
               </button>
             </div>
-            {project.createdBy === userId ? (
-              <select className="language-dropdown" onChange={handleLogSelection}>
+            {project.createdBy._id === userId ? (
+              <select
+                className="language-dropdown"
+                onChange={handleLogSelection}
+              >
                 <option disabled value="">
                   Select a log
                 </option>
@@ -319,21 +381,19 @@ function C_EditorPage() {
                 ))}
               </select>
             ) : null}
-             {project.createdBy === userId && hasNewLog &&(
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "30px",
-                      right: "200px",
-                      width: "10px",
-                      height: "10px",
-                      backgroundColor: "green",
-                      borderRadius: "50%",
-                    }}
-                  />
-                )}
-              
-
+            {project.createdBy._id === userId && hasNewLog && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "30px",
+                  right: "200px",
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "green",
+                  borderRadius: "50%",
+                }}
+              />
+            )}
 
             <select
               className="language-dropdown"
@@ -346,7 +406,6 @@ function C_EditorPage() {
                 </option>
               ))}
             </select>
-
           </div>
 
           <C_Editor
@@ -363,21 +422,20 @@ function C_EditorPage() {
         <button className="compile-btn" onClick={toggleCompileWindow}>
           {isCompileWindowOpen ? "Close Compiler" : "Open Compiler"}
         </button>
-        {/* 
+
         <div className={`compiler-input ${isCompileWindowOpen ? "open" : ""}`}>
           <div className="input-header">
             <h5>Compiler Input</h5>
-       
           </div>
-          
-            <textarea
-              className="input-content"
-              placeholder="Enter input here..."
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-            />
-          
-        </div> */}
+
+          <textarea
+            className="input-content"
+            placeholder={prompts[inputIndex] || "Enter input here..."}
+            value={userInput}
+            onChange={handleUserInputChange}
+            onKeyPress={handleKeyPress}
+          />
+        </div>
 
         <div className={`compiler-output ${isCompileWindowOpen ? "open" : ""}`}>
           <div className="output-header">
@@ -400,9 +458,6 @@ function C_EditorPage() {
           </pre>
         </div>
       </div>
-
-
-
     </div>
   );
 }

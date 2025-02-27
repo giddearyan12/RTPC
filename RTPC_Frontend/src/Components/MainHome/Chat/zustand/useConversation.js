@@ -7,7 +7,7 @@ const useConversation = create((set) => ({
 	messages: [],
 	setMessages: (messages) => set({ messages }),
 	
-	lastMessages: {}, // Stores latest message timestamps for sorting
+	lastMessages: {}, 
 	setLastMessages: (update) => set((state) => ({
 		lastMessages: { ...state.lastMessages, ...update }
 	})),

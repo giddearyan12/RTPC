@@ -1,9 +1,6 @@
-
 import dockerode from "dockerode";
 
-
 const docker = new dockerode();
-
 
 const languageConfig = {
   python: { versionIndex: "1" },
@@ -25,10 +22,18 @@ export const executeCode = async (req, res) => {
   let cmd = ["node", "-e", code];
 
   switch (language) {
+    case "python":
     case "python3":
       imageName = "python";
-      cmd = ["python", "-c", code];
+      cmd = [
+        "bash",
+        "-c",
+        `echo "${code.replace(/"/g, '\\"')}" > /tmp/script.py && echo '${
+          req.body.input
+        }' | python3 /tmp/script.py`,
+      ];
       break;
+
     case "cpp":
       imageName = "gcc";
       cmd = [
@@ -143,7 +148,6 @@ export const executeCode = async (req, res) => {
     });
   }
 };
-
 
 function cleanDockerOutput(output) {
   return output.replace(/[\x00-\x1F\x7F]/g, "").trim();

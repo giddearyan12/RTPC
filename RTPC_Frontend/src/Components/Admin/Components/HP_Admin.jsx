@@ -2,30 +2,30 @@ import React, { useState } from 'react';
 import mytask from '../assets/mytask.png';
 import home from '../assets/home.png';
 import member from '../assets/member.png';
-import './HomePage.css';
-import Dashboard from '../Components/Home/Dashboard.jsx';
-import Header from './Header';
-import Students from './Students/Students.jsx'; 
+import './HP_Admin.css';
+import A_Dashboard from './A_Home/A_Dashboard.jsx';
+import A_Header from './A_Header.jsx';
+import A_Students from './A_Students/A_Students.jsx'; 
 
-const HomePage = () => {
+const HP_Admin = () => {
   const [selectedComponent, setSelectedComponent] = useState('dashboard');
 
  
   const renderComponent = () => {
     switch (selectedComponent) {
       case 'dashboard':
-        return <Dashboard />;
+        return <A_Dashboard />;
       case 'students':
-        return <Students />;
+        return <A_Students />;
       default:
-        return <Dashboard />;
+        return <A_Dashboard />;
     }
   };
 
   return (
     <>
       <div className='right-navbar'>
-        <Header />
+        <A_Header />
       </div>
       <div className='main-home'>
         <div className="left">
@@ -56,4 +56,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HP_Admin;

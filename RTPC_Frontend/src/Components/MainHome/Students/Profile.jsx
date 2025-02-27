@@ -11,7 +11,7 @@ const Profile = ({ student, onBack }) => {
     const fetchStudentDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/user/${student.name}`);
-        console.log(response.data)
+      
         setStudentDetails(response.data);
         
         setLoading(false);

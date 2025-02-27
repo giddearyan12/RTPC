@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }]
+    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
+   
 },{minimize:false});
 
 const userModel = mongoose.models.user || mongoose.model("user", userSchema)

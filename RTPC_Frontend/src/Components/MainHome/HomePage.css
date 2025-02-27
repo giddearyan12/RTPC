@@ -95,3 +95,19 @@
     width: 30px;
 }
 
+.chat-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .unread-dot {
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    right: -10px;
+    top: 5px;
+  }
+  

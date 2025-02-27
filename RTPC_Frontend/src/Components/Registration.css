@@ -81,6 +81,7 @@
     border: 1px solid #ccc; 
     background-color: white;
     color: #818183;
+    font-size: 1em;
 }
 
 .reg-form .submit {
@@ -103,6 +104,10 @@
 }
 
 .loginform input {
+    width: 100%;
+    padding: 5px 8px;
+}
+.loginform select {
     width: 100%;
     padding: 5px 8px;
 }

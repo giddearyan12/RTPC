@@ -12,11 +12,10 @@ const Conversation = ({ conversation, lastIdx }) => {
 	const isOnline = onlineUsers.includes(conversation._id);
 	const token = localStorage.getItem("token");
 	const decodedToken = jwtDecode(token);
-	
+
 
 	const markAsRead = async (id) => {
 		try {
-			console.log('hello')
 			await axios.post("http://localhost:5000/api/members/mark", {
 				receiverId: decodedToken.userId,
 				senderId: id,
@@ -28,19 +27,10 @@ const Conversation = ({ conversation, lastIdx }) => {
 
 	const handleSelectConversation = (id) => {
 		setSelectedConversation(conversation);
+
 		conversation.unreadCount = 0;
 		markAsRead(id);
 	};
-
-
-	if(isSelected && conversation.unreadCount>0)
-	{
-		console.log("abc")
-		conversation.unreadCount = 0;
-		markAsRead(conversation._id);
-	}
-
-
 	return (
 		<>
 			<div

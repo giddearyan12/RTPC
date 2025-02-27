@@ -8,6 +8,7 @@ import HomePage from './Components/MainHome/HomePage'
 import UserProfile from './Components/MainHome/UserProfile'
 import C_Home from './Components/MainHome/MyProject/CodeEditor/C_Home'
 import C_EditorPage from './Components/MainHome/MyProject/CodeEditor/C_EditorPage'
+import HP_Admin from './Components/Admin/Components/HP_Admin'
 
 function App() {
   const { authUser } = useAuthContext();
@@ -22,6 +23,7 @@ function App() {
           <Route path='/profile' element={authUser ?<UserProfile/>:<PreHome/>}/>
           <Route path='/ide/:projectId' element={authUser ?<C_Home/>:<PreHome/>}/>
           <Route path="/editor/:roomId" element={<C_EditorPage />}></Route>
+          <Route path="/admin" element={authUser ?<HP_Admin/>:<PreHome/>}></Route>
 
      
         

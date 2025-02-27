@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StudentProfile = ({ student, closePopup, handleRemoveClick }) => {
+const A_StudentProfile = ({ student, closePopup, handleRemoveClick }) => {
   return (
     <div className="popup-overlay">
       <div className="popup">
@@ -29,4 +29,4 @@ const StudentProfile = ({ student, closePopup, handleRemoveClick }) => {
   );
 };
 
-export default StudentProfile;
+export default A_StudentProfile;
