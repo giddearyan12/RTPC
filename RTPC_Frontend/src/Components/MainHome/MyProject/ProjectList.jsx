@@ -77,7 +77,7 @@ function ProjectList({ projects, filterProjects, setProjects, loading }) {
                   <FaSpinner className="status-icon ongoing" />
                 )}
               </h3>
-              {userId === project.createdBy && (
+              {userId === project.createdBy._id && (
                 <MdOutlineEdit className="edit-icon" onClick={() => handleEditClick(project)} />
               )}
             </div>

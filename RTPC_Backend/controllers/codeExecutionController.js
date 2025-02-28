@@ -12,7 +12,7 @@ const languageConfig = {
 };
 
 export const executeCode = async (req, res) => {
-  const { code, language } = req.body;
+  const { code, language, input } = req.body;
 
   if (!code || !language) {
     return res.status(400).json({ error: "Code or language not provided" });
@@ -28,9 +28,7 @@ export const executeCode = async (req, res) => {
       cmd = [
         "bash",
         "-c",
-        `echo "${code.replace(/"/g, '\\"')}" > /tmp/script.py && echo '${
-          req.body.input
-        }' | python3 /tmp/script.py`,
+        `echo "${code.replace(/"/g, '\\"')}" > /tmp/script.py && python3 /tmp/script.py <<EOF\n${input}\nEOF`,
       ];
       break;
 
@@ -39,9 +37,10 @@ export const executeCode = async (req, res) => {
       cmd = [
         "bash",
         "-c",
-        `echo '${code}' > program.cpp && g++ program.cpp -o program && ./program`,
+        `echo '${code}' > program.cpp && g++ program.cpp -o program && echo "${input}" | ./program`,
       ];
       break;
+
     case "java":
       imageName = "openjdk:11";
       const classNameMatch = code.match(/public\s+class\s+([A-Za-z0-9_]+)/);
@@ -49,28 +48,29 @@ export const executeCode = async (req, res) => {
       cmd = [
         "bash",
         "-c",
-        `echo "${code.replace(
-          /"/g,
-          '\\"'
-        )}" > ${className}.java && javac ${className}.java && java ${className}`,
+        `echo "${code.replace(/"/g, '\\"')}" > ${className}.java && javac ${className}.java && echo "${input}" | java ${className}`,
       ];
       break;
+
     case "c":
       imageName = "gcc";
       cmd = [
         "bash",
         "-c",
-        `echo "${code.replace(
-          /"/g,
-          '\\"'
-        )}" > program.c && gcc program.c -o program && ./program`,
+        `echo "${code.replace(/"/g, '\\"')}" > program.c && gcc program.c -o program && echo "${input}" | ./program`,
       ];
       break;
+
     case "javascript":
     case "js":
       imageName = "node";
-      cmd = ["node", "-e", code];
+      cmd = [
+        "bash",
+        "-c",
+        `echo "${code.replace(/"/g, '\\"')}" > script.js && node script.js <<EOF\n${input}\nEOF`,
+      ];
       break;
+
     case "php":
       imageName = "php:8.0-cli";
       const sanitizedCode = code
@@ -80,7 +80,7 @@ export const executeCode = async (req, res) => {
       cmd = [
         "bash",
         "-c",
-        `echo "${sanitizedCode}" > /script.php && php /script.php`,
+        `echo "${sanitizedCode}" > /script.php && php /script.php <<EOF\n${input}\nEOF`,
       ];
       break;
 
@@ -122,14 +122,14 @@ export const executeCode = async (req, res) => {
             output += chunk.toString("utf8");
           });
           stream.on("end", () => {
-            resolve(cleanDockerOutput(output));
+            resolve(output);
           });
         }
       );
     });
 
     if (logs) {
-      res.json({ output: logs });
+      res.json({ output: logs.trim() });
     } else {
       res.status(500).json({ error: "No output from the container" });
     }
@@ -148,6 +148,7 @@ export const executeCode = async (req, res) => {
     });
   }
 };
+
 
 function cleanDockerOutput(output) {
   return output.replace(/[\x00-\x1F\x7F]/g, "").trim();

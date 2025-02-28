@@ -40,15 +40,15 @@ function C_EditorPage() {
   const [userInputs, setUserInputs] = useState([]);
   const { socket } = useSocketContext();
 
-  const samplecode = `
-  num1 = input("Enter first number: ")
-  num2 = input("Enter second number: ")
-  print(f"Sum of {num1} and {num2}")
-`;
+//   const samplecode = `
+//   num1 = input("Enter first number: ")
+//   num2 = input("Enter second number: ")
+//   print(f"Sum of {num1} and {num2}")
+// `;
 
   useEffect(() => {
     setPrompts(detectInputPlaceholder(codeRef.current));
-  }, [samplecode]); 
+  }, []); 
 
   useEffect(() => {
     const fetchCode = async () => {
