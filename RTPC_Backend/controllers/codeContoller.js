@@ -1,5 +1,5 @@
 import { getReceiverSocketId} from "../socketExecution.js";
-import {io} from '../Server.js'
+import {io} from '../app.js'
 import Code from "../models/saveCode.js";
 import verifyCode from "../models/verifyCodeModel.js";
 import projectModel from "../models/projectModel.js";
@@ -46,6 +46,7 @@ export const submitCode = async (req, res) => {
         username: username,
         code: code,
         timestamp: new Date(),
+        seen:false,
       };
       if (projectCode.codeHistory.length >= 5) {
         projectCode.codeHistory.shift();
@@ -86,6 +87,7 @@ export const submitCode = async (req, res) => {
   }
 };
 
+
 export const getCodeByProjectId = async (req, res) => {
   try {
     const { projectId } = req.body;
@@ -120,6 +122,34 @@ export const getLogs = async (req, res) => {
     }
 
     res.status(200).json(projectData.codeHistory);
+  } catch (error) {
+    console.error("Error fetching Logs", error.stack);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+export const handleLogSelection = async (req, res) => {
+  try {
+    const { selectedLog } = req.body;
+
+
+    if (!selectedLog) {
+      return res.status(400).json({ error: "Log is required" });
+    }
+
+    await verifyCode.findOneAndUpdate(
+      { 
+        "codeHistory": { 
+          $elemMatch: { username: selectedLog.username, timestamp: selectedLog.timestamp } 
+        } 
+      }, 
+      { $set: { "codeHistory.$.seen": true } }, 
+      { new: true }  
+    );
+    
+    
+  
+
+    res.status(200).json({success:true});
   } catch (error) {
     console.error("Error fetching Logs", error.stack);
     res.status(500).json({ error: "Internal server error" });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./prehome.css";
+import "./PreHome.css";
 import { useNavigate } from "react-router-dom";
 import PreHomeImg from "../../assets/PreHomeImg.png";
 import ServiceCard from "./ServiceCard.jsx";

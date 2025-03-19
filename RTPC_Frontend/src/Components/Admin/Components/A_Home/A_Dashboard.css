@@ -40,14 +40,30 @@
   outline: none;
 }
 
+.project-table-container {
+  max-height: 600px; 
+  overflow-y: auto;
+  border-radius: 12px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.project-table-container::-webkit-scrollbar {
+  display: none;
+}
+
+
+.project-table-container {
+  scrollbar-width: none;
+}
+
+
 .project-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 .project-table th,
 .project-table td {
@@ -58,6 +74,9 @@
 .project-table thead {
   background: #4C3575;
   color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .project-table tbody tr:nth-child(even) {

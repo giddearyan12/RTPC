@@ -6,7 +6,7 @@ import logo_white from "../../../../assets/logo_white.png";
 import { useSocketContext } from "../../Chat/Context/SocketContext.jsx";
 import ACTIONS from "./Actions.js";
 import "./C_Style.css";
-import {useNavigate,useLocation,Navigate,useParams} from "react-router-dom";
+import { useNavigate, useLocation, Navigate, useParams } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -27,11 +27,10 @@ function C_EditorPage() {
   const navigate = useNavigate();
   const { roomId } = useParams();
   const { project } = location.state || {};
-  
+
   const token = localStorage.getItem("token");
   const userId = jwt_decode(token).userId;
   const [logs, setLogs] = useState([]);
-  const [lastLogTimestamp, setLastLogTimestamp] = useState(null);
   const [hasNewLog, setHasNewLog] = useState(false);
   const [inputIndex, setInputIndex] = useState(0);
   const [prompts, setPrompts] = useState([]);
@@ -40,15 +39,11 @@ function C_EditorPage() {
   const [userInputs, setUserInputs] = useState([]);
   const { socket } = useSocketContext();
 
-//   const samplecode = `
-//   num1 = input("Enter first number: ")
-//   num2 = input("Enter second number: ")
-//   print(f"Sum of {num1} and {num2}")
-// `;
+
 
   useEffect(() => {
     setPrompts(detectInputPlaceholder(codeRef.current));
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchCode = async () => {
@@ -99,10 +94,6 @@ function C_EditorPage() {
         );
       });
     };
-
-
-    
-
     const fetchAndInit = async () => {
       await fetchCode();
       await getLogs();
@@ -124,23 +115,23 @@ function C_EditorPage() {
     return <Navigate to="/" />;
   }
   useEffect(() => {
-     
+
     if (!socket) return;
 
     const handleNewLog = (log) => {
-      
+
       setLogs((prevLogs) => {
-        const updatedLogs = [log, ...prevLogs]; 
-        return updatedLogs.slice(0, 5); 
+        const updatedLogs = [log, ...prevLogs];
+        return updatedLogs.slice(0, 5);
       });
       setHasNewLog(true);
     };
 
     socket.on("newLog", handleNewLog);
-      return () => {
-        socket.off("newLog", handleNewLog);
-      };
-    }, [socket])
+    return () => {
+      socket.off("newLog", handleNewLog);
+    };
+  }, [socket])
 
 
 
@@ -153,16 +144,12 @@ function C_EditorPage() {
 
     const newLogs = response.data;
     setLogs(newLogs.reverse());
-
-    if (newLogs.length > 0) {
-      const latestLogTime = newLogs[0].timestamp;
-     
-
-      if (!lastLogTimestamp || latestLogTime > lastLogTimestamp) {
+    newLogs.map((log) => {
+      if (log.seen == false) {
         setHasNewLog(true);
-        setLastLogTimestamp(latestLogTime);
       }
-    }
+    })
+
   };
 
   const copyRoomId = async () => {
@@ -207,7 +194,7 @@ function C_EditorPage() {
         input: userInput,
       });
 
-      
+
 
       setOutput(
         response.data.output
@@ -299,14 +286,42 @@ function C_EditorPage() {
       );
     }
   };
-  const handleLogSelection = (event) => {
+  const handleLogSelection = async (event) => {
+  
+    const selectedCode = event.target.value;
+    const selectedLog = logs.find(log => log.code === selectedCode);
+    const response = await axios.post("http://localhost:5000/api/logs-seen", {
+      selectedLog
+    });
+
+    
     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
       roomId,
       code: event.target.value,
     });
     setHasNewLog(false);
+    logs.map((log) => {
+      if (log.code!=selectedCode && log.seen == false) {
+        setHasNewLog(true);
+      }
+    })
+   
+    if (selectedLog && selectedLog.seen === false) {
+      await handleSeenUpdate(selectedCode);
+    }
   };
- 
+
+  const handleSeenUpdate = async (code) => {
+   
+    setLogs(prevLogs =>
+      prevLogs.map(log => 
+        log.code === code ? { ...log, seen: true } : log
+      )
+    );
+  };
+
+
+
 
   return (
     <div className="editor-container">
@@ -317,7 +332,7 @@ function C_EditorPage() {
         <div className="clients-list">
           <span className="members-title">Members</span>
           {clients.map((client) => (
-            <C_Client key={client.socketId} username={project.createdBy.name === client.username ? `${client.username} ⭐` : client.username}  />
+            <C_Client key={client.socketId} username={project.createdBy.name === client.username ? `${client.username} ⭐` : client.username} />
           ))}
         </div>
 
@@ -366,17 +381,14 @@ function C_EditorPage() {
               </button>
             </div>
             {project.createdBy._id === userId ? (
-              <select
-                className="language-dropdown"
-                onChange={handleLogSelection}
-              >
+              <select className="language-dropdown" onChange={handleLogSelection}>
                 <option disabled value="">
                   Select a log
                 </option>
                 <option value={tempCode}>Updates</option>
                 {logs.map((log, index) => (
                   <option key={index} value={log.code}>
-                    {log.username}
+                 {log.username} {log.seen === false ? "(new)" : ""}
                   </option>
                 ))}
               </select>

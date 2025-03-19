@@ -1,7 +1,7 @@
 import ACTIONS from "./Actions.js";
 
 let userSocketMap = {};
-const usersCode = {}; // Stores the latest code for each room
+const usersCode = {};
 
 const getAllConnectedClients = (roomId, io) => {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(

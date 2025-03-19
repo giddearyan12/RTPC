@@ -38,4 +38,4 @@ COPY . .
 EXPOSE 3000
 
 
-CMD ["nodemon", "Server.js"]
+CMD ["nodemon", "app.js"]

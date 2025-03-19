@@ -10,7 +10,7 @@ const A_StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Fetch students data from the API
+  
   const fetchData = async () => {
     try {
       const response = await axios.get(`${url}/students`);
@@ -57,13 +57,11 @@ const A_StudentList = () => {
 
   return (
     <div className="student-list-container">
-      {/* Pass students and actions to StudentTable component */}
       <A_StudentTable
         students={students}
         handleViewProfile={handleViewProfile}
       />
 
-      {/* Pass selectedStudent and actions to StudentProfile component */}
       {selectedStudent && (
         <A_StudentProfile
           student={selectedStudent}
@@ -72,7 +70,6 @@ const A_StudentList = () => {
         />
       )}
 
-      {/* Confirmation Pop-up */}
       {showConfirmation && (
         <div className="popup-overlay">
           <div className="popup">
@@ -82,7 +79,7 @@ const A_StudentList = () => {
               <button className="confirm-btn" onClick={confirmRemoveMember}>
                 Yes
               </button>
-              <button className="cancel-btn" onClick={closePopup}>
+              <button className="cancels-btn" onClick={closePopup}>
                 No
               </button>
             </div>

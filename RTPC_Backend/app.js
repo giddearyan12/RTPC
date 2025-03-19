@@ -19,7 +19,7 @@ import codeExecutionRoutes from "./routes/codeExecutionRoute.js";
 import { socketHandler } from "./socketExecution.js";
 
 mongoose
-  .connect("mongodb+srv://giddearyan222:umcaa2025@pym-db.nwazx.mongodb.net/?retryWrites=true&w=majority&appName=pym-db")
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("MONGO DB CONNECTED"));
 
 
@@ -32,7 +32,7 @@ const io = new Server(server, {
   },
 });
 
-const port = 5000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());

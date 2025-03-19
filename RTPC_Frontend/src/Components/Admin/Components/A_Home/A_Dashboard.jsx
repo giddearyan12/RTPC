@@ -113,6 +113,7 @@ function A_Dashboard() {
       ) : error ? (
         <div className="error-message">{error}</div>
       ) : (
+        <div className="project-table-container">
         <table className="project-table">
           <thead>
             <tr>
@@ -150,6 +151,7 @@ function A_Dashboard() {
             )}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

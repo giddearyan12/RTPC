@@ -6,6 +6,7 @@ const verifyCodeSchema = new mongoose.Schema({
           username: { type: String },
           code: { type: String },
           timestamp: { type: Date, default: Date.now },
+          seen: {type: Boolean},
         },
     ],
    projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required:true },
