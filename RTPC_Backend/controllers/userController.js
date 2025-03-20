@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import projectModel from "../models/projectModel.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer'
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
