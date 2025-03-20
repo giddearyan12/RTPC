@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import projectModel from "../models/projectModel.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import nodemailer from 'nodemailer'
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "Incorrect Credentials" });
     }
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
       return res.json({ success: false, message: "Wrong Password" });
     }
@@ -142,8 +142,8 @@ const registerUser = async (req, res) => {
       });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedpass = await bcrypt.hash(password, salt);
+    const salt = await bcryptjs.genSalt(10);
+    const hashedpass = await bcryptjs.hash(password, salt);
 
     const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
