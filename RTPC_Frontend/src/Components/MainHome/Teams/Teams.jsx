@@ -71,13 +71,15 @@ const Teams = () => {
     setShowPopup(false);
   };
 
-  const handleRemoveMember = async () => {
+  const handleRemoveMember = async (sp, memberToRemove) => {
+    console.log(sp)
     if (memberToRemove) {
       try {
-        await axios.post('http://localhost:5000/students/remove-collaborator', {
-          projectId: memberToRemove.projectId,
-          collaboratorId: memberToRemove.collaboratorId,
+        const response = await axios.post('http://localhost:5000/students/remove-collaborator', {
+          projectId: sp,
+          collaboratorId: memberToRemove,
         });
+        console.log(response)
         fetchData();
         setShowPopup(false);
         setMemberToRemove(null);

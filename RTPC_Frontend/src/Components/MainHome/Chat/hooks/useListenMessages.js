@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useSocketContext } from "../Context/SocketContext";
 import useConversation from "../zustand/useConversation";
+import useGetConversations from "../hooks/useGetConversations";
 
 import notificationSound from "../sounds/notification.mp3";
 const markAsRead = async (senderId, receiverId) => {
@@ -20,6 +21,7 @@ const useListenMessages = () => {
 	const { socket } = useSocketContext();
 	const { messages, setMessages } = useConversation(); 
 	const { selectedConversation, setSelectedConversation } = useConversation();
+	const { getConversations } = useGetConversations();
 	
 
 	useEffect(() => {

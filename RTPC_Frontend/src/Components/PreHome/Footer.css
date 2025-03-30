@@ -8,7 +8,7 @@
     flex-wrap: wrap;
 }
 
-ul {
+.row ul {
     list-style: none;
 }
 
@@ -64,7 +64,6 @@ ul {
     transition: all 0.4s ease-in-out;
 }
 
-/* Specific Colors for Each Icon */
 .footer-col .social-links a.facebook:hover {
     background-color: #1877F2;
     color: #ffffff;
@@ -89,21 +88,35 @@ ul {
     transform: scale(1.2);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 992px) {
     .footer-col {
         width: 50%;
         margin-bottom: 20px;
+        text-align: center;
     }
 }
 
-@media (max-width: 574px) {
-    .footer-col {
-        width: 100%;
-        text-align: center;
+@media (max-width: 768px) {
+    .footer {
+        padding: 20px 0;
+        display: none;
     }
 
-    .footer-col .social-links {
-        display: flex;
-        justify-content: center;
+}
+
+@media (max-width: 576px) {
+    .footer {
+        width: 100%;
+        text-align: center;
+        display: none;
+       
     }
+
+}
+
+@media (max-width: 400px) {
+    .footer {
+        display: none;
+    }
+   
 }

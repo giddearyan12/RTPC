@@ -8,6 +8,7 @@ function A_Dashboard() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
+  const url = 'http://localhost:5000';
 
   useEffect(() => {
     if (filter === "new") {
@@ -20,7 +21,7 @@ function A_Dashboard() {
 
   const fetchNewProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/admin/newProjects");
+      const response = await axios.get(`${url}/admin/newProjects`);
       if (response.data.success) {
         setProjects(response.data.project);
       } else {
@@ -34,7 +35,7 @@ function A_Dashboard() {
   };
   const fetchAllProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/admin/allProjects");
+      const response = await axios.get(`${url}/admin/allProjects`);
       if (response.data.success) {
         setProjects(response.data.project);
       } else {
@@ -49,7 +50,7 @@ function A_Dashboard() {
 
   const handleAccept = async (name) => {
     try {
-      const response = await axios.post("http://localhost:5000/admin/verify", {
+      const response = await axios.post(`${url}/admin/verify`, {
         name: name,
       });
       if (!response.data.success) {
@@ -63,7 +64,7 @@ function A_Dashboard() {
 
   const handleReject = async (name) => {
     try {
-      const response = await axios.post("http://localhost:5000/admin/reject", { name: name });
+      const response = await axios.post(`${url}/admin/reject`, { name: name });
       if (!response.data.success) {
         alert("Error");
       }
@@ -76,7 +77,7 @@ function A_Dashboard() {
 
   const handleRemove = async (projectId) => {
     try {
-      const response = await axios.post("http://localhost:5000/admin/remove", { id: projectId });
+      const response = await axios.post(`${url}/admin/remove`, { id: projectId });
       if (response.data.success) {
         setProjects((prev) => prev.filter((p) => p._id !== projectId));
       } else {

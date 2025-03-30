@@ -1,4 +1,4 @@
-.header {
+.a-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -7,12 +7,12 @@
   background-color: #ffffff;
 }
 
-.search-bar {
+.a-search-bar {
   display: flex;
   align-items: center;
 }
 
-.search-bar input {
+.a-search-bar input {
   margin: 10px;
   padding: 10px;
   border-radius: 5px;
@@ -22,7 +22,7 @@
   font-size: 14px;
 }
 
-.user-info {
+.a-user-info {
   position: relative;
   display: flex;
   align-items: center;
@@ -30,19 +30,19 @@
   cursor: pointer;
 }
 
-.user-info svg {
+.a-user-info svg {
   margin-right: 10px;
   font-size: 24px;
   color: #555;
 }
 
-.user-info span {
+.a-user-info span {
   font-size: 16px;
   color: #333;
   font-weight: 500;
 }
 
-.dropdown-menu {
+.a-dropdown-menu {
   position: absolute;
   top: 50px;
   right: 0;
@@ -54,7 +54,7 @@
   width: 150px;
 }
 
-.dropdown-item {
+.a-dropdown-item {
   padding: 10px 15px;
   background-color: #ffffff;
   border: none;
@@ -66,114 +66,12 @@
   transition: background-color 0.2s ease;
 }
 
-.dropdown-item:hover {
+.a-dropdown-item:hover {
   background-color: #f3f3f3;
 }
 
-.user-info:hover svg,
-.user-info:hover span {
+.a-user-info:hover svg,
+.a-user-info:hover span {
   color: #007bff;
 }
 
-
-@media (max-width: 575.98px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
-
-  .search-bar {
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .search-bar input {
-    width: 90%;
-    font-size: 12px;
-  }
-
-  .user-info {
-    padding: 10px 0;
-  }
-
-  .user-info svg {
-    font-size: 20px;
-  }
-
-  .user-info span {
-    font-size: 14px;
-  }
-}
-
-
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .search-bar input {
-    width: 75%;
-    font-size: 13px;
-  }
-
-  .user-info svg {
-    font-size: 22px;
-  }
-
-  .user-info span {
-    font-size: 15px;
-  }
-}
-
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .header {
-    padding: 10px 15px;
-  }
-
-  .search-bar input {
-    width: 60%;
-  }
-
-  .user-info svg {
-    font-size: 23px;
-  }
-
-  .user-info span {
-    font-size: 15px;
-  }
-}
-
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .header {
-    padding: 15px 20px;
-  }
-
-  .search-bar input {
-    width: 50%;
-  }
-
-  .user-info svg {
-    font-size: 24px;
-  }
-
-  .user-info span {
-    font-size: 16px;
-  }
-}
-
-
-@media (min-width: 1200px) {
-
-
-  .search-bar input {
-    width: 40%;
-  }
-
-  .user-info svg {
-    font-size: 26px;
-  }
-
-  .user-info span {
-    font-size: 17px;
-  }
-}

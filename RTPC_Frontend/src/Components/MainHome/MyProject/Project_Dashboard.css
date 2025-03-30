@@ -1,17 +1,149 @@
-.pro-dash{
+.pro-dash {
   width: 100%;
   height: 100%;
 }
+
 .project-app {
-    font-family: Arial, sans-serif;
-    height: 85%;
-    text-align: left;
-    width: 100%;
+  font-family: Arial, sans-serif;
+  height: 85%;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.tabs {
+  display: flex;
+  margin: 20px 0px;
+  justify-content: space-between;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: white;
+  border: 1px solid #666;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 400px;
+  text-transform: capitalize;
+  font-size: 18px;
+}
+
+.tab .arrow-icon {
+  margin-left: auto;
+}
+
+.tab .icon {
+  font-size: 2rem;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+
+.project-form {
+  width: 250px;
+  margin: 0 auto;
+
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.project-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.project-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.project-form input[type="text"]:focus {
+  border-color: #4C3575;
+  outline: none;
+}
+
+.project-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4C3575;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin: 15px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.project-form button:hover {
+  background-color: #4C3575;
+}
+
+.project_form_section {
+  height: fit-content;
+  border-radius: 5%;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #4C3575;
+}
+
+.project_form_section h1 {
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.custom-select {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  color: #374151;
+  background-color: #f9fafb;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  cursor: pointer;
+}
+
+.custom-select:hover {
+  border-color: #9ca3af;
+}
+
+@media (max-width: 480px) {
+  .project-list {
     display: flex;
-    justify-content: space-between;
-    
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    justify-content: center;
+    align-items: center;
   }
-  
+
   .tabs {
     display: flex;
     margin: 20px 0px;
@@ -21,112 +153,28 @@
   .tab {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 5px 8px;
     background-color: white;
-    border:1px solid #666;
+    border: 1px solid #666;
     border-radius: 5px;
-    margin-right: 10px;
+    margin-right: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 400px; 
+    width: 200px;
     text-transform: capitalize;
-    font-size: 18px;
-  }
-  .tab .arrow-icon {
-    margin-left: auto; 
+    font-size: 12px;
   }
 
   .tab .icon {
-    font-size: 2rem;
+    font-size: 1rem;
     margin-right: 10px;
     padding: 5px;
     border-radius: 5px;
   }
-  
- 
-  .project-form {
-    width: 250px;
-    margin: 0 auto;
-    
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
- 
-  
-  .project-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .project-form input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    font-size: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-  }
-  
-  .project-form input[type="text"]:focus {
-    border-color: #4C3575;
-    outline: none;
-  }
-  
-  .project-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4C3575;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    margin: 15px 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .project-form button:hover {
-    background-color: #4C3575;
-  }
-  
-  .project_form_section{
-    height: fit-content;
-    border-radius: 5%;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #4C3575;
-  }
 
-  .project_form_section h1{
-    font-weight: 500;
-    font-size: 24px;
-    margin-bottom: 5px;
-    color: white;
+  .project-app{
+    height: fit-content;
+    display: flex;
+   flex-direction: column;
   }
-  .custom-select {
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    border: 1px solid #d1d5db;
-    font-size: 1rem;
-    color: #374151;
-    background-color: #f9fafb;
-    width: 100%; 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    appearance: none; 
-    cursor: pointer; 
-  }
-  
-  .custom-select:hover {
-    border-color: #9ca3af; 
-  }
-  
- 
-  
+}

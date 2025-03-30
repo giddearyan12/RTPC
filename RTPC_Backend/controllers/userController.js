@@ -5,15 +5,11 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import nodemailer from 'nodemailer'
 import generateTokenAndSetCookie from "../utils/generateToken.js";
-
 import verifyModel from "../models/verifyModel.js";
 import adminModel from "../models/adminModel.js";
 
 const loginUser = async (req, res) => {
   const { email, password, role } = req.body;
-
-
-  
   try {
    let user;
     if(role==='user'){

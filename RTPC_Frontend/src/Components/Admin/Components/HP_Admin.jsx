@@ -24,17 +24,17 @@ const HP_Admin = () => {
 
   return (
     <>
-      <div className='right-navbar'>
+      <div className='a-right-navbar'>
         <A_Header />
       </div>
-      <div className='main-home'>
-        <div className="left">
-          <div className="left-box">
-            <div className="mytask">
+      <div className='a-main-home'>
+        <div className="a-left">
+          <div className="a-left-box">
+            <div className="a-mytask">
               <img src={mytask} alt="" />
               <p>My Task</p>
             </div>
-            <div className="main-menu">
+            <div className="a-main-menu">
               <ul>
                 <li onClick={() => setSelectedComponent('dashboard')}>
                   <img src={home} alt="" />Home
@@ -48,7 +48,7 @@ const HP_Admin = () => {
            
           </div>
         </div>
-        <div className="right">
+        <div className="a-right">
           {renderComponent()} 
         </div>
       </div>

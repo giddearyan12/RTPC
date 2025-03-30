@@ -284,24 +284,9 @@
 }
 
 
-@media (max-width: 768px) {
-  .modal-content {
-    padding: 15px;
-    max-width: 90%;
-  }
+@media (max-width: 480px) {
+ .project-cards{
+ 
+ }
 
-  .inline-fields {
-    flex-direction: column; 
-    gap: 10px;
-  }
-
-  .modal-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .save-btn,
-  .cancel-btn {
-    width: 100%;
-  }
 }

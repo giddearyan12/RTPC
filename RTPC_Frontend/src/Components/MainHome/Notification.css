@@ -89,3 +89,6 @@
     scrollbar-width: none; 
     overflow-x: hidden;
   }
+  @media (max-width: 480px) {
+   
+  }

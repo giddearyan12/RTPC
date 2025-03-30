@@ -6,6 +6,7 @@ import { FaEnvelope, FaPhone, FaIdBadge, FaUser } from 'react-icons/fa';
 import { MdOutlineEdit } from "react-icons/md";
 import axios from 'axios';
 import Header from './Header';
+import toast from 'react-hot-toast';
 
 const UserProfile = () => {
   const [studentDetails, setStudentDetails] = useState(null);
@@ -13,24 +14,24 @@ const UserProfile = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('token');
+  const fetchStudentDetails = async () => {
+    try {
+      const decodedToken = jwt_decode(token);
+      const response = await axios.get("http://localhost:5000/students/profile", {
+        params: { id: decodedToken.userId },
+      });
+
+      setStudentDetails(response.data.user);
+      console.log(response.data.user)
+      setFormData(response.data.user);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching student details:', error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStudentDetails = async () => {
-      try {
-        const decodedToken = jwt_decode(token);
-        const response = await axios.get("http://localhost:5000/students/profile", {
-          params: { id: decodedToken.userId },
-        });
-
-        setStudentDetails(response.data.user);
-        console.log(response.data.user)
-        setFormData(response.data.user);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching student details:', error);
-        setLoading(false);
-      }
-    };
 
     fetchStudentDetails();
   }, [token]);
@@ -39,21 +40,30 @@ const UserProfile = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-
   const handleSave = async () => {
     try {
       const decodedToken = jwt_decode(token);
-      await axios.put("http://localhost:5000/students/profile", {
+      const response = await axios.put("http://localhost:5000/students/profile", {
         id: decodedToken.userId,
         ...formData,
       });
-      setStudentDetails(formData);
+      if (response.data.success) {
+        setStudentDetails(formData);
+        toast.success(response.data.message);
+      }
+      else {
+        toast.error(response.data.message);
+        fetchStudentDetails();
+      }
+
       setEditMode(false);
     } catch (error) {
       console.error('Error updating student details:', error);
     }
   };
+
+
+
 
   if (loading) {
     return <p>Loading...</p>;
@@ -70,8 +80,8 @@ const UserProfile = () => {
         <div className="profile-header">
           <h1 className="my-profile">My Profile</h1>
           {!editMode && (
-           
-            <MdOutlineEdit className="edit-icon" onClick={() => setEditMode(true)}/>
+
+            <MdOutlineEdit className="edit-icon" onClick={() => setEditMode(true)} />
           )}
         </div>
 
@@ -93,8 +103,13 @@ const UserProfile = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
+                minLength="10"
+                maxLength="10"
+                pattern="\d{10}" 
+                required
               />
             </div>
+
             <div className="profile-info-item">
               <label><strong>Enrollment No:</strong></label>
               <input

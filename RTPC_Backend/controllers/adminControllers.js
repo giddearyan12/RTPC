@@ -3,7 +3,32 @@ import Code from '../models/saveCode.js'
 import verifyModel from "../models/verifyModel.js";
 import userModel from "../models/userModel.js";
 import verifyCode from "../models/verifyCodeModel.js";
+import nodemailer from 'nodemailer'
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: 'proyectaminds@gmail.com', 
+    pass: 'eshn jxtg xjmo zchk',
+  },
+});
+
+const sendEmail = async (to, subject, text, html) => {
+  try {
+    const mailOptions = {
+      from: 'proyectaminds@gmail.com',
+      to, 
+      subject,
+      text, 
+      html,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully!");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+};
 
 export const verifyProject = async (req, res) => {
     const { name} = req.body;
@@ -41,11 +66,8 @@ export const verifyProject = async (req, res) => {
         ],
       });
       
-      // Save the new document to the database
+     
       await newVerifyCode.save();
-       
-      
-  
       await newProject.save();
       await newCode.save();
   
@@ -53,6 +75,13 @@ export const verifyProject = async (req, res) => {
       await user.save();
 
       await verifyModel.findOneAndDelete({name});
+       sendEmail(
+        user.email,
+        "Project Accepted",
+        `Hi, your project "${name}" has been accepted.`,
+        `<h2>Hi</h2><p>Your project "<strong>${name}</strong>" has been accepted. Congratulations!</p>`
+      );
+      
   
       return res.json({
         success: true,
@@ -76,7 +105,14 @@ export const rejectProject = async (req, res) => {
       if (!proj) {
         return res.json({ success: false, message: "Project already exists" });
       }
+      const user = await userModel.findById(proj.createdBy);
       await verifyModel.findOneAndDelete({name});
+      sendEmail(
+        user.email,
+        "Project Rejected",
+        `Hi, your project "${name}" has been Rejected.`,
+        `<h2>Hi</h2><p>Your project "<strong>${name}</strong>" has been Rejected</p>`
+      );
   
       return res.json({
         success: true,

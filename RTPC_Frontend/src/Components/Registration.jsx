@@ -7,10 +7,11 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const Registration = () => {
-  const url = "http://localhost:5000";
-  const [curr, setCurr] = useState("Register");
+  
+   const url = 'http://localhost:5000'
+  const [curr, setCurr] = useState("Login");
   const { setAuthUser } = useAuthContext();
-  const [role, setRole] = useState("user"); // ✅ New state for role (user/admin)
+  const [role, setRole] = useState("user"); 
 
   const [data, setData] = useState({
     name: "",
@@ -46,7 +47,9 @@ const Registration = () => {
     const loadingToast = toast.loading(curr === "Login" ? "Signing in..." : "Registering...");
 
     try {
+    
       const response = await axios.post(newUrl, { ...data, role });
+      console.log("Role" ,response);
 
       if (response.data.success) {
         toast.dismiss(loadingToast);
@@ -79,6 +82,7 @@ const Registration = () => {
   };
 
   return (
+    <div className="reg-page-parent">
     <div className="reg-page">
       <div className="reg-welcome">
         <img src={rocket} alt="" />
@@ -150,6 +154,7 @@ const Registration = () => {
           </>
         )}
       </form>
+    </div>
     </div>
   );
 };

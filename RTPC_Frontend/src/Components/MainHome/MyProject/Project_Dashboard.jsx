@@ -11,7 +11,7 @@ function ProjectDashboard() {
   const [filterProjects, setFilterProjects] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  const url = "http://localhost:5000";
+  const url = 'http://localhost:5000'
 
   const fetchProjects = async () => {
     setLoading(true);

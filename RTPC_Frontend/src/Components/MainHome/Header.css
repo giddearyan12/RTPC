@@ -76,3 +76,10 @@
 .user-info:hover span {
   color: #007bff; 
 }
+@media (max-width: 480px) {
+  .header{
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+  }
+}

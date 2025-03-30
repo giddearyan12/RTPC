@@ -234,24 +234,18 @@
     transform: scale(1);
   }
 }
-
-/* Responsive Table */
-@media screen and (max-width: 768px) {
-  .projects-table,
-  .projects-table thead,
-  .projects-table tbody,
-  .projects-table th,
-  .projects-table td,
-  .projects-table tr {
+@media screen and (max-width: 480px) {
+  .projects-table, .projects-table thead, .projects-table tbody, 
+  .projects-table th, .projects-table td, .projects-table tr {
     display: block;
   }
 
   .projects-table tr {
-    margin-bottom: 15px;
     background: white;
     border-radius: 6px;
-    overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    padding: 10px;
   }
 
   .projects-table th {
@@ -260,26 +254,24 @@
 
   .projects-table td {
     border: none;
-    position: relative;
-    padding-left: 50%;
+    padding: 8px;
     text-align: left;
     display: flex;
     justify-content: space-between;
-    padding: 12px;
   }
 
-  .projects-table td:before {
+  .projects-table td::before {
+    content: attr(data-label);
     font-weight: bold;
-    position: absolute;
-    left: 10px;
-    width: 45%;
-    white-space: nowrap;
+    color: #333;
   }
 
-  .projects-table td:nth-of-type(1):before { content: "Project Name"; }
-  .projects-table td:nth-of-type(2):before { content: "Technology"; }
-  .projects-table td:nth-of-type(3):before { content: "Created By"; }
-  .projects-table td:nth-of-type(4):before { content: "Created At"; }
-  .projects-table td:nth-of-type(5):before { content: "Collaborators"; }
-  .projects-table td:nth-of-type(6):before { content: "Status"; }
+  .search-box, .status-select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .teams-popup {
+    width: 90%;
+  }
 }

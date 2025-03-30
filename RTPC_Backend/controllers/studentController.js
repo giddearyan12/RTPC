@@ -1,10 +1,11 @@
 import userModel from "../models/userModel.js";
+import validator from "validator";
 import projectModel from "../models/projectModel.js";
 import mongoose from "mongoose";
 import notificationModel from "../models/notificationModel.js";
 const studentsList = async (req, res) => {
   try {
-    
+
     const students = await userModel.find();
 
     if (!students || students.length === 0) {
@@ -13,16 +14,16 @@ const studentsList = async (req, res) => {
 
     const updatedStudents = await Promise.all(
       students.map(async (student) => {
-     
+
         const projects = await projectModel.find({
           _id: { $in: student.projects },
         });
 
-       
+
         const projectNames = projects.map((project) => project.name);
 
         return {
-          ...student._doc, 
+          ...student._doc,
           projects: projectNames,
         };
       })
@@ -53,14 +54,14 @@ const requestCollaboration = async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-   
+
     const sender = await userModel.findById(userId);
     if (!sender) {
       return res.status(404).json({ message: "Requesting user not found" });
     }
 
     const recipientId = project.createdBy._id;
-   
+
 
 
     const existingNotification = await notificationModel.findOne({
@@ -68,15 +69,15 @@ const requestCollaboration = async (req, res) => {
       sender: userId,
       projectId: projectId
     });
-  
 
-    
+
+
 
     if (existingNotification) {
       return res.status(200).json({ message: "Collaboration request already sent." });
     }
 
-  
+
     const notification = new notificationModel({
       recipient: recipientId,
       sender: userId,
@@ -84,7 +85,7 @@ const requestCollaboration = async (req, res) => {
       message: `${sender.name} has requested to collaborate on your project "${project.name}".`,
     });
 
-   
+
 
     await notification.save();
 
@@ -96,11 +97,11 @@ const requestCollaboration = async (req, res) => {
 };
 
 
- const deleteProject = async (req, res) => {
+const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    
+
     const project = await Project.findByIdAndDelete(id);
 
     if (!project) {
@@ -116,64 +117,93 @@ const requestCollaboration = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-      const { id } = req.query;
-     
-      if (!id) {
-          return res.status(400).json({ success: false, message: "User ID is required" });
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: "User ID is required" });
+    }
+
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    const projects = await projectModel.find({
+      '_id': { $in: user.projects }
+    });
+
+    res.json({
+      success: true,
+      user: {
+        ...user.toObject(),
+        projects
       }
-
-      const user = await userModel.findById(id);
-
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
-
-      
-      const projects = await projectModel.find({
-          '_id': { $in: user.projects }
-      });
-
-      res.json({
-          success: true,
-          user: {
-              ...user.toObject(), 
-              projects 
-          }
-      });
+    });
   } catch (error) {
-      res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: 'Server error', error });
   }
 };
 
 const updateUser = async (req, res) => {
-  const { name, email, phone, en, department, gender, college, domain } = req.body;
+  const { id,name, email, phone, en, department, gender, college, domain } = req.body;
 
   try {
-      
-      const user = await userModel.findById(req.body.id);
 
-      if (!user) {
-          return res.status(404).json({ error: "User not found" });
-      }
-      const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
-      const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
 
-      user.name = name || user.name;
-      user.email = email || user.email;
-      user.phone = phone || user.phone;
-      user.en = en || user.en;
-      user.department = department || user.department;
-      user.gender = gender || user.gender;
-      user.college = college || user.college;
-      user.domain = domain || user.domain;
-      user.profilePic = user.gender === "Male"? boyProfilePic : girlProfilePic;
+    if (!validator.isEmail(email)) {
+      return res.json({ success: false, message: "Incorrect Email" });
+    }
 
-      await user.save();
 
-      res.json({ message: "Profile updated successfully." });
+    if (!/^\d{10}$/.test(phone)) {
+      return res.json({ success: false, message: "Phone number must be exactly 10 digits." });
+    }
+
+
+    const existingUserWithName = await userModel.findOne({ name, _id: { $ne: id } });
+    if (existingUserWithName) {
+      return res.json({ success: false, message: "User with this name already exists." });
+    }
+
+    const existingUserWithEn = await userModel.findOne({ en, _id: { $ne: id } });
+    if (existingUserWithEn) {
+      return res.json({ success: false, message: "Enrollment number already exists." });
+    }
+
+
+    const existingUserWithEmail = await userModel.findOne({ email, _id: { $ne: id } });
+    if (existingUserWithEmail) {
+      return res.json({ success: false, message: "Email already exists." });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${name}`;
+    const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${name}`;
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+    user.en = en || user.en;
+    user.department = department || user.department;
+    user.gender = gender || user.gender;
+    user.college = college || user.college;
+    user.domain = domain || user.domain;
+    user.profilePic = user.gender === "Male" ? boyProfilePic : girlProfilePic;
+
+    await user.save();
+
+    res.json({ success: true, message: "Profile updated successfully." });
   } catch (error) {
-      console.error("Error updating profile:", error);
-      res.status(500).json({ error: "Server error" });
+    console.error("Error updating profile:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -188,14 +218,12 @@ const teamData = async (req, res) => {
 
     const projectsPromise = projectModel
       .find({ createdBy: id })
-      // Remove .select() to get all fields
-      .populate("createdBy", "name") 
+      .populate("createdBy", "name")
       .populate("collaborators", "name")
-      .lean(); 
+      .lean();
 
     const collaboratedProjectsPromise = projectModel
       .find({ collaborators: id })
-      // Remove .select() to get all fields
       .populate("createdBy", "name")
       .populate("collaborators", "name")
       .lean();
@@ -214,14 +242,14 @@ const teamData = async (req, res) => {
 
 
 
-const notificationFun = async(req,res)=>{
+const notificationFun = async (req, res) => {
   try {
-    
-    const userId = req.query.id; 
-    
+
+    const userId = req.query.id;
+
     const notifications = await notificationModel.find({ recipient: userId }).populate("sender", "name");
-    
-  
+
+
     res.status(200).json(notifications);
   } catch (error) {
     console.error("Error fetching notifications:", error);
@@ -229,7 +257,7 @@ const notificationFun = async(req,res)=>{
   }
 }
 
-const notificationRespond = async(req, res)=>{
+const notificationRespond = async (req, res) => {
   try {
     const { id } = req.params;
     const { action } = req.body;
@@ -245,7 +273,7 @@ const notificationRespond = async(req, res)=>{
         await project.save();
         collaborator.projects.push(notification.projectId);
         await collaborator.save();
-      } 
+      }
       console.log("Accepted collaboration request for project:", notification.projectId);
     } else if (action === "reject") {
       console.log("Rejected collaboration request for project:", notification.projectId);
@@ -260,17 +288,20 @@ const notificationRespond = async(req, res)=>{
   }
 }
 
-const removeCollaborator = async(req, res)=>{
+const removeCollaborator = async (req, res) => {
   try {
-    const { projectId, collaboratorId } = req.body.data;
+    console.log('Hello')
+    const { projectId, collaboratorId } = req.body;
+
+    console.log(projectId, collaboratorId);
     await projectModel.updateOne(
       { _id: projectId },
-      { $pull: { collaborators: collaboratorId } } 
+      { $pull: { collaborators: collaboratorId } }
     );
 
     await userModel.updateOne(
       { _id: collaboratorId },
-      { $pull: { projects: projectId  } }
+      { $pull: { projects: projectId } }
     );
 
 
@@ -282,6 +313,6 @@ const removeCollaborator = async(req, res)=>{
 
 
 
- 
 
-export {studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond, removeCollaborator};
+
+export { studentsList, requestCollaboration, deleteProject, getUserProfile, updateUser, teamData, notificationFun, notificationRespond, removeCollaborator };

@@ -8,7 +8,7 @@ import logo from "../assets/logo.png";
 const A_Header = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const token = localStorage.getItem("token");
-  
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("chat-user");
@@ -26,44 +26,41 @@ const A_Header = () => {
       window.location.href = "/";
     }, 500);
   };
-  const handleViewProfile = () => {
-    window.location.href = "/profile";
-  };
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (event) => {
+    event.stopPropagation(); // Prevents the event from bubbling up to document
     setIsDropdownVisible((prevState) => !prevState);
   };
 
   const handleOutsideClick = (event) => {
-    if (!event.target.closest(".user-info")) {
+    if (!event.target.closest(".a-user-info")) {
       setIsDropdownVisible(false);
     }
   };
-    useEffect(() => {
-  
-      document.addEventListener("click", handleOutsideClick);
-  
-      return () => {
-        document.removeEventListener("click", handleOutsideClick);
-      };
-    }, [token]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className="header">
-      <div className="logo">
+    <div className="a-header">
+      <div className="a-logo">
         <img src={logo} alt="logo" />
       </div>
 
-      <div className="user-info" onClick={toggleDropdown} >
+      <div className="a-user-info" onClick={toggleDropdown}>
         <FaUserCircle />
         <span>Admin</span>
         {isDropdownVisible && (
-          <div className="dropdown-menu">
-            <button className="dropdown-item" onClick={handleLogout}>
+          <div className="a-dropdown-menu">
+            <button className="a-dropdown-item" onClick={handleLogout}>
               Logout
             </button>
           </div>
         )}
-    
       </div>
     </div>
   );
