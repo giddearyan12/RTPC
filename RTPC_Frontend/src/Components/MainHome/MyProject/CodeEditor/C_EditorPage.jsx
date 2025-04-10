@@ -142,7 +142,7 @@ function C_EditorPage() {
       projectId,
     });
 
-    const newLogs = response.data;
+    const newLogs = response.data.slice(0, 5);
     setLogs(newLogs.reverse());
     newLogs.map((log) => {
       if (log.seen == false) {
@@ -194,13 +194,13 @@ function C_EditorPage() {
         input: userInput,
       });
 
-
-
+    
       setOutput(
         response.data.output
           ? response.data.output
           : JSON.stringify(response.data, null, 2)
       );
+     
     } catch (error) {
       console.error("Error compiling code:", error);
       setOutput(error.response?.data?.error || "An error occurred");
@@ -319,6 +319,9 @@ function C_EditorPage() {
       )
     );
   };
+  const openLogsPage = async()=>{
+    navigate(`/logs/${project._id}/${project.createdBy._id}`)
+  }
 
 
 
@@ -369,6 +372,21 @@ function C_EditorPage() {
                 <span>Export Code</span>
               </button>
             </div>
+            
+            {project.createdBy._id === userId ? 
+            <div>
+              <button
+                className="logsbutton"
+                onClick={() =>
+                 openLogsPage()
+                }
+              >
+                <span className="material-icons">receipt_long</span>Logs
+                
+              </button>
+              
+            </div>:""
+            }
             <div>
               <button
                 className="savebutton"

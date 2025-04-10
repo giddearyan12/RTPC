@@ -48,9 +48,7 @@ export const submitCode = async (req, res) => {
         timestamp: new Date(),
         seen:false,
       };
-      if (projectCode.codeHistory.length >= 5) {
-        projectCode.codeHistory.shift();
-      }
+     
       projectCode.codeHistory.push(newCodeHistory);
       await projectCode.save();
       

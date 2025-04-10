@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./PreHome.css";
 import { useNavigate } from "react-router-dom";
-import PreHomeImg from "../../assets/PreHomeImg.png";
+import PreHomeImg from "../../assets/prehome-1.png";
 import ServiceCard from "./ServiceCard.jsx";
 import logo from "../../assets/logo.png";
 import { FaCode, FaUsers, FaProjectDiagram } from "react-icons/fa";

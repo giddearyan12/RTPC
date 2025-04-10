@@ -286,7 +286,7 @@
 
 .importbutton,
 .exportbutton,
-.savebutton {
+.savebutton, .logsbutton {
   display: inline-flex;
   align-items: center;
   gap: 8px; /* Space between icon and text */
@@ -325,6 +325,14 @@
 .savebutton:hover {
  
   background-color: #27ae60;
+}
+.logsbutton {
+  background-color: brown;
+}
+
+.logsbutton:hover {
+  background-color: #5d4037;
+
 }
 
 .material-icons {

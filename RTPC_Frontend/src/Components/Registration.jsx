@@ -49,7 +49,7 @@ const Registration = () => {
     try {
     
       const response = await axios.post(newUrl, { ...data, role });
-      console.log("Role" ,response);
+      
 
       if (response.data.success) {
         toast.dismiss(loadingToast);

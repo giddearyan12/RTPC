@@ -87,8 +87,7 @@ const registerUser = async (req, res) => {
     department,
     gender,
     college,
-    domain,
-    role
+    domain
   } = req.body;
 
   try {
@@ -155,7 +154,7 @@ const registerUser = async (req, res) => {
       college: college,
       domain: domain,
       profilePic: gender === "Male" ? boyProfilePic : girlProfilePic,
-      role:role,
+      role:'user',
     });
 
     const user = await newUser.save();

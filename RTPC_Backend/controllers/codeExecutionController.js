@@ -127,9 +127,10 @@ export const executeCode = async (req, res) => {
         }
       );
     });
-
-    if (logs) {
-      res.json({ output: logs.trim() });
+    const out = cleanDockerOutput(logs);
+ 
+    if (out) {
+      res.json({ output: out.trim() });
     } else {
       res.status(500).json({ error: "No output from the container" });
     }
