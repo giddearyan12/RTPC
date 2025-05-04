@@ -7,57 +7,63 @@ import userModel from "../models/userModel.js";
 
 export const sendMessage = async (req, res) => {
 	try {
-		const { message } = req.body;
-		const { id: receiverId } = req.params;
-		const senderId = req.user._id;
-
-		let conversation = await Conversation.findOne({
-			participants: { $all: [senderId, receiverId] },
+	  const { message, file, fileType } = req.body; // Accept file and fileType in the request body
+	  const { id: receiverId } = req.params;
+	  const senderId = req.user._id;
+  
+	  // Find or create a conversation
+	  let conversation = await Conversation.findOne({
+		participants: { $all: [senderId, receiverId] },
+	  });
+  
+	  if (!conversation) {
+		conversation = await Conversation.create({
+		  participants: [senderId, receiverId],
 		});
-
-		if (!conversation) {
-			conversation = await Conversation.create({
-				participants: [senderId, receiverId],
-			});
-		}
-
-	
-		const newMessage = new Message({
-			senderId,
-			receiverId,
-			message,
-			seen: false,
-		});
-
-		if (newMessage) {
-			conversation.messages.push(newMessage._id);
-		}
-		await Promise.all([conversation.save(), newMessage.save()]);
-
-		
-		const sender = await userModel.findById(senderId).select("name");
-		const receiver = await userModel.findById(receiverId).select("name");
-
-	
-		const populatedMessage = {
-			...newMessage.toObject(),
-			sender: { _id: senderId, name: sender?.name || "Unknown" },
-			receiver: { _id: receiverId, name: receiver?.name || "Unknown" },
-		};
-
-	
-		const receiverSocketId = getReceiverSocketId(receiverId);
-		if (receiverSocketId) {
-			io.to(receiverSocketId).emit("newMessage", populatedMessage);
-		}
-
-		res.status(201).json(populatedMessage);
+	  }
+  
+	  // Create a new message
+	  const newMessage = new Message({
+		senderId,
+		receiverId,
+		message: message || "", 
+		file: file || null,  // Store the file (image, pdf, etc.)
+		fileType: fileType || null,  // Store the type of file ("image", "pdf", etc.)
+		seen: false,
+	  });
+  
+	  if (newMessage) {
+		conversation.messages.push(newMessage._id);
+	  }
+  
+	  // Save conversation and message
+	  await Promise.all([conversation.save(), newMessage.save()]);
+  
+	  // Get sender and receiver names for populated message
+	  const sender = await userModel.findById(senderId).select("name");
+	  const receiver = await userModel.findById(receiverId).select("name");
+  
+	  // Populate the new message with sender and receiver info
+	  const populatedMessage = {
+		...newMessage.toObject(),
+		sender: { _id: senderId, name: sender?.name || "Unknown" },
+		receiver: { _id: receiverId, name: receiver?.name || "Unknown" },
+	  };
+  
+	  // Emit the new message to the receiver via WebSockets
+	  const receiverSocketId = getReceiverSocketId(receiverId);
+	  if (receiverSocketId) {
+		io.to(receiverSocketId).emit("newMessage", populatedMessage);
+	  }
+  
+	  // Send back the populated message to the sender
+	  res.status(201).json(populatedMessage);
 	} catch (error) {
-		console.log("Error in sendMessage controller: ", error.message);
-		res.status(500).json({ error: "Internal server error" });
+	  console.log("Error in sendMessage controller: ", error.message);
+	  res.status(500).json({ error: "Internal server error" });
 	}
-};
-
+  };
+  
 
 export const getMessages = async (req, res) => {
 	try {
