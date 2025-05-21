@@ -89,7 +89,7 @@ const LogsHistory = () => {
         )}
 
         {logs.map((log, index) => (
-          <div key={index} className={`log-entry ${log.seen ? '' : 'unseen'}`}>
+          <div key={index} className={`log-entry`}>
             <h3 className="username-heading">{log.username}</h3>
             <div className="log-header">
               <span className="log-time">

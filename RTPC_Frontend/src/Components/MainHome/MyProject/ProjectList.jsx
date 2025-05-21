@@ -85,9 +85,12 @@ function ProjectList({ projects, filterProjects, setProjects, loading }) {
               <strong>Technologies Used: </strong>
               {project.technology}
             </p>
-            <button className="open-ide-btn" onClick={() => handleOpenIDE(project)}>
-              Open IDE
-            </button>
+            {(project.status !== 'Completed' || userId === project.createdBy._id) && (
+              <button className="open-ide-btn" onClick={() => handleOpenIDE(project)}>
+                Open IDE
+              </button>
+            )}
+
           </div>
         ))
       )}

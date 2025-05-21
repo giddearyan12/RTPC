@@ -12,7 +12,7 @@ import "monaco-editor/esm/vs/language/json/monaco.contribution.js";
 import ACTIONS from "./Actions";
 import "./C_Style.css";
 
-const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
+const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode, username }) => {
   const editorRef = useRef(null);
   const editorContainerRef = useRef(null);
   const currentCodeRef = useRef(initialCode || "");
@@ -49,45 +49,46 @@ const C_Editor = ({ socketRef, roomId, onCodeChange, initialCode }) => {
     const socket = socketRef.current;
 
     if (socket) {
-     
+
       socket.emit(ACTIONS.REQUEST_LATEST_CODE, { roomId });
 
       socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
         if (code !== null) {
-          const editor = editorRef.current;
-          const cursor = editor.getPosition();
+          console.log('Hello')
+        const editor = editorRef.current;
+        const cursor = editor.getPosition();
 
-          editor.executeEdits("", [
-            {
-              range: editor.getModel().getFullModelRange(),
-              text: code,
-            },
-          ]);
+        editor.executeEdits("", [
+          {
+            range: editor.getModel().getFullModelRange(),
+            text: code,
+          },
+        ]);
 
-          editor.setPosition(cursor);
-          currentCodeRef.current = code;
-        }
-      });
-
-      socket.on(ACTIONS.SEND_LATEST_CODE, ({ latestCode }) => {
-        if (latestCode && latestCode !== currentCodeRef.current) {
-          editorRef.current.setValue(latestCode);
-          currentCodeRef.current = latestCode;
-        }
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off(ACTIONS.CODE_CHANGE);
-        socket.off(ACTIONS.SEND_LATEST_CODE);
+        editor.setPosition(cursor);
+        currentCodeRef.current = code;
       }
-    };
+      });
+
+  socket.on(ACTIONS.SEND_LATEST_CODE, ({ latestCode }) => {
+    if (latestCode && latestCode !== currentCodeRef.current) {
+      editorRef.current.setValue(latestCode);
+      currentCodeRef.current = latestCode;
+    }
+  });
+}
+
+return () => {
+  if (socket) {
+    socket.off(ACTIONS.CODE_CHANGE);
+    socket.off(ACTIONS.SEND_LATEST_CODE);
+  }
+};
   }, [socketRef.current]);
 
-  return (
-    <div ref={editorContainerRef} style={{ height: "100vh", width: "100%" }} />
-  );
+return (
+  <div ref={editorContainerRef} style={{ height: "100vh", width: "100%" }} />
+);
 };
 
 export default C_Editor;

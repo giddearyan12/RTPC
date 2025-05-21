@@ -23,6 +23,7 @@ function A_Dashboard() {
     try {
       const response = await axios.get(`${url}/admin/newProjects`);
       if (response.data.success) {
+        console.log(response.data.project);
         setProjects(response.data.project);
       } else {
         setError(response.data.message || "Failed to fetch projects");

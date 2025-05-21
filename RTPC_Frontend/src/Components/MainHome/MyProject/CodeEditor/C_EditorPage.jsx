@@ -27,7 +27,7 @@ function C_EditorPage() {
   const navigate = useNavigate();
   const { roomId } = useParams();
   const { project } = location.state || {};
-
+  const username = location.state?.username;
   const token = localStorage.getItem("token");
   const userId = jwt_decode(token).userId;
   const [logs, setLogs] = useState([]);
@@ -38,8 +38,6 @@ function C_EditorPage() {
   const socketRef = useRef(null);
   const [userInputs, setUserInputs] = useState([]);
   const { socket } = useSocketContext();
-
-
 
   useEffect(() => {
     setPrompts(detectInputPlaceholder(codeRef.current));
@@ -93,7 +91,12 @@ function C_EditorPage() {
           prev.filter((client) => client.socketId !== socketId)
         );
       });
+
+        
     };
+
+
+
     const fetchAndInit = async () => {
       await fetchCode();
       await getLogs();
@@ -126,15 +129,14 @@ function C_EditorPage() {
       });
       setHasNewLog(true);
     };
+   
+
 
     socket.on("newLog", handleNewLog);
     return () => {
       socket.off("newLog", handleNewLog);
     };
   }, [socket])
-
-
-
 
   const getLogs = async () => {
     const projectId = location.state?.projectId.projectId;
@@ -162,9 +164,9 @@ function C_EditorPage() {
     }
   };
 
-  const leaveRoom = async () => {
-    navigate(-1);
-  };
+const leaveRoom = () => {
+  navigate('/', { replace: true });
+};
 
   const detectInputPlaceholder = (code) => {
     const inputRegex = /input\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
@@ -193,14 +195,12 @@ function C_EditorPage() {
         language: selectedLanguage,
         input: userInput,
       });
-
-    
       setOutput(
         response.data.output
           ? response.data.output
           : JSON.stringify(response.data, null, 2)
       );
-     
+
     } catch (error) {
       console.error("Error compiling code:", error);
       setOutput(error.response?.data?.error || "An error occurred");
@@ -287,45 +287,41 @@ function C_EditorPage() {
     }
   };
   const handleLogSelection = async (event) => {
-  
+
     const selectedCode = event.target.value;
     const selectedLog = logs.find(log => log.code === selectedCode);
     const response = await axios.post("http://localhost:5000/api/logs-seen", {
       selectedLog
     });
 
-    
+
     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
       roomId,
       code: event.target.value,
     });
     setHasNewLog(false);
     logs.map((log) => {
-      if (log.code!=selectedCode && log.seen == false) {
+      if (log.code != selectedCode && log.seen == false) {
         setHasNewLog(true);
       }
     })
-   
+
     if (selectedLog && selectedLog.seen === false) {
       await handleSeenUpdate(selectedCode);
     }
   };
 
   const handleSeenUpdate = async (code) => {
-   
+
     setLogs(prevLogs =>
-      prevLogs.map(log => 
+      prevLogs.map(log =>
         log.code === code ? { ...log, seen: true } : log
       )
     );
   };
-  const openLogsPage = async()=>{
+  const openLogsPage = async () => {
     navigate(`/logs/${project._id}/${project.createdBy._id}`)
   }
-
-
-
-
   return (
     <div className="editor-container">
       <div className="sidebar">
@@ -340,6 +336,7 @@ function C_EditorPage() {
         </div>
 
         <div className="room-actions">
+
           <button className="copy-btn" onClick={copyRoomId}>
             Copy Room ID
           </button>
@@ -372,20 +369,20 @@ function C_EditorPage() {
                 <span>Export Code</span>
               </button>
             </div>
-            
-            {project.createdBy._id === userId ? 
-            <div>
-              <button
-                className="logsbutton"
-                onClick={() =>
-                 openLogsPage()
-                }
-              >
-                <span className="material-icons">receipt_long</span>Logs
-                
-              </button>
-              
-            </div>:""
+
+            {project.createdBy._id === userId ?
+              <div>
+                <button
+                  className="logsbutton"
+                  onClick={() =>
+                    openLogsPage()
+                  }
+                >
+                  <span className="material-icons">receipt_long</span>Logs
+
+                </button>
+
+              </div> : ""
             }
             <div>
               <button
@@ -406,7 +403,7 @@ function C_EditorPage() {
                 <option value={tempCode}>Updates</option>
                 {logs.map((log, index) => (
                   <option key={index} value={log.code}>
-                 {log.username} {log.seen === false ? "(new)" : ""}
+                    {log.username} {log.seen === false ? "(new)" : ""}
                   </option>
                 ))}
               </select>
@@ -444,8 +441,10 @@ function C_EditorPage() {
             onCodeChange={(code) => {
               setCode(code);
               codeRef.current = code;
+              // handleTyping();
             }}
             initialCode={code}
+            username={username}
           />
         </div>
 
@@ -454,38 +453,19 @@ function C_EditorPage() {
         </button>
 
         <div className={`compiler-input ${isCompileWindowOpen ? "open" : ""}`}>
-          <div className="input-header">
-            <h5>Compiler Input</h5>
-          </div>
-
-          <textarea
-            className="input-content"
-            placeholder={prompts[inputIndex] || "Enter input here..."}
-            value={userInput}
-            onChange={handleUserInputChange}
-            onKeyPress={handleKeyPress}
-          />
+          <div className="input-header"><h5>Compiler Input</h5></div>
+          <textarea className="input-content" placeholder={prompts[inputIndex] || "Enter input here..."} value={userInput} onChange={handleUserInputChange} onKeyPress={handleKeyPress}/>
         </div>
 
         <div className={`compiler-output ${isCompileWindowOpen ? "open" : ""}`}>
           <div className="output-header">
             <h5>Compiler Output</h5>
             <div className="action-buttons">
-              <button
-                className="run-btn"
-                onClick={runCode}
-                disabled={isCompiling}
-              >
-                {isCompiling ? "Compiling..." : "Run Code"}
-              </button>
-              <button className="close-btn" onClick={toggleCompileWindow}>
-                Close
-              </button>
+              <button className="run-btn" onClick={runCode} disabled={isCompiling}>{isCompiling ? "Compiling..." : "Run Code"}</button>
+              <button className="close-btn" onClick={toggleCompileWindow}>Close</button>
             </div>
           </div>
-          <pre className="output-content">
-            {output || "Output will appear here after compilation"}
-          </pre>
+          <pre className="output-content">{output || "Output will appear here after compilation"}</pre>
         </div>
       </div>
     </div>

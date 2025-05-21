@@ -7,6 +7,8 @@ const ACTIONS = {
     CODE_CHANGE: 'code-change',
     SYNC_CODE: 'sync-code',
     LEAVE: 'leave',
+    USER_TYPING: 'user-typing',
+    USER_STOP_TYPING: 'user-stop-typing',
 };
 
 export default ACTIONS;

@@ -38,7 +38,7 @@
     border: 1px solid #4b5563; 
     font-size: 0.875rem; 
     border-radius: 1.5rem; 
-    padding: 25px 15px; 
+    padding: 30px 15px; 
     color: black;
     width: 100%; 
     outline: none;
@@ -53,7 +53,7 @@
 
 .custom-send-button {
     position: absolute; 
-    right: 0.5rem; 
+    right: 0.2rem; 
     top: 30%; 
     transform: translateY(-30%); 
     background-color: #4C3575; 
@@ -78,49 +78,71 @@
     object-fit: cover;
     margin-top: 6px;
   }
-  .custom-image-modal-content {
-    max-width: 90%;
-    max-height: 90vh;
-    border-radius: 12px;
-    object-fit: contain;
-  }
-  .custom-image-download-btn,
-  .custom-image-close-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 10px 8px 0 0;
-    transition: background-color 0.3s ease;
-  }
-  
-  .custom-image-download-btn {
-    background-color: #28a745; 
-    color: white;
-  }
-  
-  .custom-image-download-btn:hover {
-    background-color: #218838;
-  }
-  
-  .custom-image-close-btn {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .custom-image-close-btn:hover {
-    background-color: #c82333;
-  }
-  
-  .custom-image-modal {
-    position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-      
+
+
+
+
+.custom-image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.custom-image-modal {
+  position: relative;
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-image-modal-content {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.custom-image-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  background: #ff5c5c;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.custom-image-download-btn {
+  margin-top: 1rem;
+  background-color: #4caf50;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
 
 
 

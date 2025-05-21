@@ -43,7 +43,7 @@ const MessageInput = () => {
 
 		await sendMessage({
 			text: message,
-			file: filePreview, // used for both image and pdf
+			file: filePreview, 
 		});
 
 		setMessage("");

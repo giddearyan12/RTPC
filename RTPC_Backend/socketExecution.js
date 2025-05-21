@@ -13,7 +13,6 @@ const getAllConnectedClients = (roomId, io) => {
 };
 
 export const socketHandler = (socket, io) => {
-
   const userId = socket.handshake.query.userId;
   if (userId !== "undefined") userSocketMap[userId] = socket.id;
 
@@ -29,15 +28,12 @@ export const socketHandler = (socket, io) => {
     socket.join(roomId);
 
     if (!usersCode[roomId]) {
-      
       usersCode[roomId] = initialCode || "";
     }
-
 
     socket.emit(ACTIONS.SEND_LATEST_CODE, {
       latestCode: usersCode[roomId],
     });
-
 
     const clients = getAllConnectedClients(roomId, io);
     clients.forEach(({ socketId }) => {
@@ -50,13 +46,12 @@ export const socketHandler = (socket, io) => {
   });
 
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
-
-
     usersCode[roomId] = code;
     socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+    
     io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
@@ -66,6 +61,16 @@ export const socketHandler = (socket, io) => {
         latestCode: usersCode[roomId],
       });
     }
+  });
+
+  socket.on(ACTIONS.USER_TYPING, ({ roomId, username }) => {
+    console.log('Starts')
+    socket.in(roomId).emit(ACTIONS.USER_TYPING, { username });
+  });
+
+  socket.on(ACTIONS.USER_STOP_TYPING, ({ roomId, username }) => {
+    console.log('Stops')
+    socket.in(roomId).emit(ACTIONS.USER_STOP_TYPING, { username });
   });
 
   socket.on("disconnecting", () => {

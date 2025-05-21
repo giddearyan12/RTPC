@@ -428,6 +428,15 @@
   background-color: #c0392b;
 }
 
+
+.typing-indicator {
+  color: #ffd700;
+  font-style: italic;
+  margin: 10px;
+  text-align: center;
+}
+
+
 /* Compiler Output Content */
 .output-content {
   background-color: #ecf0f1;
