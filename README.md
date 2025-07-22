@@ -8,7 +8,8 @@ To simplify remote project collaboration by combining real-time communication, r
 
 
 🔥 Core Features
-🔐 User authentication (JWT & bcrypt)
+
+🔐 User authentication
 
 👥 Role-based access: Project Leader, Collaborators, Admin
 
@@ -16,15 +17,13 @@ To simplify remote project collaboration by combining real-time communication, r
 
 📂 Project creation, collaboration requests, approval flow
 
-💬 Live chat system for project members
+💬 Chat system for project members
 
 🔄 Merge approval system for proposed code changes
 
 🛠 Admin dashboard with real-time updates on project creation
 
 🧾 Docker integration for secure backend code execution
-
-🌐 Deployment-ready architecture using Railway, Render, etc.
 
 
 🧱 Tech Stack
