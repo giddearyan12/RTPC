@@ -1,66 +1,47 @@
-📘 Proyecta Minds – Real-Time Project Collaboration
-Proyecta Minds is a MERN stack-based real-time project collaboration platform designed for college students and developers. It allows users to create, manage, and contribute to coding projects in real time. The platform includes a Docker-powered code editor, chat collaboration, merge approval system, and more.
+# 📘 Proyecta Minds – Real-Time Project Collaboration
 
-🎯 Objective
-To simplify remote project collaboration by combining real-time communication, role-based project management, and secure code execution in one unified platform.
+**Proyecta Minds** is a **MERN stack**-based real-time project collaboration platform designed for **college students and developers**. It allows users to **create, manage, and contribute to coding projects** seamlessly in a team environment. Key features include a **real-time code editor** (powered by Docker), **chat-based collaboration**, **permission-based code merging**, and a **project approval workflow**.
 
-🔥 Core Features
-🔐 User Authentication (Login & Register)
+---
 
-👥 Role-based Access
+## 🎯 Objective
 
-Project Leader
+To simplify remote project collaboration by combining **real-time communication**, **role-based project management**, and **secure code execution** in one unified platform.
 
-Collaborators
+---
 
-Admin
+## 🔥 Core Features
 
-🧠 Real-time Collaborative Code Editor
+- 🔐 **User Authentication**
+- 👥 **Role-based Access**: Project Leader, Collaborators, Admin
+- 🧠 **Real-time Collaborative Code Editor** (Docker-based execution)
+- 📂 **Project Creation**, Collaboration Requests, Approval Flow
+- 💬 **Chat System** for Project Members
+- 🔄 **Merge Approval System** for Proposed Code Changes
+- 🛠 **Admin Dashboard** with Real-Time Updates on Projects
+- 🧾 **Docker Integration** for Secure Backend Code Execution
 
-Powered by Docker
+---
 
-Multi-user editing & execution
+## 🧱 Tech Stack
 
-📂 Project Management System
+| Layer       | Technology                         |
+|------------|-------------------------------------|
+| Frontend    | React.js             |
+| Backend     | Node.js, Express.js                |
+| Database    | MongoDB, Mongoose                  |
+| Realtime    | Socket.IO                          |
+| Code Exec   | Docker (via backend APIs)          |
+| Auth        | JWT, bcrypt                        |
+| Dev Tools   | Git, Postman, VSCode               |
 
-Project creation
 
-Collaboration requests
+---
 
-Approval workflows
+## 🧪 How to Run Locally
 
-💬 Real-time Chat System
-
-Project-level conversations
-
-🔄 Merge Approval Flow
-
-Project Leader reviews and approves code changes before they’re committed
-
-🛠 Admin Dashboard
-
-View projects in real-time without refreshing
-
-🧾 Docker Integration
-
-Secure backend code execution environment
-
-🧱 Tech Stack
-Layer	Technology
-Frontend	React.js, TailwindCSS
-Backend	Node.js, Express.js
-Database	MongoDB + Mongoose
-Realtime	Socket.IO
-Code Exec	Docker (with backend APIs)
-Auth	JWT, bcrypt
-Dev Tools	Git, Postman, VSCode
-Deployment	Railway (Backend), Vercel/Render (Frontend)
-
-🧪 How to Run Locally
-1️⃣ Clone the Repository
-bash
-Copy
-Edit
+### 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/giddearyan12/proyecta-minds.git
 2️⃣ Install Backend
 bash
@@ -76,26 +57,26 @@ Edit
 cd ../frontend
 npm install
 npm run dev
-4️⃣ Setup Docker
-Ensure Docker Desktop is installed and running. Docker will be used to safely execute code from the code editor in a containerized environment.
+4️⃣ Setup Docker Execution
+Make sure Docker Desktop is installed and running. Docker is used to run code in isolated containers securely.
 
-🔐 Environment Variables (Backend)
-Create a .env file inside the backend folder:
+🔐 Environment Variables
+Create a .env file in your backend directory and add the following:
 
 env
 Copy
 Edit
-MONGO_URI=your_mongodb_url
+MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 PORT=5000
 🚀 Planned Enhancements
-✅ GitHub Integration for version control
+✅ GitHub Integration for Version Control
 
-✅ Real-time Video Call Support (via WebRTC)
+✅ Real-Time Video Call Support via WebRTC
 
-✅ AI-based Code Suggestions (via LLM API like OpenAI/Gemini)
+✅ AI-Powered Code Suggestions via LLM API
 
-✅ WhatsApp Bot for Project Notifications (via Gemini API)
+✅ WhatsApp Bot for Project Updates (via Gemini API)
 
 👥 Contributors
 Aryan Gidde
@@ -107,3 +88,4 @@ Uday Saptale
 Aarya Khedekar
 
 Mohan Chhapari
+
