@@ -41,34 +41,28 @@ To simplify remote project collaboration by combining **real-time communication*
 ## 🧪 How to Run Locally
 
 ### 1️⃣ Clone the Repository
-```bash
 git clone https://github.com/giddearyan12/proyecta-minds.git
+
 2️⃣ Install Backend
-bash
-Copy
-Edit
 cd backend
 npm install
 node serve.js
+
 3️⃣ Install Frontend
-bash
-Copy
-Edit
 cd ../frontend
 npm install
 npm run dev
+
 4️⃣ Setup Docker Execution
 Make sure Docker Desktop is installed and running. Docker is used to run code in isolated containers securely.
 
 🔐 Environment Variables
 Create a .env file in your backend directory and add the following:
-
 env
-Copy
-Edit
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 PORT=5000
+
 🚀 Planned Enhancements
 ✅ GitHub Integration for Version Control
 
