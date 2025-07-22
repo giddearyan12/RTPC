@@ -37,46 +37,63 @@ Auth	JWT + bcrypt
 Dev Tools	Git, Postman, VSCode
 Deployment	Railway (backend), Render / Vercel (frontend)
 
-
-🧩 Project Structure
-/frontend       → React frontend
-/backend        → Node.js + Express API
-/docker         → Docker execution handler
-/models         → Mongoose schemas
-/routes         → API routes
-/controllers    → Logic for each feature
-/socket         → Socket.IO config
-
 🧪 How to Run Locally
 Clone Repo
+
 git clone https://github.com/giddearyan12/proyecta-minds.git
 
+
 Install Backend
+
 cd backend
+
 npm install
-npm run dev
+
+node serve.js
+
+
+
 Install Frontend
+
 cd ../frontend
+
 npm install
-npm start
+
+npm run dev
+
+
 Setup Docker Execution
-Make sure Docker Desktop is installed and running. The Docker container runs isolated code execution (for security).
+Make sure Docker Desktop is installed and running. The Docker container runs isolated code execution.
 
 
 🔐 Environment Variables
+
 MONGO_URI=your_mongodb_url
+
 JWT_SECRET=your_secret_key
+
 PORT=5000
 
+
 🧠 Planned Enhancements
+
 ✅ GitHub integration for version control
+
 ✅ Real-time video call support via WebRTC
+
 ✅ AI-powered code suggestions (via LLM API)
+
 ✅ WhatsApp bot for project updates (via Gemini API)
 
+
 👥 Contributors
+
 Aryan Gidde 
+
 Chaitanya Teke
+
 Uday Saptale
+
 Aarya Khedekar
+
 Mohan Chhapari
