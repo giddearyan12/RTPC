@@ -1,9 +1,11 @@
 📘 Proyecta Minds – Real-Time Project Collaboration
-📄 Project Overview
+
+
 Proyecta Minds is a MERN stack-based real-time project collaboration platform designed for college students and developers. It allows users to create, manage, and contribute to coding projects seamlessly in a team environment. Key features include a real-time code editor (powered by Docker), chat-based collaboration, permission-based code merging, and a project approval workflow.
 
 🎯 Objective
 To simplify remote project collaboration by combining real-time communication, role-based project management, and secure code execution in one unified platform.
+
 
 🔥 Core Features
 🔐 User authentication (JWT & bcrypt)
@@ -24,6 +26,7 @@ To simplify remote project collaboration by combining real-time communication, r
 
 🌐 Deployment-ready architecture using Railway, Render, etc.
 
+
 🧱 Tech Stack
 Layer	Technology
 Frontend	React.js, TailwindCSS
@@ -34,6 +37,7 @@ Code Exec	Docker (with backend APIs)
 Auth	JWT + bcrypt
 Dev Tools	Git, Postman, VSCode
 Deployment	Railway (backend), Render / Vercel (frontend)
+
 
 🧩 Project Structure
 /frontend       → React frontend
@@ -46,7 +50,7 @@ Deployment	Railway (backend), Render / Vercel (frontend)
 
 🧪 How to Run Locally
 Clone Repo
-git clone https://github.com/yourname/proyecta-minds.git
+git clone https://github.com/giddearyan12/proyecta-minds.git
 
 Install Backend
 cd backend
@@ -59,19 +63,16 @@ npm start
 Setup Docker Execution
 Make sure Docker Desktop is installed and running. The Docker container runs isolated code execution (for security).
 
-🔐 Environment Variables
 
+🔐 Environment Variables
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret_key
 PORT=5000
 
 🧠 Planned Enhancements
 ✅ GitHub integration for version control
-
 ✅ Real-time video call support via WebRTC
-
 ✅ AI-powered code suggestions (via LLM API)
-
 ✅ WhatsApp bot for project updates (via Gemini API)
 
 👥 Contributors
