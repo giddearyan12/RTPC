@@ -41,29 +41,43 @@ To simplify remote project collaboration by combining **real-time communication*
 ## 🧪 How to Run Locally
 
 ### 1️⃣ Clone the Repository
+
 git clone https://github.com/giddearyan12/proyecta-minds.git
 
 2️⃣ Install Backend
+
 cd backend
+
 npm install
+
 node serve.js
 
 3️⃣ Install Frontend
+
 cd ../frontend
+
 npm install
+
 npm run dev
 
 4️⃣ Setup Docker Execution
+
 Make sure Docker Desktop is installed and running. Docker is used to run code in isolated containers securely.
 
 🔐 Environment Variables
+
 Create a .env file in your backend directory and add the following:
+
 env
+
 MONGO_URI=your_mongodb_connection_string
+
 JWT_SECRET=your_secret_key
+
 PORT=5000
 
 🚀 Planned Enhancements
+
 ✅ GitHub Integration for Version Control
 
 ✅ Real-Time Video Call Support via WebRTC
@@ -73,6 +87,7 @@ PORT=5000
 ✅ WhatsApp Bot for Project Updates (via Gemini API)
 
 👥 Contributors
+
 Aryan Gidde
 
 Chaitanya Teke
